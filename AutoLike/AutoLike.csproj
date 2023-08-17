@@ -70,6 +70,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -84,6 +85,43 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\LogoImage.bmp" />
+    <None Include="Resources\Images\332 %281%29.gif" />
+    <None Include="Resources\Images\332.gif" />
+    <None Include="Resources\Images\468.gif" />
+    <None Include="Resources\Images\739.gif" />
+    <None Include="Resources\Images\76.gif" />
+    <Content Include="Resources\Images\add.png" />
+    <Content Include="Resources\Images\add1.png" />
+    <Content Include="Resources\Images\add2.png" />
+    <Content Include="Resources\Images\chrome.png" />
+    <Content Include="Resources\Images\chrome1.png" />
+    <Content Include="Resources\Images\close.png" />
+    <Content Include="Resources\Images\close1.png" />
+    <Content Include="Resources\Images\close2.png" />
+    <Content Include="Resources\Images\copy.png" />
+    <Content Include="Resources\Images\Download-Start-Button-Png-Image-100686-For-Designing-Projects.png" />
+    <Content Include="Resources\Images\download.png" />
+    <Content Include="Resources\Images\edit.png" />
+    <None Include="Resources\Images\kissclipart-seo-icon-like-icon-e02520685a815c38.png" />
+    <Content Include="Resources\Images\LDbackground.png" />
+    <Content Include="Resources\Images\LDbackground6.png" />
+    <Content Include="Resources\Images\link.png" />
+    <Content Include="Resources\Images\message.png" />
+    <Content Include="Resources\Images\minimize.PNG" />
+    <Content Include="Resources\Images\Minio_Text_Editor_Bold-42-512.png" />
+    <Content Include="Resources\Images\refresh.png" />
+    <Content Include="Resources\Images\select.png" />
+    <Content Include="Resources\Images\select1.png" />
+    <Content Include="Resources\Images\start-button.png" />
+    <Content Include="Resources\Images\start.png" />
+    <Content Include="Resources\Images\start1.png" />
+    <Content Include="Resources\Images\thoat.PNG" />
+    <Content Include="Resources\Images\unselect.png" />
+    <Content Include="Resources\Images\upload.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Selenium.Chrome.WebDriver.85.0.0\build\Selenium.Chrome.WebDriver.targets" Condition="Exists('..\packages\Selenium.Chrome.WebDriver.85.0.0\build\Selenium.Chrome.WebDriver.targets')" />
