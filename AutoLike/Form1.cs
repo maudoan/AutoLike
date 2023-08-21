@@ -21,5 +21,20 @@ namespace AutoLike
         {
 
         }
+
+        private void buttonCloseApp_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void minimizeButton_Click(object sender, EventArgs e)
+        {
+            WindowState = FormWindowState.Minimized;
+        }
+
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+
+        }
     }
 }
