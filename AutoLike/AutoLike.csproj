@@ -86,7 +86,10 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Features\" />
+    <Folder Include="Utils\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="Resources\LogoImage.bmp" />
     <None Include="Resources\Images\332 %281%29.gif" />

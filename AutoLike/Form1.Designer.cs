@@ -53,6 +53,8 @@
             this.statusFilterComboBox = new System.Windows.Forms.ComboBox();
             this.fileManagementChild1GroupBox = new System.Windows.Forms.GroupBox();
             this.fileManagementChild2GroupBox = new System.Windows.Forms.GroupBox();
+            this.readAllFileButton = new System.Windows.Forms.Button();
+            this.readAllFileLabel = new System.Windows.Forms.Label();
 
             this.toolBar.SuspendLayout();
             this.tabControl.SuspendLayout();
@@ -409,6 +411,8 @@
             // 
             this.fileManagementChild2GroupBox.Controls.Add(this.statusFilterLabel);
             this.fileManagementChild2GroupBox.Controls.Add(this.statusFilterComboBox);
+            this.fileManagementChild2GroupBox.Controls.Add(this.readAllFileLabel);
+            this.fileManagementChild2GroupBox.Controls.Add(this.readAllFileButton);
             this.fileManagementChild2GroupBox.Location = new System.Drawing.Point(5, 170);
             this.fileManagementChild2GroupBox.Name = "fileManagementChild1GroupBox";
             this.fileManagementChild2GroupBox.Size = new System.Drawing.Size(310, 140);
@@ -425,6 +429,31 @@
             this.statusFilterLabel.Size = new System.Drawing.Size(100, 16);
             this.statusFilterLabel.TabIndex = 0;
             this.statusFilterLabel.Text = "Lọc Tình Trạng";
+
+            // 
+            // readAllFileLabel
+            // 
+            this.readAllFileLabel.AutoSize = true;
+            this.readAllFileLabel.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.readAllFileLabel.Location = new System.Drawing.Point(2, 40);
+            this.readAllFileLabel.Name = "readAllFileLabel";
+            this.readAllFileLabel.Size = new System.Drawing.Size(100, 16);
+            this.readAllFileLabel.TabIndex = 1;
+            this.readAllFileLabel.Text = "Đọc All File";
+
+            // 
+            // readAllFileButton
+            // 
+            this.readAllFileButton.BackColor = System.Drawing.Color.DarkGray;
+            this.readAllFileButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.readAllFileButton.ForeColor = System.Drawing.Color.White;
+            this.readAllFileButton.Location = new System.Drawing.Point(100, 40);
+            this.readAllFileButton.Name = "readAllFileButton";
+            this.readAllFileButton.Size = new System.Drawing.Size(69, 25);
+            this.readAllFileButton.TabIndex = 89;
+            this.readAllFileButton.Text = "Read All";
+            this.readAllFileButton.UseVisualStyleBackColor = false;
+            //this.readAllFileButton.Click += new System.EventHandler(this.Button28_Click_1);
 
             // 
             // statusFilterComboBox
@@ -506,6 +535,8 @@
         private System.Windows.Forms.TextBox createFileTextBox;
         private System.Windows.Forms.Label statusFilterLabel;
         private System.Windows.Forms.ComboBox statusFilterComboBox;
+        private System.Windows.Forms.Label readAllFileLabel;
+        private System.Windows.Forms.Button readAllFileButton;
 
     }
 }

@@ -121,7 +121,7 @@
   <data name="pictureBoxLogoShop.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAA4QAAAOECAYAAAD5Tv87AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
-        DQAACw0B7QfALAAA/7JJREFUeF7s/Wl0XMd17g/3Jy595icuf9DS/773JpoIYiaIsQGQIMABJCjKlmHZ
+        DAAACwwBP0AiyAAA/7JJREFUeF7s/Wl0XMd17g/3Jy595icuf9DS/773JpoIYiaIsQGQIMABJCjKlmHZ
         hh3b8SArk3Ovkoj3IlRyo9hOYieKYzu5CRIZkjWRokhR4CA2ZxAEJ3CeMaMxNQmSmBokUG/tc041qg92
         D9W9QYHQftb6rdqn+mBjanTXg12DRwjBMAzDMAzDMAzDfA5BOxmGYRiGYRiGYZj5D9rJMAzDMAzDMAzD
         zH/QToZhGIZhGIZhGGb+g3YyDMMwDMMwDMMw8x+0k2EYhmEYhmEYhpn/oJ0MwzAMwzAMwzDM/AftZBiG
@@ -3210,7 +3210,7 @@
   <data name="minimizeButton.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAd0AAAHdCAYAAABYPaNuAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vQAADr0BR/uQrQAADMNJREFUeF7t3c/qpnUdxnGZReo4bSLdhQluPJAaCwRrlVFnoOQm8ywKcmEwttUz
+        vAAADrwBlbxySQAADMNJREFUeF7t3c/qpnUdxnGZReo4bSLdhQluPJAaCwRrlVFnoOQm8ywKcmEwttUz
         yBBrVbjMIAWtJvuzGDTCZjZunD7f/RUo9/U8z32Prze8NtcBfD8M/Oa577t79y4AcAZxBAD64ggA9MUR
         AOiLIwDQF0cAoC+OAEBfHAGAvjgCAH1xBAD64ggA9MURAOiLIwDQF0cAoC+OAEBfHAGAvjgCAH1xBAD6
         4ggA9MURAOiLIwDQF0cAoC+OAEBfHAGAvjgCAH1xBAD64ggA9MURAOiLIwDQF0cAoC+OAEBfHAGAvjgC
