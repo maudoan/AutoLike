@@ -79,17 +79,13 @@ namespace AutoLike.Utils
                 {
                     using (SQLiteCommand sqliteCommand = sqliteConnection2.CreateCommand())
                     {
-                        sqliteCommand.CommandText = "SELECT * From [data]";
+                        sqliteCommand.CommandText = "SELECT DISTINCT DANHMUC From [data]";
                         sqliteCommand.CommandType = CommandType.Text;
                         SQLiteDataReader sqliteDataReader = sqliteCommand.ExecuteReader();
                         bool flag;
                         while (flag = sqliteDataReader.Read())
                         {
-                            if (sqliteDataReader["CATELOGE"].ToString() == cateloge)
-                            {
-                                acc.Add(sqliteDataReader["UID"].ToString());
-                            }
-
+                                acc.Add(sqliteDataReader["DANHMUC"].ToString());
                         }
                     }
                 }
