@@ -32,7 +32,7 @@ namespace AutoLike
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStylelistFile = new System.Windows.Forms.DataGridViewCellStyle();
             this.toolBar = new System.Windows.Forms.Panel();
             this.pictureBoxLogoShop = new System.Windows.Forms.PictureBox();
             this.minimizeButton = new System.Windows.Forms.Button();
@@ -344,14 +344,14 @@ namespace AutoLike
             this.listFileDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.listFileDataGridViewTextBoxColumn});
             this.listFileDataGridView.ContextMenuStrip = this.listFileContextMenuStrip;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Tahoma", 8F);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.Blue;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.listFileDataGridView.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStylelistFile.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStylelistFile.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStylelistFile.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStylelistFile.ForeColor = System.Drawing.Color.Green;
+            dataGridViewCellStylelistFile.SelectionBackColor = System.Drawing.Color.White;
+            dataGridViewCellStylelistFile.SelectionForeColor = System.Drawing.Color.Blue;
+            dataGridViewCellStylelistFile.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.listFileDataGridView.DefaultCellStyle = dataGridViewCellStylelistFile;
             this.listFileDataGridView.GridColor = System.Drawing.Color.White;
             this.listFileDataGridView.Location = new System.Drawing.Point(5, 300);
             this.listFileDataGridView.Name = "listFileDataGridView";

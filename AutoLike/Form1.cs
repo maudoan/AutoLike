@@ -50,17 +50,21 @@ namespace AutoLike
             
             importFileTextBox.Text = _form1Controller.GetSelectedFileName();
 
-
-            Categorys = _form1Controller.LoadFileAccount();
-            for (int i = 0; i < Categorys.Count; i++)
+            if (checkImportFile)
             {
-                this.Invoke(new Action(() =>
+                listFileDataGridView.Rows.Clear();
+                Categorys = _form1Controller.LoadFileAccount();
+                for (int i = 0; i < Categorys.Count; i++)
                 {
+                    this.Invoke(new Action(() =>
+                    {
 
-                    listFileDataGridView.Rows.Add(Categorys[i]);
-                }));
+                        listFileDataGridView.Rows.Add(Categorys[i]);
+                    }));
 
+                }
             }
+          
         }
     }
 }
