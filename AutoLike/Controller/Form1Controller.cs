@@ -106,10 +106,13 @@ namespace AutoLike.Controller
 
         }
 
-        public List<String> LoadFileAccount()
+        public void  LoadFileAccount(DataGridView dataGridView)
         {
             List<string> dm = _sqliteUtils.getListCategory("DM");
-            return dm;
+            for (int i = 0; i < dm.Count; i++)
+            {
+                 dataGridView.Rows.Add(dm[i]);
+            }
         }
 
         public List<string> getListAccount(string fileName, DataGridView dataGridView)
@@ -157,7 +160,7 @@ namespace AutoLike.Controller
                     rowCount++;
 
                     DataGridViewRow row = dataGridView.Rows[rowCount - 1];
-                    if (row.Cells["Tinhtrang1"].Value.ToString().Contains("Die") || row.Cells["Tinhtrang1"].Value.ToString().ToLower().Contains("check") || row.Cells["Tinhtrang1"].Value.ToString().Contains("LỖI"))
+                    if (row.Cells["tinhtrangAccount"].Value.ToString().Contains("Die") || row.Cells["tinhtrangAccount"].Value.ToString().ToLower().Contains("check") || row.Cells["tinhtrangAccount"].Value.ToString().Contains("LỖI"))
                     {
                         row.DefaultCellStyle.BackColor = Color.FromArgb(248, 198, 198);
                     }
@@ -167,7 +170,11 @@ namespace AutoLike.Controller
                     }
 
                 }
-                catch { }
+                catch (Exception ex) 
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                
             }
 
             return list;

@@ -103,7 +103,7 @@ namespace AutoLike
             this.tokenAccount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cookieldAccount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tokenldAccount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.email1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.emailAccount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.passmailAccount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.namtaoAccount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tenAccount = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -553,7 +553,7 @@ namespace AutoLike
             this.tokenAccount,
             this.cookieldAccount,
             this.tokenldAccount,
-            this.email1,
+            this.emailAccount,
             this.passmailAccount,
             this.namtaoAccount,
             this.tenAccount,
@@ -667,13 +667,13 @@ namespace AutoLike
             this.tokenldAccount.Name = "tokenldAccount";
             this.tokenldAccount.Width = 60;
             // 
-            // email1
+            // emailAccount
             // 
             dataGridViewCellStyle12.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.email1.DefaultCellStyle = dataGridViewCellStyle12;
-            this.email1.HeaderText = "Email";
-            this.email1.Name = "email1";
-            this.email1.Width = 50;
+            this.emailAccount.DefaultCellStyle = dataGridViewCellStyle12;
+            this.emailAccount.HeaderText = "Email";
+            this.emailAccount.Name = "emailAccount";
+            this.emailAccount.Width = 50;
             // 
             // passmailAccount
             // 
@@ -914,7 +914,6 @@ namespace AutoLike
         private System.Windows.Forms.DataGridViewTextBoxColumn buAccount;
         private System.Windows.Forms.DataGridViewTextBoxColumn trangthaiAccount;
         private System.Windows.Forms.ContextMenuStrip contextMenuStripFeature;
-        private DataGridViewTextBoxColumn email1;
     }
 }
 

@@ -24,6 +24,8 @@ namespace AutoLike
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            _form1Controller.LoadFileAccount(listFileDataGridView);
+
 
         }
 
@@ -45,7 +47,7 @@ namespace AutoLike
         private void importFileTextBox_DoubleClick(object sender, EventArgs e)
         {
             Boolean checkImportFile;
-            List<string> Categorys = new List<string>();
+          
             checkImportFile = _form1Controller.SelectFile();
             
             importFileTextBox.Text = _form1Controller.GetSelectedFileName();
@@ -53,37 +55,29 @@ namespace AutoLike
             if (checkImportFile)
             {
                 listFileDataGridView.Rows.Clear();
-                Categorys = _form1Controller.LoadFileAccount();
-                for (int i = 0; i < Categorys.Count; i++)
-                {
-                    this.Invoke(new Action(() =>
-                    {
-
-                        listFileDataGridView.Rows.Add(Categorys[i]);
-                    }));
-
-                }
+                _form1Controller.LoadFileAccount(listFileDataGridView);
+                
             }
           
         }
         private void listFileDataGridView_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            //listFileDataGridView.Rows.Clear();
+            detailListAccountsDataGridView.Rows.Clear();
             int index = listFileDataGridView.CurrentCell.RowIndex;
             string fileName = listFileDataGridView.Rows[index].Cells[0].Value.ToString();
-            _form1Controller.getListAccount(fileName, listFileDataGridView);
-            for (int i = 0; i < listFileDataGridView.Rows.Count; i++)
+            _form1Controller.getListAccount(fileName, detailListAccountsDataGridView);
+            for (int i = 0; i < detailListAccountsDataGridView.Rows.Count; i++)
             {
                 string ac = "";
-                for (int j = 2; j < listFileDataGridView.Rows[i].Cells.Count; j++)
+                for (int j = 2; j < detailListAccountsDataGridView.Rows[i].Cells.Count; j++)
                 {
                     if (j == 2)
                     {
-                        ac = listFileDataGridView.Rows[i].Cells[j].Value.ToString();
+                        ac = detailListAccountsDataGridView.Rows[i].Cells[j].Value.ToString();
                     }
                     else
                     {
-                        ac = ac + "|" + listFileDataGridView.Rows[i].Cells[j].Value.ToString();
+                        ac = ac + "|" + detailListAccountsDataGridView.Rows[i].Cells[j].Value.ToString();
                     }
 
                 }
