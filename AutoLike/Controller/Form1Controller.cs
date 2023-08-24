@@ -3,6 +3,7 @@ using AutoLike.Utils;
 using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -109,6 +110,68 @@ namespace AutoLike.Controller
         {
             List<string> dm = _sqliteUtils.getListCategory("DM");
             return dm;
+        }
+
+        public List<string> getListAccount(string fileName, DataGridView dataGridView)
+        {
+
+            List<string> list = new List<string>();
+            if (fileName == "ALL")
+            {
+                //for (int i1 = 0; i1 < listFileDataGridView.Rows.Count; i1++)
+                //{
+                //    List<string> list1 = FBAutoKitDo.SQLite.getlistac(dataGridView6.Rows[i1].Cells[0].Value.ToString());
+                //    for (int i2 = 0; i2 < list1.Count; i2++)
+                //    {
+                //        list.Add(list1[i2]);
+                //    }
+                //}
+            }
+            else
+            {
+                list = _sqliteUtils.getlistAccount(fileName);
+            }
+
+            dataGridView.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.EnableResizing;
+            int rowCount = dataGridView.Rows.Count;
+
+            foreach (var item in list)
+            {
+                try
+                {
+                    string[] acc = item.Split('|');
+
+                    StringBuilder sb = new StringBuilder();
+                    sb.Append((rowCount + 1).ToString()).Append(",").Append(false);
+                    for (int i = 0; i < 22; i++)
+                    {
+                        sb.Append(",").Append(i == 10 ? acc[10].Replace("\"", "'") : acc[i]);
+                    }
+
+                    int friend;
+                    int.TryParse(acc[12], out friend);
+                    sb.Append(",").Append(friend);
+
+                    dataGridView.Rows.Add(sb.ToString().Split(','));
+
+                    rowCount++;
+
+                    DataGridViewRow row = dataGridView.Rows[rowCount - 1];
+                    if (row.Cells["Tinhtrang1"].Value.ToString().Contains("Die") || row.Cells["Tinhtrang1"].Value.ToString().ToLower().Contains("check") || row.Cells["Tinhtrang1"].Value.ToString().Contains("LỖI"))
+                    {
+                        row.DefaultCellStyle.BackColor = Color.FromArgb(248, 198, 198);
+                    }
+                    else
+                    {
+                        row.DefaultCellStyle.BackColor = Color.FromArgb(203, 245, 203);
+                    }
+
+                }
+                catch { }
+            }
+
+            return list;
+
         }
     }
 }

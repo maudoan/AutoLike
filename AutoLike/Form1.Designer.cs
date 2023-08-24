@@ -32,7 +32,33 @@ namespace AutoLike
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStylelistFile = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle26 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle27 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle22 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle23 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle24 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle25 = new System.Windows.Forms.DataGridViewCellStyle();
             this.toolBar = new System.Windows.Forms.Panel();
             this.pictureBoxLogoShop = new System.Windows.Forms.PictureBox();
             this.minimizeButton = new System.Windows.Forms.Button();
@@ -43,8 +69,8 @@ namespace AutoLike
             this.tabControl = new System.Windows.Forms.TabControl();
             this.doashBoardTabPage = new System.Windows.Forms.TabPage();
             this.fileManagementGroupBox = new System.Windows.Forms.GroupBox();
-            this.fileManagementLabel = new System.Windows.Forms.Label();
             this.fileManagementChild1GroupBox = new System.Windows.Forms.GroupBox();
+            this.fileManagementLabel = new System.Windows.Forms.Label();
             this.importFileTextBox = new System.Windows.Forms.TextBox();
             this.importFileLabel = new System.Windows.Forms.Label();
             this.createFileLabel = new System.Windows.Forms.Label();
@@ -66,6 +92,34 @@ namespace AutoLike
             this.checkViaGroupBox = new System.Windows.Forms.GroupBox();
             this.settingChormeGroupBox = new System.Windows.Forms.GroupBox();
             this.turnOffChormeButton = new System.Windows.Forms.Button();
+            this.detailListAccountsPanel = new System.Windows.Forms.Panel();
+            this.detailListAccountsDataGridView = new System.Windows.Forms.DataGridView();
+            this.sttAccount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.checkboxItemAccount = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.uidAccount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.passAccount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.code2faAccount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cookieAccount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tokenAccount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cookieldAccount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tokenldAccount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.email1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.passmailAccount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.namtaoAccount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tenAccount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.birthdayAccount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.friendsAccount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.groupsAccount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.genderAccount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tinhtrangAccount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.proxyAccount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.lastactiveAccount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tenfileAccount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ghichuAccount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.buAccount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.trangthaiAccount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.contextMenuStripFeature = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.loadingPictureBox = new System.Windows.Forms.PictureBox();
             this.toolBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogoShop)).BeginInit();
             this.tabControl.SuspendLayout();
@@ -76,6 +130,9 @@ namespace AutoLike
             ((System.ComponentModel.ISupportInitialize)(this.listFileDataGridView)).BeginInit();
             this.listFileContextMenuStrip.SuspendLayout();
             this.settingChormeGroupBox.SuspendLayout();
+            this.detailListAccountsPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.detailListAccountsDataGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.loadingPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // toolBar
@@ -194,6 +251,7 @@ namespace AutoLike
             this.doashBoardTabPage.Controls.Add(this.backupGroupBox);
             this.doashBoardTabPage.Controls.Add(this.checkViaGroupBox);
             this.doashBoardTabPage.Controls.Add(this.settingChormeGroupBox);
+            this.doashBoardTabPage.Controls.Add(this.detailListAccountsPanel);
             this.doashBoardTabPage.ForeColor = System.Drawing.Color.White;
             this.doashBoardTabPage.Location = new System.Drawing.Point(4, 34);
             this.doashBoardTabPage.Name = "doashBoardTabPage";
@@ -212,17 +270,6 @@ namespace AutoLike
             this.fileManagementGroupBox.TabIndex = 57;
             this.fileManagementGroupBox.TabStop = false;
             // 
-            // fileManagementLabel
-            // 
-            this.fileManagementLabel.AutoSize = true;
-            this.fileManagementLabel.BackColor = System.Drawing.Color.Green;
-            this.fileManagementLabel.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.fileManagementLabel.Location = new System.Drawing.Point(4, 9);
-            this.fileManagementLabel.Name = "fileManagementLabel";
-            this.fileManagementLabel.Size = new System.Drawing.Size(69, 13);
-            this.fileManagementLabel.TabIndex = 81;
-            this.fileManagementLabel.Text = "Quản lý file";
-            // 
             // fileManagementChild1GroupBox
             // 
             this.fileManagementChild1GroupBox.Controls.Add(this.fileManagementLabel);
@@ -236,14 +283,25 @@ namespace AutoLike
             this.fileManagementChild1GroupBox.TabIndex = 55;
             this.fileManagementChild1GroupBox.TabStop = false;
             // 
+            // fileManagementLabel
+            // 
+            this.fileManagementLabel.AutoSize = true;
+            this.fileManagementLabel.BackColor = System.Drawing.Color.Green;
+            this.fileManagementLabel.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.fileManagementLabel.Location = new System.Drawing.Point(4, 9);
+            this.fileManagementLabel.Name = "fileManagementLabel";
+            this.fileManagementLabel.Size = new System.Drawing.Size(69, 13);
+            this.fileManagementLabel.TabIndex = 81;
+            this.fileManagementLabel.Text = "Quản lý file";
+            // 
             // importFileTextBox
             // 
             this.importFileTextBox.Location = new System.Drawing.Point(80, 39);
             this.importFileTextBox.Name = "importFileTextBox";
+            this.importFileTextBox.ReadOnly = true;
             this.importFileTextBox.Size = new System.Drawing.Size(200, 20);
             this.importFileTextBox.TabIndex = 35;
             this.importFileTextBox.DoubleClick += new System.EventHandler(this.importFileTextBox_DoubleClick);
-            this.importFileTextBox.ReadOnly = true;
             // 
             // importFileLabel
             // 
@@ -344,14 +402,14 @@ namespace AutoLike
             this.listFileDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.listFileDataGridViewTextBoxColumn});
             this.listFileDataGridView.ContextMenuStrip = this.listFileContextMenuStrip;
-            dataGridViewCellStylelistFile.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStylelistFile.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStylelistFile.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStylelistFile.ForeColor = System.Drawing.Color.Green;
-            dataGridViewCellStylelistFile.SelectionBackColor = System.Drawing.Color.White;
-            dataGridViewCellStylelistFile.SelectionForeColor = System.Drawing.Color.Blue;
-            dataGridViewCellStylelistFile.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.listFileDataGridView.DefaultCellStyle = dataGridViewCellStylelistFile;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Tahoma", 8F);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.Blue;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.listFileDataGridView.DefaultCellStyle = dataGridViewCellStyle1;
             this.listFileDataGridView.GridColor = System.Drawing.Color.White;
             this.listFileDataGridView.Location = new System.Drawing.Point(5, 300);
             this.listFileDataGridView.Name = "listFileDataGridView";
@@ -359,6 +417,7 @@ namespace AutoLike
             this.listFileDataGridView.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.listFileDataGridView.Size = new System.Drawing.Size(309, 285);
             this.listFileDataGridView.TabIndex = 2;
+            this.listFileDataGridView.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.listFileDataGridView_CellContentDoubleClick);
             // 
             // listFileDataGridViewTextBoxColumn
             // 
@@ -374,22 +433,27 @@ namespace AutoLike
             this.editNameFileToolStripMenuItem,
             this.viewToolStripMenuItem});
             this.listFileContextMenuStrip.Name = "listFileContextMenuStrip";
-            this.listFileContextMenuStrip.Size = new System.Drawing.Size(68, 70);
+            this.listFileContextMenuStrip.Size = new System.Drawing.Size(134, 70);
             // 
             // deleteFileToolStripMenuItem
             // 
+            this.deleteFileToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.deleteFileToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.deleteFileToolStripMenuItem.Name = "deleteFileToolStripMenuItem";
-            this.deleteFileToolStripMenuItem.Size = new System.Drawing.Size(67, 22);
+            this.deleteFileToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.deleteFileToolStripMenuItem.Text = "Xóa File";
             // 
             // editNameFileToolStripMenuItem
             // 
             this.editNameFileToolStripMenuItem.Name = "editNameFileToolStripMenuItem";
-            this.editNameFileToolStripMenuItem.Size = new System.Drawing.Size(67, 22);
+            this.editNameFileToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.editNameFileToolStripMenuItem.Text = "Đổi tên File";
             // 
             // viewToolStripMenuItem
             // 
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
-            this.viewToolStripMenuItem.Size = new System.Drawing.Size(67, 22);
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.viewToolStripMenuItem.Text = "View";
             // 
             // itemFileDetail
             // 
@@ -446,6 +510,307 @@ namespace AutoLike
             this.turnOffChormeButton.Text = "Tắt Chromedriver";
             this.turnOffChormeButton.UseVisualStyleBackColor = false;
             // 
+            // detailListAccountsPanel
+            // 
+            this.detailListAccountsPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.detailListAccountsPanel.Controls.Add(this.detailListAccountsDataGridView);
+            this.detailListAccountsPanel.Location = new System.Drawing.Point(8, 163);
+            this.detailListAccountsPanel.Name = "detailListAccountsPanel";
+            this.detailListAccountsPanel.Size = new System.Drawing.Size(1293, 499);
+            this.detailListAccountsPanel.TabIndex = 18;
+            // 
+            // detailListAccountsDataGridView
+            // 
+            this.detailListAccountsDataGridView.AllowUserToAddRows = false;
+            this.detailListAccountsDataGridView.AllowUserToResizeRows = false;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Tahoma", 8F);
+            this.detailListAccountsDataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
+            this.detailListAccountsDataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.detailListAccountsDataGridView.BackgroundColor = System.Drawing.Color.White;
+            this.detailListAccountsDataGridView.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.detailListAccountsDataGridView.CausesValidation = false;
+            this.detailListAccountsDataGridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
+            this.detailListAccountsDataGridView.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Tahoma", 8F);
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.detailListAccountsDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            this.detailListAccountsDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.detailListAccountsDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.sttAccount,
+            this.checkboxItemAccount,
+            this.uidAccount,
+            this.passAccount,
+            this.code2faAccount,
+            this.cookieAccount,
+            this.tokenAccount,
+            this.cookieldAccount,
+            this.tokenldAccount,
+            this.email1,
+            this.passmailAccount,
+            this.namtaoAccount,
+            this.tenAccount,
+            this.birthdayAccount,
+            this.friendsAccount,
+            this.groupsAccount,
+            this.genderAccount,
+            this.tinhtrangAccount,
+            this.proxyAccount,
+            this.lastactiveAccount,
+            this.tenfileAccount,
+            this.ghichuAccount,
+            this.buAccount,
+            this.trangthaiAccount});
+            this.detailListAccountsDataGridView.ContextMenuStrip = this.contextMenuStripFeature;
+            this.detailListAccountsDataGridView.EnableHeadersVisualStyles = false;
+            this.detailListAccountsDataGridView.GridColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.detailListAccountsDataGridView.Location = new System.Drawing.Point(3, 2);
+            this.detailListAccountsDataGridView.Name = "detailListAccountsDataGridView";
+            this.detailListAccountsDataGridView.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            dataGridViewCellStyle26.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle26.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle26.Font = new System.Drawing.Font("Tahoma", 8F);
+            dataGridViewCellStyle26.ForeColor = System.Drawing.Color.Teal;
+            dataGridViewCellStyle26.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle26.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle26.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.detailListAccountsDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle26;
+            this.detailListAccountsDataGridView.RowHeadersVisible = false;
+            this.detailListAccountsDataGridView.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
+            dataGridViewCellStyle27.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle27.Font = new System.Drawing.Font("Tahoma", 8F);
+            dataGridViewCellStyle27.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.detailListAccountsDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle27;
+            this.detailListAccountsDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.detailListAccountsDataGridView.Size = new System.Drawing.Size(1286, 492);
+            this.detailListAccountsDataGridView.TabIndex = 83;
+            // 
+            // sttAccount
+            // 
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(81)))));
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.sttAccount.DefaultCellStyle = dataGridViewCellStyle4;
+            this.sttAccount.HeaderText = "STT";
+            this.sttAccount.Name = "sttAccount";
+            this.sttAccount.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.sttAccount.Width = 30;
+            // 
+            // checkboxItemAccount
+            // 
+            this.checkboxItemAccount.HeaderText = "All";
+            this.checkboxItemAccount.Name = "checkboxItemAccount";
+            this.checkboxItemAccount.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.checkboxItemAccount.Width = 20;
+            // 
+            // uidAccount
+            // 
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.uidAccount.DefaultCellStyle = dataGridViewCellStyle5;
+            this.uidAccount.HeaderText = "UID";
+            this.uidAccount.Name = "uidAccount";
+            this.uidAccount.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.uidAccount.Width = 60;
+            // 
+            // passAccount
+            // 
+            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.passAccount.DefaultCellStyle = dataGridViewCellStyle6;
+            this.passAccount.HeaderText = "Pass Mail";
+            this.passAccount.Name = "passAccount";
+            this.passAccount.Width = 50;
+            // 
+            // code2faAccount
+            // 
+            dataGridViewCellStyle7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.code2faAccount.DefaultCellStyle = dataGridViewCellStyle7;
+            this.code2faAccount.HeaderText = "2FA";
+            this.code2faAccount.Name = "code2faAccount";
+            this.code2faAccount.Width = 50;
+            // 
+            // cookieAccount
+            // 
+            dataGridViewCellStyle8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.cookieAccount.DefaultCellStyle = dataGridViewCellStyle8;
+            this.cookieAccount.HeaderText = "Cookie";
+            this.cookieAccount.Name = "cookieAccount";
+            this.cookieAccount.Width = 60;
+            // 
+            // tokenAccount
+            // 
+            dataGridViewCellStyle9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.tokenAccount.DefaultCellStyle = dataGridViewCellStyle9;
+            this.tokenAccount.HeaderText = "Token";
+            this.tokenAccount.Name = "tokenAccount";
+            this.tokenAccount.Width = 60;
+            // 
+            // cookieldAccount
+            // 
+            dataGridViewCellStyle10.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.cookieldAccount.DefaultCellStyle = dataGridViewCellStyle10;
+            this.cookieldAccount.HeaderText = "Cookie LD";
+            this.cookieldAccount.Name = "cookieldAccount";
+            this.cookieldAccount.Width = 60;
+            // 
+            // tokenldAccount
+            // 
+            dataGridViewCellStyle11.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.tokenldAccount.DefaultCellStyle = dataGridViewCellStyle11;
+            this.tokenldAccount.HeaderText = "Token LD";
+            this.tokenldAccount.Name = "tokenldAccount";
+            this.tokenldAccount.Width = 60;
+            // 
+            // email1
+            // 
+            dataGridViewCellStyle12.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.email1.DefaultCellStyle = dataGridViewCellStyle12;
+            this.email1.HeaderText = "Email";
+            this.email1.Name = "email1";
+            this.email1.Width = 50;
+            // 
+            // passmailAccount
+            // 
+            this.passmailAccount.Name = "passmailAccount";
+            // 
+            // namtaoAccount
+            // 
+            dataGridViewCellStyle13.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
+            this.namtaoAccount.DefaultCellStyle = dataGridViewCellStyle13;
+            this.namtaoAccount.HeaderText = "Avatar";
+            this.namtaoAccount.Name = "namtaoAccount";
+            this.namtaoAccount.Width = 60;
+            // 
+            // tenAccount
+            // 
+            dataGridViewCellStyle14.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle14.ForeColor = System.Drawing.Color.SlateBlue;
+            this.tenAccount.DefaultCellStyle = dataGridViewCellStyle14;
+            this.tenAccount.FillWeight = 150F;
+            this.tenAccount.HeaderText = "Name";
+            this.tenAccount.Name = "tenAccount";
+            this.tenAccount.ReadOnly = true;
+            this.tenAccount.Width = 60;
+            // 
+            // birthdayAccount
+            // 
+            dataGridViewCellStyle15.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.birthdayAccount.DefaultCellStyle = dataGridViewCellStyle15;
+            this.birthdayAccount.HeaderText = "Birthday";
+            this.birthdayAccount.Name = "birthdayAccount";
+            this.birthdayAccount.ReadOnly = true;
+            this.birthdayAccount.Width = 60;
+            // 
+            // friendsAccount
+            // 
+            dataGridViewCellStyle16.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.friendsAccount.DefaultCellStyle = dataGridViewCellStyle16;
+            this.friendsAccount.HeaderText = "Friends";
+            this.friendsAccount.Name = "friendsAccount";
+            this.friendsAccount.ReadOnly = true;
+            this.friendsAccount.Width = 50;
+            // 
+            // groupsAccount
+            // 
+            dataGridViewCellStyle17.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.groupsAccount.DefaultCellStyle = dataGridViewCellStyle17;
+            this.groupsAccount.HeaderText = "Groups";
+            this.groupsAccount.Name = "groupsAccount";
+            this.groupsAccount.ReadOnly = true;
+            this.groupsAccount.Width = 50;
+            // 
+            // genderAccount
+            // 
+            dataGridViewCellStyle18.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.genderAccount.DefaultCellStyle = dataGridViewCellStyle18;
+            this.genderAccount.HeaderText = "Gender";
+            this.genderAccount.Name = "genderAccount";
+            this.genderAccount.ReadOnly = true;
+            this.genderAccount.Width = 50;
+            // 
+            // tinhtrangAccount
+            // 
+            dataGridViewCellStyle19.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle19.ForeColor = System.Drawing.Color.Green;
+            this.tinhtrangAccount.DefaultCellStyle = dataGridViewCellStyle19;
+            this.tinhtrangAccount.HeaderText = "Live/Die";
+            this.tinhtrangAccount.Name = "tinhtrangAccount";
+            this.tinhtrangAccount.ReadOnly = true;
+            this.tinhtrangAccount.Width = 60;
+            // 
+            // proxyAccount
+            // 
+            dataGridViewCellStyle20.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.proxyAccount.DefaultCellStyle = dataGridViewCellStyle20;
+            this.proxyAccount.HeaderText = "Proxy";
+            this.proxyAccount.Name = "proxyAccount";
+            this.proxyAccount.Width = 50;
+            // 
+            // lastactiveAccount
+            // 
+            dataGridViewCellStyle21.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle21.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.lastactiveAccount.DefaultCellStyle = dataGridViewCellStyle21;
+            this.lastactiveAccount.HeaderText = "Last Active";
+            this.lastactiveAccount.Name = "lastactiveAccount";
+            this.lastactiveAccount.Width = 50;
+            // 
+            // tenfileAccount
+            // 
+            dataGridViewCellStyle22.ForeColor = System.Drawing.Color.Navy;
+            this.tenfileAccount.DefaultCellStyle = dataGridViewCellStyle22;
+            this.tenfileAccount.HeaderText = "DM";
+            this.tenfileAccount.Name = "tenfileAccount";
+            this.tenfileAccount.Width = 60;
+            // 
+            // ghichuAccount
+            // 
+            dataGridViewCellStyle23.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
+            this.ghichuAccount.DefaultCellStyle = dataGridViewCellStyle23;
+            this.ghichuAccount.HeaderText = "Ghi chú";
+            this.ghichuAccount.Name = "ghichuAccount";
+            this.ghichuAccount.Width = 50;
+            // 
+            // buAccount
+            // 
+            dataGridViewCellStyle24.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
+            this.buAccount.DefaultCellStyle = dataGridViewCellStyle24;
+            this.buAccount.HeaderText = "Ngày BU";
+            this.buAccount.Name = "buAccount";
+            this.buAccount.Width = 60;
+            // 
+            // trangthaiAccount
+            // 
+            this.trangthaiAccount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            dataGridViewCellStyle25.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle25.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.trangthaiAccount.DefaultCellStyle = dataGridViewCellStyle25;
+            this.trangthaiAccount.HeaderText = "Status";
+            this.trangthaiAccount.Name = "trangthaiAccount";
+            this.trangthaiAccount.ReadOnly = true;
+            // 
+            // contextMenuStripFeature
+            // 
+            this.contextMenuStripFeature.AllowDrop = true;
+            this.contextMenuStripFeature.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.contextMenuStripFeature.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.contextMenuStripFeature.Name = "contextMenuStripFeature";
+            this.contextMenuStripFeature.Size = new System.Drawing.Size(245, 378);
+            // 
+            // loadingPictureBox
+            // 
+            this.loadingPictureBox.Location = new System.Drawing.Point(0, 0);
+            this.loadingPictureBox.Name = "loadingPictureBox";
+            this.loadingPictureBox.Size = new System.Drawing.Size(100, 50);
+            this.loadingPictureBox.TabIndex = 0;
+            this.loadingPictureBox.TabStop = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -479,6 +844,9 @@ namespace AutoLike
             ((System.ComponentModel.ISupportInitialize)(this.listFileDataGridView)).EndInit();
             this.listFileContextMenuStrip.ResumeLayout(false);
             this.settingChormeGroupBox.ResumeLayout(false);
+            this.detailListAccountsPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.detailListAccountsDataGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.loadingPictureBox)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -518,7 +886,35 @@ namespace AutoLike
         private System.Windows.Forms.ToolStripMenuItem editNameFileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
         private System.Windows.Forms.TextBox itemFileDetail;
-
+        private System.Windows.Forms.Panel detailListAccountsPanel;
+        private System.Windows.Forms.DataGridView detailListAccountsDataGridView;
+        private System.Windows.Forms.PictureBox loadingPictureBox;
+        private System.Windows.Forms.DataGridViewTextBoxColumn sttAccount;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn checkboxItemAccount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn uidAccount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn passAccount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn code2faAccount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn cookieAccount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn tokenAccount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn cookieldAccount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn tokenldAccount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn emailAccount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn passmailAccount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn namtaoAccount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn tenAccount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn birthdayAccount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn friendsAccount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn groupsAccount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn genderAccount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn tinhtrangAccount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn proxyAccount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn lastactiveAccount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn tenfileAccount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ghichuAccount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn buAccount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn trangthaiAccount;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStripFeature;
+        private DataGridViewTextBoxColumn email1;
     }
 }
 

@@ -190,5 +190,61 @@ namespace AutoLike.Utils
 
             return false;
         }
+
+        
+        public List<string> getlistAccount(string cateloge)
+        {
+
+          
+                List<string> acc = new List<string>();
+
+                SQLiteConnection sqliteConnection = new SQLiteConnection();
+                sqliteConnection.ConnectionString = "Data Source=Data.sqlite3;Version=3;";
+                sqliteConnection.Open();
+                SQLiteCommand sqliteCommand = sqliteConnection.CreateCommand();
+
+                sqliteCommand.CommandText = "SELECT * From [data]";
+                sqliteCommand.CommandType = CommandType.Text;
+                SQLiteDataReader sqliteDataReader = sqliteCommand.ExecuteReader();
+                while (sqliteDataReader.Read())
+                {
+
+                    if (sqliteDataReader["CATELOGE"].ToString() == cateloge)
+                    {
+                        acc.Add(sqliteDataReader["UID"].ToString() + "|" +
+                       sqliteDataReader["PASS"].ToString() + "|" +
+                       sqliteDataReader["2FA"].ToString() + "|" +
+                       sqliteDataReader["COOKIE"].ToString() + "|" +
+                       sqliteDataReader["TOKEN"].ToString() + "|" +
+                       sqliteDataReader["COOKIELD"].ToString() + "|" +
+                        sqliteDataReader["TOKENLD"].ToString() + "|" +
+                         sqliteDataReader["EMAIL"].ToString() + "|" +
+                          sqliteDataReader["PASSMAIL"].ToString().Replace("\r", "").Replace("\n", "") + " | " +
+                           sqliteDataReader["NAMTAO"].ToString() + "|" +
+                            sqliteDataReader["TEN"].ToString() + "|" +
+                             sqliteDataReader["SINHNHAT"].ToString() + "|" +
+                              sqliteDataReader["FRIEND"].ToString() + "|" +
+                               sqliteDataReader["GROUP"].ToString() + "|" +
+                               sqliteDataReader["GENDER"].ToString() + "|" +
+                               sqliteDataReader["LIVE"].ToString() + "|" +
+                               sqliteDataReader["PROXY"].ToString() + "|" +
+                               sqliteDataReader["LASTACTIVE"].ToString() + "|" +
+                               sqliteDataReader["CATELOGE"].ToString() + "|" +
+                               sqliteDataReader["GHICHU"].ToString() + "|" +
+                                sqliteDataReader["NGAYBU"].ToString() + "|" +
+                               sqliteDataReader["TRANGTHAI"].ToString()
+                       );
+                    }
+
+
+                }
+                sqliteDataReader.Close();
+                sqliteConnection.Close();
+                return acc; 
+            }
+           
+
+    
+        
     }
 }

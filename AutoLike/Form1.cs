@@ -66,5 +66,28 @@ namespace AutoLike
             }
           
         }
+        private void listFileDataGridView_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            //listFileDataGridView.Rows.Clear();
+            int index = listFileDataGridView.CurrentCell.RowIndex;
+            string fileName = listFileDataGridView.Rows[index].Cells[0].Value.ToString();
+            _form1Controller.getListAccount(fileName, listFileDataGridView);
+            for (int i = 0; i < listFileDataGridView.Rows.Count; i++)
+            {
+                string ac = "";
+                for (int j = 2; j < listFileDataGridView.Rows[i].Cells.Count; j++)
+                {
+                    if (j == 2)
+                    {
+                        ac = listFileDataGridView.Rows[i].Cells[j].Value.ToString();
+                    }
+                    else
+                    {
+                        ac = ac + "|" + listFileDataGridView.Rows[i].Cells[j].Value.ToString();
+                    }
+
+                }
+            }
+        }
     }
 }
