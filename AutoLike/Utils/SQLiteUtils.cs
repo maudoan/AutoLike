@@ -23,7 +23,7 @@ namespace AutoLike.Utils
         }
         public void insertListAccount(List<account> listAccounts)
         {
-            //deleteuidtrung(data);
+            deleteuidtrung(listAccounts);
             try
             {
                 SQLiteConnection sqliteConnection = new SQLiteConnection();
@@ -57,9 +57,8 @@ namespace AutoLike.Utils
             
         }
 
-        public static void deleteuidtrung(string data)
+        public static void deleteuidtrung(List<account> listAccounts)
         {
-            string[] dat1 = data.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
             SQLiteConnection sqliteConnection = new SQLiteConnection();
             sqliteConnection.ConnectionString = "Data Source=Data.sqlite3;Version=3;";
             sqliteConnection.Open();
@@ -68,10 +67,9 @@ namespace AutoLike.Utils
             sqliteCommand.Transaction = trans;
             Stopwatch sw = new Stopwatch();
             sw.Start();
-            for (int i = 0; i < dat1.Length; i++)
+            for (int i = 0; i < listAccounts.Count; i++)
             {
-                string[] dat2 = dat1[i].Split('|');
-                string text = string.Format("DELETE FROM data where [UID]='{0}'", dat2[0]);
+                string text = string.Format("DELETE FROM data where [UID]='{0}'", listAccounts[0].UID);
                 sqliteCommand.CommandText = text;
                 sqliteCommand.ExecuteNonQuery();
 

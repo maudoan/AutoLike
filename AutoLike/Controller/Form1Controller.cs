@@ -89,9 +89,9 @@ namespace AutoLike.Controller
                     }
                 }
                 _sqliteUtils.insertListAccount(_listAccounts);
-                if (_sqliteUtils.checkExitsCategory(_listAccounts[0].DANHMUC) == false)
+                if (_sqliteUtils.checkExitsCategory(_listAccounts[0].CATELOGE) == false)
                 {
-                    _sqliteUtils.addCategory(_listAccounts[0].DANHMUC);
+                    _sqliteUtils.addCategory(_listAccounts[0].CATELOGE);
                 }
 
 
