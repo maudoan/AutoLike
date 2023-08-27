@@ -145,7 +145,7 @@ namespace AutoLike
             this.detailListAccountsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.detailListAccountsDataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.loadingPictureBox)).BeginInit();
-            this.contextMenuStripFeature.SuspendLayout();
+            this.featuresContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolBar
@@ -832,20 +832,18 @@ namespace AutoLike
             this.loadingPictureBox.TabIndex = 0;
             this.loadingPictureBox.TabStop = false;
             // 
-<<<<<<< Updated upstream
             // contextMenuStripFeature
             // 
-            this.contextMenuStripFeature.AllowDrop = true;
-            this.contextMenuStripFeature.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.contextMenuStripFeature.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.contextMenuStripFeature.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.featuresContextMenuStrip.AllowDrop = true;
+            this.featuresContextMenuStrip.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.featuresContextMenuStrip.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.featuresContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             //this.cHỌNACCOUNTToolStripMenuItem,
             //this.bỎCHỌNTẤTCẢToolStripMenuItem
             });
-            this.contextMenuStripFeature.Name = "contextMenuStripFeature";
-            this.contextMenuStripFeature.Size = new System.Drawing.Size(245, 378);
+            this.featuresContextMenuStrip.Name = "contextMenuStripFeature";
+            this.featuresContextMenuStrip.Size = new System.Drawing.Size(245, 378);
             //this.contextMenuStripFeature.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
-=======
             // selectAccountToolStripMenuItem
             // 
             this.selectAccountToolStripMenuItem.BackColor = System.Drawing.Color.White;
@@ -938,7 +936,6 @@ namespace AutoLike
             this.unSelectAllAccountToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
             this.unSelectAllAccountToolStripMenuItem.Text = "BỎ CHỌN TẤT CẢ";
             //this.unSelectAllAccountToolStripMenuItem.Click += new System.EventHandler(this.bỎCHỌNTẤTCẢToolStripMenuItem2_Click);
->>>>>>> Stashed changes
             // 
             // Form1
             // 
@@ -974,7 +971,7 @@ namespace AutoLike
             this.listFileContextMenuStrip.ResumeLayout(false);
             this.settingChormeGroupBox.ResumeLayout(false);
             this.detailListAccountsPanel.ResumeLayout(false);
-            this.contextMenuStripFeature.ResumeLayout(false);
+            this.featuresContextMenuStrip.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.detailListAccountsDataGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.loadingPictureBox)).EndInit();
             this.ResumeLayout(false);
