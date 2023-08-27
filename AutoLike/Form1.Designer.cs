@@ -1,4 +1,6 @@
-﻿using System.Windows.Forms;
+﻿using System.Drawing.Printing;
+using System.Runtime.CompilerServices;
+using System.Windows.Forms;
 
 namespace AutoLike
 {
@@ -119,8 +121,17 @@ namespace AutoLike
             this.ghichuAccount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.buAccount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.trangthaiAccount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.contextMenuStripFeature = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.featuresContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.loadingPictureBox = new System.Windows.Forms.PictureBox();
+            this.selectAccountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.selectAccountNowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.selectAllAccountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.selectLiveAccountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.selectDieAccountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.selectCheckpointAccountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.selectAllFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.unSelectAccountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.unSelectAllAccountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogoShop)).BeginInit();
             this.tabControl.SuspendLayout();
@@ -570,7 +581,7 @@ namespace AutoLike
             this.ghichuAccount,
             this.buAccount,
             this.trangthaiAccount});
-            this.detailListAccountsDataGridView.ContextMenuStrip = this.contextMenuStripFeature;
+            this.detailListAccountsDataGridView.ContextMenuStrip = this.featuresContextMenuStrip;
             this.detailListAccountsDataGridView.EnableHeadersVisualStyles = false;
             this.detailListAccountsDataGridView.GridColor = System.Drawing.SystemColors.ControlDarkDark;
             this.detailListAccountsDataGridView.Location = new System.Drawing.Point(3, 2);
@@ -801,13 +812,17 @@ namespace AutoLike
             this.trangthaiAccount.Name = "trangthaiAccount";
             this.trangthaiAccount.ReadOnly = true;
             // 
-            // contextMenuStripFeature
+            // featuresContextMenuStrip
             // 
-            this.contextMenuStripFeature.AllowDrop = true;
-            this.contextMenuStripFeature.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.contextMenuStripFeature.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.contextMenuStripFeature.Name = "contextMenuStripFeature";
-            this.contextMenuStripFeature.Size = new System.Drawing.Size(245, 378);
+            this.featuresContextMenuStrip.AllowDrop = true;
+            this.featuresContextMenuStrip.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.featuresContextMenuStrip.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.featuresContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.selectAccountToolStripMenuItem,
+            this.unSelectAccountToolStripMenuItem
+            });
+            this.featuresContextMenuStrip.Name = "featuresContextMenuStrip";
+            this.featuresContextMenuStrip.Size = new System.Drawing.Size(245, 378);
             // 
             // loadingPictureBox
             // 
@@ -817,6 +832,7 @@ namespace AutoLike
             this.loadingPictureBox.TabIndex = 0;
             this.loadingPictureBox.TabStop = false;
             // 
+<<<<<<< Updated upstream
             // contextMenuStripFeature
             // 
             this.contextMenuStripFeature.AllowDrop = true;
@@ -829,6 +845,100 @@ namespace AutoLike
             this.contextMenuStripFeature.Name = "contextMenuStripFeature";
             this.contextMenuStripFeature.Size = new System.Drawing.Size(245, 378);
             //this.contextMenuStripFeature.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
+=======
+            // selectAccountToolStripMenuItem
+            // 
+            this.selectAccountToolStripMenuItem.BackColor = System.Drawing.Color.White;
+            this.selectAccountToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.selectAccountNowToolStripMenuItem,
+            this.selectAllAccountToolStripMenuItem,
+            this.selectLiveAccountToolStripMenuItem,
+            this.selectDieAccountToolStripMenuItem,
+            this.selectCheckpointAccountToolStripMenuItem,
+            this.selectAllFileToolStripMenuItem
+            });
+            this.selectAccountToolStripMenuItem.Name = "selectAccountToolStripMenuItem";
+            this.selectAccountToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
+            this.selectAccountToolStripMenuItem.Text = "CHỌN";
+            //this.selectAccountToolStripMenuItem.Click += new System.EventHandler(this.cHỌNACCOUNTToolStripMenuItem_Click);
+            // 
+            // selectAccountNowToolStripMenuItem
+            // 
+            this.selectAccountNowToolStripMenuItem.Name = "selectAccountNowToolStripMenuItem";
+            this.selectAccountNowToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D1)));
+            this.selectAccountNowToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
+            this.selectAccountNowToolStripMenuItem.Text = "CHỌN DÒNG BÔI ĐEN";
+            //this.selectAccountNowToolStripMenuItem.Click += new System.EventHandler(this.cHỌNDÒNGBÔIĐENToolStripMenuItem_Click);
+            // 
+            // selectAllAccountToolStripMenuItem
+            // 
+            this.selectAllAccountToolStripMenuItem.BackColor = System.Drawing.Color.White;
+            this.selectAllAccountToolStripMenuItem.Name = "selectAllAccountToolStripMenuItem";
+            this.selectAllAccountToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D2)));
+            this.selectAllAccountToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
+            this.selectAllAccountToolStripMenuItem.Text = "CHỌN TẤT CẢ";
+            //this.selectAllAccountToolStripMenuItem.Click += new System.EventHandler(this.cHỌNTẤTCẢToolStripMenuItem_Click);
+            // 
+            // selectLiveAccountToolStripMenuItem
+            // 
+            this.selectLiveAccountToolStripMenuItem.BackColor = System.Drawing.Color.White;
+            this.selectLiveAccountToolStripMenuItem.Name = "selectLiveAccountToolStripMenuItem";
+            this.selectLiveAccountToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D3)));
+            this.selectLiveAccountToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
+            this.selectLiveAccountToolStripMenuItem.Text = "CHỌN ACC LIVE";
+            //this.selectLiveAccountToolStripMenuItem.Click += new System.EventHandler(this.cHỌNACCLIVEToolStripMenuItem_Click);
+            // 
+            // selectDieAccountToolStripMenuItem
+            // 
+            this.selectDieAccountToolStripMenuItem.BackColor = System.Drawing.Color.White;
+            this.selectDieAccountToolStripMenuItem.Name = "selectDieAccountToolStripMenuItem";
+            this.selectDieAccountToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D4)));
+            this.selectDieAccountToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
+            this.selectDieAccountToolStripMenuItem.Text = "CHỌN ACC DIE";
+            //this.selectDieAccountToolStripMenuItem.Click += new System.EventHandler(this.cHỌNACCDIEToolStripMenuItem_Click);
+            // 
+            // selectCheckpointAccountToolStripMenuItem
+            // 
+            this.selectCheckpointAccountToolStripMenuItem.BackColor = System.Drawing.Color.White;
+            this.selectCheckpointAccountToolStripMenuItem.Name = "selectCheckpointAccountToolStripMenuItem";
+            this.selectCheckpointAccountToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D5)));
+            this.selectCheckpointAccountToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
+            this.selectCheckpointAccountToolStripMenuItem.Text = "CHỌN ACC CHECKPOINT";
+            //this.selectCheckpointAccountToolStripMenuItem.Click += new System.EventHandler(this.cHỌNACCCHECKPOINTToolStripMenuItem_Click);
+            // 
+            // selectAllFileToolStripMenuItem
+            // 
+            this.selectAllFileToolStripMenuItem.Name = "toolStripMenuItem1";
+            this.selectAllFileToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
+            | System.Windows.Forms.Keys.A)));
+            this.selectAllFileToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
+            this.selectAllFileToolStripMenuItem.Text = "CHỌN ALL FILE";
+            //this.selectAllFileToolStripMenuItem.Click += new System.EventHandler(this.ToolStripMenuItem1_Click);
+            // 
+            // unSelectAccountToolStripMenuItem
+            // 
+            this.unSelectAccountToolStripMenuItem.BackColor = System.Drawing.Color.White;
+            this.unSelectAccountToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.unSelectAllAccountToolStripMenuItem});
+            this.unSelectAccountToolStripMenuItem.Name = "unSelectAccountToolStripMenuItem";
+            this.unSelectAccountToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
+            | System.Windows.Forms.Keys.D1)));
+            this.unSelectAccountToolStripMenuItem.ShowShortcutKeys = false;
+            this.unSelectAccountToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
+            this.unSelectAccountToolStripMenuItem.Text = "BỎ CHỌN";
+            //this.unSelectAccountToolStripMenuItem.Click += new System.EventHandler(this.bỎCHỌNTẤTCẢToolStripMenuItem_Click);
+            // 
+            // unSelectAllAccountToolStripMenuItem
+            // 
+            this.unSelectAllAccountToolStripMenuItem.BackColor = System.Drawing.Color.White;
+            this.unSelectAllAccountToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("bỎCHỌNTẤTCẢToolStripMenuItem2.Image")));
+            this.unSelectAllAccountToolStripMenuItem.Name = "unSelectAllAccountToolStripMenuItem";
+            this.unSelectAllAccountToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
+            | System.Windows.Forms.Keys.D2)));
+            this.unSelectAllAccountToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
+            this.unSelectAllAccountToolStripMenuItem.Text = "BỎ CHỌN TẤT CẢ";
+            //this.unSelectAllAccountToolStripMenuItem.Click += new System.EventHandler(this.bỎCHỌNTẤTCẢToolStripMenuItem2_Click);
+>>>>>>> Stashed changes
             // 
             // Form1
             // 
@@ -933,7 +1043,16 @@ namespace AutoLike
         private System.Windows.Forms.DataGridViewTextBoxColumn ghichuAccount;
         private System.Windows.Forms.DataGridViewTextBoxColumn buAccount;
         private System.Windows.Forms.DataGridViewTextBoxColumn trangthaiAccount;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStripFeature;
+        private System.Windows.Forms.ContextMenuStrip featuresContextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem selectAccountToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem selectAccountNowToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem selectAllAccountToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem selectLiveAccountToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem selectDieAccountToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem selectCheckpointAccountToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem selectAllFileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem unSelectAccountToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem unSelectAllAccountToolStripMenuItem;
     }
 }
 
