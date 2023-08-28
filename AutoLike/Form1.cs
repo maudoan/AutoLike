@@ -15,13 +15,19 @@ namespace AutoLike
 {
     public partial class Form1 : Form
     {
+     
         private Form1Controller _form1Controller;
         public Form1()
         {
             InitializeComponent();
             _form1Controller = new Form1Controller();
+
+            if (!Directory.Exists(AppDomain.CurrentDomain.BaseDirectory + "\\DATA\\CHROME_PROFILE"))
+            {
+                Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + "\\DATA\\CHROME_PROFILE");
+            }
         }
-        int x = 0;
+        
         private void Form1_Load(object sender, EventArgs e)
         {
             _form1Controller.LoadFileAccount(listFileDataGridView);
@@ -46,6 +52,7 @@ namespace AutoLike
 
         private void doashBoardHScrollBar_Scroll(object sender, ScrollEventArgs e)
         {
+            int x = 0;
             int vl = doashBoardHScrollBar.Value;
             if (vl == 0)
             {
@@ -96,6 +103,49 @@ namespace AutoLike
 
                 }
             }
+        }
+
+
+        private void selectAccountToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int totalAccountSelected = 0;
+            foreach (DataGridViewRow row in detailListAccountsDataGridView.SelectedRows)
+            {
+                detailListAccountsDataGridView.Rows[row.Index].Cells["checkboxItemAccount"].Value = true;
+
+            }
+            for (int i = 0; i < detailListAccountsDataGridView.Rows.Count; i++)
+            {
+                if (detailListAccountsDataGridView.Rows[i].Cells["checkboxItemAccount"].Value.ToString() == "True")
+                {
+                    totalAccountSelected += 1;
+                }
+            }
+            totalAccountSelectedValueLabel.Text = totalAccountSelected.ToString();
+
+        }
+
+        private void selectAccountNowToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int totalAccountSelected = 0;
+            foreach (DataGridViewRow row in detailListAccountsDataGridView.Rows)
+            {
+                detailListAccountsDataGridView.Rows[row.Index].Cells["checkboxItemAccount"].Value = false;
+
+            }
+            foreach (DataGridViewRow row in detailListAccountsDataGridView.SelectedRows)
+            {
+                detailListAccountsDataGridView.Rows[row.Index].Cells["checkboxItemAccount"].Value = true;
+
+            }
+            for (int i = 0; i < detailListAccountsDataGridView.Rows.Count; i++)
+            {
+                if (detailListAccountsDataGridView.Rows[i].Cells["checkboxItemAccount"].Value.ToString() == "True")
+                {
+                    totalAccountSelected += 1;
+                }
+            }
+            totalAccountSelectedValueLabel.Text = totalAccountSelected.ToString();
         }
     }
 }

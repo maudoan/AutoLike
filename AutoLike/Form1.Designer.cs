@@ -135,6 +135,14 @@ namespace AutoLike
             this.unSelectAccountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.unSelectAllAccountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.doashBoardHScrollBar = new System.Windows.Forms.HScrollBar();
+            this.totalAccountLabel = new System.Windows.Forms.Label();
+            this.totalAccountLiveLabel = new System.Windows.Forms.Label();
+            this.totalAccountDieLabel = new System.Windows.Forms.Label();
+            this.totalAccountSelectedLabel = new System.Windows.Forms.Label();
+            this.totalAccountValueLabel = new System.Windows.Forms.Label();
+            this.totalAccountLiveValueLabel = new System.Windows.Forms.Label();
+            this.totalAccountDieValueLabel = new System.Windows.Forms.Label();
+            this.totalAccountSelectedValueLabel = new System.Windows.Forms.Label();
             this.toolBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogoShop)).BeginInit();
             this.tabControl.SuspendLayout();
@@ -420,7 +428,7 @@ namespace AutoLike
             this.listFileDataGridView.ContextMenuStrip = this.listFileContextMenuStrip;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Tahoma", 8F);
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Green;
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.White;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.Blue;
@@ -869,7 +877,7 @@ namespace AutoLike
             this.selectAccountToolStripMenuItem.Name = "selectAccountToolStripMenuItem";
             this.selectAccountToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
             this.selectAccountToolStripMenuItem.Text = "CHỌN";
-            //this.selectAccountToolStripMenuItem.Click += new System.EventHandler(this.cHỌNACCOUNTToolStripMenuItem_Click);
+            this.selectAccountToolStripMenuItem.Click += new System.EventHandler(this.selectAccountToolStripMenuItem_Click);
             // 
             // selectAccountNowToolStripMenuItem
             // 
@@ -877,7 +885,7 @@ namespace AutoLike
             this.selectAccountNowToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D1)));
             this.selectAccountNowToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
             this.selectAccountNowToolStripMenuItem.Text = "CHỌN DÒNG BÔI ĐEN";
-            //this.selectAccountNowToolStripMenuItem.Click += new System.EventHandler(this.cHỌNDÒNGBÔIĐENToolStripMenuItem_Click);
+            this.selectAccountNowToolStripMenuItem.Click += new System.EventHandler(this.selectAccountNowToolStripMenuItem_Click);
             // 
             // selectAllAccountToolStripMenuItem
             // 
@@ -948,6 +956,100 @@ namespace AutoLike
             this.unSelectAllAccountToolStripMenuItem.Text = "BỎ CHỌN TẤT CẢ";
             //this.unSelectAllAccountToolStripMenuItem.Click += new System.EventHandler(this.bỎCHỌNTẤTCẢToolStripMenuItem2_Click);
             // 
+            // totalAccountLabel
+            // 
+            this.totalAccountLabel.AutoSize = true;
+            this.totalAccountLabel.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Bold);
+            this.totalAccountLabel.ForeColor = System.Drawing.Color.SlateBlue;
+            this.totalAccountLabel.Location = new System.Drawing.Point(622, 847);
+            this.totalAccountLabel.Name = "totalAccountLabel";
+            this.totalAccountLabel.Size = new System.Drawing.Size(74, 13);
+            this.totalAccountLabel.TabIndex = 31;
+            this.totalAccountLabel.Text = "*TỔNG ACC : ";
+            //this.totalAccountLabel.Click += new System.EventHandler(this.label99_Click);
+            // 
+            // totalAccountLiveLabel
+            // 
+            this.totalAccountLiveLabel.AutoSize = true;
+            this.totalAccountLiveLabel.BackColor = System.Drawing.Color.LimeGreen;
+            this.totalAccountLiveLabel.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Bold);
+            this.totalAccountLiveLabel.ForeColor = System.Drawing.Color.White;
+            this.totalAccountLiveLabel.Location = new System.Drawing.Point(733, 847);
+            this.totalAccountLiveLabel.Name = "label106";
+            this.totalAccountLiveLabel.Size = new System.Drawing.Size(36, 13);
+            this.totalAccountLiveLabel.TabIndex = 33;
+            this.totalAccountLiveLabel.Text = "Live :";
+            //this.totalAccountLiveLabel.Click += new System.EventHandler(this.label106_Click);
+            // 
+            // totalAccountDieLabel
+            // 
+            this.totalAccountDieLabel.AutoSize = true;
+            this.totalAccountDieLabel.BackColor = System.Drawing.Color.IndianRed;
+            this.totalAccountDieLabel.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Bold);
+            this.totalAccountDieLabel.ForeColor = System.Drawing.Color.White;
+            this.totalAccountDieLabel.Location = new System.Drawing.Point(812, 847);
+            this.totalAccountDieLabel.Name = "totalAccountDieLabel";
+            this.totalAccountDieLabel.Size = new System.Drawing.Size(31, 13);
+            this.totalAccountDieLabel.TabIndex = 34;
+            this.totalAccountDieLabel.Text = "Die :";
+            //this.totalAccountDieLabel.Click += new System.EventHandler(this.label107_Click);
+            // 
+            // totalAccountSelectedLabel
+            // 
+            this.totalAccountSelectedLabel.AutoSize = true;
+            this.totalAccountSelectedLabel.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Bold);
+            this.totalAccountSelectedLabel.ForeColor = System.Drawing.Color.RoyalBlue;
+            this.totalAccountSelectedLabel.Location = new System.Drawing.Point(882, 847);
+            this.totalAccountSelectedLabel.Name = "label101";
+            this.totalAccountSelectedLabel.Size = new System.Drawing.Size(66, 13);
+            this.totalAccountSelectedLabel.TabIndex = 32;
+            this.totalAccountSelectedLabel.Text = "*Đã chọn :";
+            //this.totalAccountSelectedLabel.Click += new System.EventHandler(this.Label101_Click);
+            // 
+            // totalAccountValueLabel
+            // 
+            this.totalAccountValueLabel.AutoSize = true;
+            this.totalAccountValueLabel.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Bold);
+            this.totalAccountValueLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.totalAccountValueLabel.Location = new System.Drawing.Point(692, 847);
+            this.totalAccountValueLabel.Name = "totalAccountValueLabel";
+            this.totalAccountValueLabel.Size = new System.Drawing.Size(16, 13);
+            this.totalAccountValueLabel.TabIndex = 38;
+            this.totalAccountValueLabel.Text = "...";
+            // 
+            // totalAccountLiveValueLabel
+            // 
+            this.totalAccountLiveValueLabel.AutoSize = true;
+            this.totalAccountLiveValueLabel.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Bold);
+            this.totalAccountLiveValueLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.totalAccountLiveValueLabel.Location = new System.Drawing.Point(774, 847);
+            this.totalAccountLiveValueLabel.Name = "totalAccountLiveValueLabel";
+            this.totalAccountLiveValueLabel.Size = new System.Drawing.Size(16, 13);
+            this.totalAccountLiveValueLabel.TabIndex = 35;
+            this.totalAccountLiveValueLabel.Text = "...";
+            // 
+            // totalAccountDieValueLabel
+            // 
+            this.totalAccountDieValueLabel.AutoSize = true;
+            this.totalAccountDieValueLabel.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Bold);
+            this.totalAccountDieValueLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.totalAccountDieValueLabel.Location = new System.Drawing.Point(852, 847);
+            this.totalAccountDieValueLabel.Name = "totalAccountDieValueLabel";
+            this.totalAccountDieValueLabel.Size = new System.Drawing.Size(16, 13);
+            this.totalAccountDieValueLabel.TabIndex = 36;
+            this.totalAccountDieValueLabel.Text = "...";
+            // 
+            // totalAccountSelectedValueLabel
+            // 
+            this.totalAccountSelectedValueLabel.AutoSize = true;
+            this.totalAccountSelectedValueLabel.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Bold);
+            this.totalAccountSelectedValueLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.totalAccountSelectedValueLabel.Location = new System.Drawing.Point(947, 847);
+            this.totalAccountSelectedValueLabel.Name = "totalAccountSelectedValueLabel";
+            this.totalAccountSelectedValueLabel.Size = new System.Drawing.Size(16, 13);
+            this.totalAccountSelectedValueLabel.TabIndex = 37;
+            this.totalAccountSelectedValueLabel.Text = "...";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -959,6 +1061,14 @@ namespace AutoLike
             this.Controls.Add(this.toolBar);
             this.Controls.Add(this.tabControl);
             this.Controls.Add(this.doashBoardHScrollBar);
+            this.Controls.Add(this.totalAccountLabel);
+            this.Controls.Add(this.totalAccountLiveLabel);
+            this.Controls.Add(this.totalAccountDieLabel);
+            this.Controls.Add(this.totalAccountSelectedLabel);
+            this.Controls.Add(this.totalAccountValueLabel);
+            this.Controls.Add(this.totalAccountLiveValueLabel);
+            this.Controls.Add(this.totalAccountDieValueLabel);
+            this.Controls.Add(this.totalAccountSelectedValueLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximumSize = new System.Drawing.Size(1678, 873);
@@ -1064,6 +1174,15 @@ namespace AutoLike
         private System.Windows.Forms.ToolStripMenuItem unSelectAccountToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem unSelectAllAccountToolStripMenuItem;
         private System.Windows.Forms.HScrollBar doashBoardHScrollBar;
+        private System.Windows.Forms.Label totalAccountLabel;
+        private System.Windows.Forms.Label totalAccountLiveLabel;
+        private System.Windows.Forms.Label totalAccountDieLabel;
+        private System.Windows.Forms.Label totalAccountSelectedLabel;
+        private System.Windows.Forms.Label totalAccountValueLabel;
+        private System.Windows.Forms.Label totalAccountLiveValueLabel;
+        private System.Windows.Forms.Label totalAccountDieValueLabel;
+        private System.Windows.Forms.Label totalAccountSelectedValueLabel;
+
     }
 }
 
