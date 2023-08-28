@@ -62,6 +62,7 @@ namespace AutoLike
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle26 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle27 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle28 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle29 = new System.Windows.Forms.DataGridViewCellStyle();
             this.toolBar = new System.Windows.Forms.Panel();
             this.pictureBoxLogoShop = new System.Windows.Forms.PictureBox();
             this.minimizeButton = new System.Windows.Forms.Button();
@@ -121,6 +122,7 @@ namespace AutoLike
             this.ghichuAccount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.buAccount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.trangthaiAccount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.pageNumberAccount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.featuresContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.loadingPictureBox = new System.Windows.Forms.PictureBox();
             this.selectAccountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -132,6 +134,7 @@ namespace AutoLike
             this.selectAllFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.unSelectAccountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.unSelectAllAccountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.doashBoardHScrollBar = new System.Windows.Forms.HScrollBar();
             this.toolBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogoShop)).BeginInit();
             this.tabControl.SuspendLayout();
@@ -580,7 +583,8 @@ namespace AutoLike
             this.tenfileAccount,
             this.ghichuAccount,
             this.buAccount,
-            this.trangthaiAccount});
+            this.trangthaiAccount,
+            this.pageNumberAccount});
             this.detailListAccountsDataGridView.ContextMenuStrip = this.featuresContextMenuStrip;
             this.detailListAccountsDataGridView.EnableHeadersVisualStyles = false;
             this.detailListAccountsDataGridView.GridColor = System.Drawing.SystemColors.ControlDarkDark;
@@ -604,6 +608,15 @@ namespace AutoLike
             this.detailListAccountsDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.detailListAccountsDataGridView.Size = new System.Drawing.Size(1286, 492);
             this.detailListAccountsDataGridView.TabIndex = 83;
+            // 
+            // doashBoardHScrollBar
+            // 
+            this.doashBoardHScrollBar.Location = new System.Drawing.Point(9, 824);
+            this.doashBoardHScrollBar.Maximum = 200;
+            this.doashBoardHScrollBar.Name = "doashBoardHScrollBar";
+            this.doashBoardHScrollBar.Size = new System.Drawing.Size(1662, 17);
+            this.doashBoardHScrollBar.TabIndex = 41;
+            this.doashBoardHScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.doashBoardHScrollBar_Scroll);
             // 
             // sttAccount
             // 
@@ -630,7 +643,7 @@ namespace AutoLike
             this.uidAccount.HeaderText = "UID";
             this.uidAccount.Name = "uidAccount";
             this.uidAccount.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.uidAccount.Width = 60;
+            this.uidAccount.Width = 40;
             // 
             // passAccount
             // 
@@ -812,6 +825,16 @@ namespace AutoLike
             this.trangthaiAccount.Name = "trangthaiAccount";
             this.trangthaiAccount.ReadOnly = true;
             // 
+            // pageNumberAccount
+            // 
+            this.pageNumberAccount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            dataGridViewCellStyle29.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle29.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.pageNumberAccount.DefaultCellStyle = dataGridViewCellStyle29;
+            this.pageNumberAccount.HeaderText = "Page Number";
+            this.pageNumberAccount.Name = "pageNumberAccount";
+            this.pageNumberAccount.ReadOnly = true;
+            // 
             // featuresContextMenuStrip
             // 
             this.featuresContextMenuStrip.AllowDrop = true;
@@ -831,18 +854,6 @@ namespace AutoLike
             this.loadingPictureBox.Size = new System.Drawing.Size(100, 50);
             this.loadingPictureBox.TabIndex = 0;
             this.loadingPictureBox.TabStop = false;
-            // 
-            // contextMenuStripFeature
-            // 
-            this.featuresContextMenuStrip.AllowDrop = true;
-            this.featuresContextMenuStrip.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.featuresContextMenuStrip.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.featuresContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            //this.cHỌNACCOUNTToolStripMenuItem,
-            //this.bỎCHỌNTẤTCẢToolStripMenuItem
-            });
-            this.featuresContextMenuStrip.Name = "contextMenuStripFeature";
-            this.featuresContextMenuStrip.Size = new System.Drawing.Size(245, 378);
             //this.contextMenuStripFeature.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
             // selectAccountToolStripMenuItem
             // 
@@ -947,6 +958,7 @@ namespace AutoLike
             this.ClientSize = new System.Drawing.Size(1678, 873);
             this.Controls.Add(this.toolBar);
             this.Controls.Add(this.tabControl);
+            this.Controls.Add(this.doashBoardHScrollBar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximumSize = new System.Drawing.Size(1678, 873);
@@ -1040,6 +1052,7 @@ namespace AutoLike
         private System.Windows.Forms.DataGridViewTextBoxColumn ghichuAccount;
         private System.Windows.Forms.DataGridViewTextBoxColumn buAccount;
         private System.Windows.Forms.DataGridViewTextBoxColumn trangthaiAccount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn pageNumberAccount;
         private System.Windows.Forms.ContextMenuStrip featuresContextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem selectAccountToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem selectAccountNowToolStripMenuItem;
@@ -1050,6 +1063,7 @@ namespace AutoLike
         private System.Windows.Forms.ToolStripMenuItem selectAllFileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem unSelectAccountToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem unSelectAllAccountToolStripMenuItem;
+        private System.Windows.Forms.HScrollBar doashBoardHScrollBar;
     }
 }
 

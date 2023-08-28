@@ -21,7 +21,7 @@ namespace AutoLike
             InitializeComponent();
             _form1Controller = new Form1Controller();
         }
-
+        int x = 0;
         private void Form1_Load(object sender, EventArgs e)
         {
             _form1Controller.LoadFileAccount(listFileDataGridView);
@@ -41,6 +41,20 @@ namespace AutoLike
 
         private void Form1_Resize(object sender, EventArgs e)
         {
+
+        }
+
+        private void doashBoardHScrollBar_Scroll(object sender, ScrollEventArgs e)
+        {
+            int vl = doashBoardHScrollBar.Value;
+            if (vl == 0)
+            {
+                tabControl.Location = new Point(x - vl, tabControl.Location.Y);
+            }
+            else
+            {
+                tabControl.Location = new Point((x - vl) * 2, tabControl.Location.Y);
+            }
 
         }
 
