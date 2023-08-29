@@ -147,5 +147,99 @@ namespace AutoLike
             }
             totalAccountSelectedValueLabel.Text = totalAccountSelected.ToString();
         }
+
+        private void selectAllAccountToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int totalAccountSelected = 0;
+            for (int i = 0; i < detailListAccountsDataGridView.Rows.Count; i++)
+            {
+                detailListAccountsDataGridView.Rows[i].Cells["checkboxItemAccount"].Value = true;
+                totalAccountSelected += 1;
+            }
+            totalAccountSelectedValueLabel.Text = totalAccountSelected.ToString();
+        }
+
+        private void selectLiveAccountToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int totalAccountSelected = 0;
+            for (int i = 0; i < detailListAccountsDataGridView.Rows.Count; i++)
+            {
+                if (detailListAccountsDataGridView.Rows[i].Cells["tinhtrangAccount"].Value.ToString() == "Live")
+                {
+                    detailListAccountsDataGridView.Rows[i].Cells["checkboxItemAccount"].Value = true;
+                }
+                else
+                {
+                    detailListAccountsDataGridView.Rows[i].Cells["checkboxItemAccount"].Value = false;
+                }
+
+            }
+            
+            for (int i = 0; i < detailListAccountsDataGridView.Rows.Count; i++)
+            {
+                if (detailListAccountsDataGridView.Rows[i].Cells["tinhtrangAccount"].Value.ToString() == "Live")
+                {
+                    totalAccountSelected += 1;
+                }
+            }
+            totalAccountSelectedValueLabel.Text = totalAccountSelected.ToString();
+
+        }
+
+        private void selectDieAccountToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int totalAccountSelected = 0;
+            for (int i = 0; i < detailListAccountsDataGridView.Rows.Count; i++)
+            {
+                if (detailListAccountsDataGridView.Rows[i].Cells["tinhtrangAccount"].Value.ToString() == "Die")
+                {
+                    detailListAccountsDataGridView.Rows[i].Cells["checkboxItemAccount"].Value = true;
+                }
+                else
+                {
+                    detailListAccountsDataGridView.Rows[i].Cells["checkboxItemAccount"].Value = false;
+                }
+
+            }
+            
+            for (int i = 0; i < detailListAccountsDataGridView.Rows.Count; i++)
+            {
+                if (detailListAccountsDataGridView.Rows[i].Cells["tinhtrangAccount"].Value.ToString() == "Die")
+                {
+                    totalAccountSelected += 1;
+                }
+            }
+            totalAccountSelectedValueLabel.Text = totalAccountSelected.ToString();
+
+        }
+
+        private void unSelectAccountToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int totalAccountSelected = 0;
+            foreach (DataGridViewRow row in detailListAccountsDataGridView.SelectedRows)
+            {
+                detailListAccountsDataGridView.Rows[row.Index].Cells["checkboxItemAccount"].Value = false;
+
+            }
+            for (int i = 0; i < detailListAccountsDataGridView.Rows.Count; i++)
+            {
+                if (detailListAccountsDataGridView.Rows[i].Cells["checkboxItemAccount"].Value.ToString() == "True")
+                {
+                    totalAccountSelected += 1;
+                }
+            }
+            totalAccountSelectedValueLabel.Text = totalAccountSelected.ToString();
+
+        }
+
+        private void unSelectAllAccountToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < detailListAccountsDataGridView.Rows.Count; i++)
+            {
+                detailListAccountsDataGridView.Rows[i].Cells["checkboxItemAccount"].Value = false;
+            }
+            totalAccountSelectedValueLabel.Text = "0";
+        }
+
     }
 }

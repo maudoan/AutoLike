@@ -894,7 +894,7 @@ namespace AutoLike
             this.selectAllAccountToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D2)));
             this.selectAllAccountToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
             this.selectAllAccountToolStripMenuItem.Text = "CHỌN TẤT CẢ";
-            //this.selectAllAccountToolStripMenuItem.Click += new System.EventHandler(this.cHỌNTẤTCẢToolStripMenuItem_Click);
+            this.selectAllAccountToolStripMenuItem.Click += new System.EventHandler(this.selectAllAccountToolStripMenuItem_Click);
             // 
             // selectLiveAccountToolStripMenuItem
             // 
@@ -903,7 +903,7 @@ namespace AutoLike
             this.selectLiveAccountToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D3)));
             this.selectLiveAccountToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
             this.selectLiveAccountToolStripMenuItem.Text = "CHỌN ACC LIVE";
-            //this.selectLiveAccountToolStripMenuItem.Click += new System.EventHandler(this.cHỌNACCLIVEToolStripMenuItem_Click);
+            this.selectLiveAccountToolStripMenuItem.Click += new System.EventHandler(this.selectLiveAccountToolStripMenuItem_Click);
             // 
             // selectDieAccountToolStripMenuItem
             // 
@@ -912,7 +912,7 @@ namespace AutoLike
             this.selectDieAccountToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D4)));
             this.selectDieAccountToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
             this.selectDieAccountToolStripMenuItem.Text = "CHỌN ACC DIE";
-            //this.selectDieAccountToolStripMenuItem.Click += new System.EventHandler(this.cHỌNACCDIEToolStripMenuItem_Click);
+            this.selectDieAccountToolStripMenuItem.Click += new System.EventHandler(this.selectDieAccountToolStripMenuItem_Click);
             // 
             // selectCheckpointAccountToolStripMenuItem
             // 
@@ -943,18 +943,17 @@ namespace AutoLike
             this.unSelectAccountToolStripMenuItem.ShowShortcutKeys = false;
             this.unSelectAccountToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
             this.unSelectAccountToolStripMenuItem.Text = "BỎ CHỌN";
-            //this.unSelectAccountToolStripMenuItem.Click += new System.EventHandler(this.bỎCHỌNTẤTCẢToolStripMenuItem_Click);
+            this.unSelectAccountToolStripMenuItem.Click += new System.EventHandler(this.unSelectAccountToolStripMenuItem_Click);
             // 
             // unSelectAllAccountToolStripMenuItem
             // 
             this.unSelectAllAccountToolStripMenuItem.BackColor = System.Drawing.Color.White;
-            this.unSelectAllAccountToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("bỎCHỌNTẤTCẢToolStripMenuItem2.Image")));
             this.unSelectAllAccountToolStripMenuItem.Name = "unSelectAllAccountToolStripMenuItem";
             this.unSelectAllAccountToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
             | System.Windows.Forms.Keys.D2)));
             this.unSelectAllAccountToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
             this.unSelectAllAccountToolStripMenuItem.Text = "BỎ CHỌN TẤT CẢ";
-            //this.unSelectAllAccountToolStripMenuItem.Click += new System.EventHandler(this.bỎCHỌNTẤTCẢToolStripMenuItem2_Click);
+            this.unSelectAllAccountToolStripMenuItem.Click += new System.EventHandler(this.unSelectAllAccountToolStripMenuItem_Click);
             // 
             // totalAccountLabel
             // 
