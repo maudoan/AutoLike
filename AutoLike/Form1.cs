@@ -21,11 +21,6 @@ namespace AutoLike
         {
             InitializeComponent();
             _form1Controller = new Form1Controller();
-
-            if (!Directory.Exists(AppDomain.CurrentDomain.BaseDirectory + "\\DATA\\CHROME_PROFILE"))
-            {
-                Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + "\\DATA\\CHROME_PROFILE");
-            }
         }
         
         private void Form1_Load(object sender, EventArgs e)
@@ -241,5 +236,31 @@ namespace AutoLike
             totalAccountSelectedValueLabel.Text = "0";
         }
 
+        private void selectPathChromeButton_Click(object sender, EventArgs e)
+        {
+            this.Invoke(new Action(() =>
+            {
+                FolderBrowserDialog folder = new FolderBrowserDialog();
+                DialogResult result = folder.ShowDialog();
+                if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(folder.SelectedPath))
+                {
+                    selectPathChromeProfileTextBox.Text = folder.SelectedPath;
+                }
+                if (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\KitDoAutoFB\Profile.txt"))
+                {
+                    File.Delete(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\KitDoAutoFB\Profile.txt");
+                }
+                using (TextWriter wr = new StreamWriter(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\KitDoAutoFB\Profile.txt"))
+                {
+                    wr.WriteLine(selectPathChromeProfileTextBox.Text);
+                    wr.Close();
+                }
+            }));
+        }
+
+        private void StartflowLoginCookieTokenButton_Click(object sender, EventArgs e)
+        {
+            tabControl.SelectTab(doashBoardTabPage);
+        }
     }
 }

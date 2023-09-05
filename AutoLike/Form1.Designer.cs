@@ -136,6 +136,18 @@ namespace AutoLike
             this.loginTabPage = new System.Windows.Forms.TabPage();
             this.CreateProfileCookieTokenGroupBox = new System.Windows.Forms.GroupBox();
             this.flowNumberLoginCookieTokenLabel = new System.Windows.Forms.Label();
+            this.flowNumberValueLoginCookieTokenNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.resetIpflowLoginCookieTokenCheckBox = new System.Windows.Forms.CheckBox();
+            this.resetIpflowLoginCookieTokenNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.resetIpflowLoginCookieTokenLabel = new System.Windows.Forms.Label();
+            this.useProxyflowLoginCookieTokenLabel = new System.Windows.Forms.Label();
+            this.useProxyflowLoginCookieTokenComboBox = new System.Windows.Forms.ComboBox();
+            this.selectPathChromeProfileGroupBox = new System.Windows.Forms.GroupBox();
+            this.selectPathChromeProfileLabel = new System.Windows.Forms.Label();
+            this.selectPathChromeProfileLabel1 = new System.Windows.Forms.Label();
+            this.selectPathChromeProfileTextBox = new System.Windows.Forms.TextBox();
+            this.selectPathChromeButton = new System.Windows.Forms.Button();
+            this.StartflowLoginCookieTokenButton = new System.Windows.Forms.Button();
             this.loadingPictureBox = new System.Windows.Forms.PictureBox();
             this.doashBoardHScrollBar = new System.Windows.Forms.HScrollBar();
             this.totalAccountLabel = new System.Windows.Forms.Label();
@@ -146,10 +158,6 @@ namespace AutoLike
             this.totalAccountLiveValueLabel = new System.Windows.Forms.Label();
             this.totalAccountDieValueLabel = new System.Windows.Forms.Label();
             this.totalAccountSelectedValueLabel = new System.Windows.Forms.Label();
-            this.flowNumberValueLoginCookieTokenNumericUpDown = new System.Windows.Forms.NumericUpDown();
-            this.resetIpflowLoginCookieTokenCheckBox = new System.Windows.Forms.CheckBox();
-            this.resetIpflowLoginCookieTokenNumericUpDown = new System.Windows.Forms.NumericUpDown();
-            this.resetIpflowLoginCookieTokenLabel = new System.Windows.Forms.Label();
             this.toolBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogoShop)).BeginInit();
             this.tabControl.SuspendLayout();
@@ -165,9 +173,10 @@ namespace AutoLike
             this.featuresContextMenuStrip.SuspendLayout();
             this.loginTabPage.SuspendLayout();
             this.CreateProfileCookieTokenGroupBox.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.loadingPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.flowNumberValueLoginCookieTokenNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.resetIpflowLoginCookieTokenNumericUpDown)).BeginInit();
+            this.selectPathChromeProfileGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.loadingPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // toolBar
@@ -450,6 +459,7 @@ namespace AutoLike
             this.listFileDataGridView.Location = new System.Drawing.Point(5, 300);
             this.listFileDataGridView.Name = "listFileDataGridView";
             this.listFileDataGridView.RowHeadersVisible = false;
+            this.listFileDataGridView.RowHeadersWidth = 51;
             this.listFileDataGridView.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.listFileDataGridView.Size = new System.Drawing.Size(309, 285);
             this.listFileDataGridView.TabIndex = 2;
@@ -459,11 +469,13 @@ namespace AutoLike
             // 
             this.listFileDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.listFileDataGridViewTextBoxColumn.HeaderText = "Column1";
+            this.listFileDataGridViewTextBoxColumn.MinimumWidth = 6;
             this.listFileDataGridViewTextBoxColumn.Name = "listFileDataGridViewTextBoxColumn";
             this.listFileDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // listFileContextMenuStrip
             // 
+            this.listFileContextMenuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.listFileContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.deleteFileToolStripMenuItem,
             this.editNameFileToolStripMenuItem,
@@ -636,6 +648,7 @@ namespace AutoLike
             dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.sttAccount.DefaultCellStyle = dataGridViewCellStyle4;
             this.sttAccount.HeaderText = "STT";
+            this.sttAccount.MinimumWidth = 6;
             this.sttAccount.Name = "sttAccount";
             this.sttAccount.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.sttAccount.Width = 30;
@@ -643,6 +656,7 @@ namespace AutoLike
             // checkboxItemAccount
             // 
             this.checkboxItemAccount.HeaderText = "All";
+            this.checkboxItemAccount.MinimumWidth = 6;
             this.checkboxItemAccount.Name = "checkboxItemAccount";
             this.checkboxItemAccount.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.checkboxItemAccount.Width = 20;
@@ -652,6 +666,7 @@ namespace AutoLike
             dataGridViewCellStyle5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.uidAccount.DefaultCellStyle = dataGridViewCellStyle5;
             this.uidAccount.HeaderText = "UID";
+            this.uidAccount.MinimumWidth = 6;
             this.uidAccount.Name = "uidAccount";
             this.uidAccount.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.uidAccount.Width = 40;
@@ -661,6 +676,7 @@ namespace AutoLike
             dataGridViewCellStyle6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.passAccount.DefaultCellStyle = dataGridViewCellStyle6;
             this.passAccount.HeaderText = "Pass Mail";
+            this.passAccount.MinimumWidth = 6;
             this.passAccount.Name = "passAccount";
             this.passAccount.Width = 50;
             // 
@@ -669,6 +685,7 @@ namespace AutoLike
             dataGridViewCellStyle7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.code2faAccount.DefaultCellStyle = dataGridViewCellStyle7;
             this.code2faAccount.HeaderText = "2FA";
+            this.code2faAccount.MinimumWidth = 6;
             this.code2faAccount.Name = "code2faAccount";
             this.code2faAccount.Width = 50;
             // 
@@ -677,6 +694,7 @@ namespace AutoLike
             dataGridViewCellStyle8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.cookieAccount.DefaultCellStyle = dataGridViewCellStyle8;
             this.cookieAccount.HeaderText = "Cookie";
+            this.cookieAccount.MinimumWidth = 6;
             this.cookieAccount.Name = "cookieAccount";
             this.cookieAccount.Width = 60;
             // 
@@ -685,6 +703,7 @@ namespace AutoLike
             dataGridViewCellStyle9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.tokenAccount.DefaultCellStyle = dataGridViewCellStyle9;
             this.tokenAccount.HeaderText = "Token";
+            this.tokenAccount.MinimumWidth = 6;
             this.tokenAccount.Name = "tokenAccount";
             this.tokenAccount.Width = 60;
             // 
@@ -693,6 +712,7 @@ namespace AutoLike
             dataGridViewCellStyle10.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.cookieldAccount.DefaultCellStyle = dataGridViewCellStyle10;
             this.cookieldAccount.HeaderText = "Cookie LD";
+            this.cookieldAccount.MinimumWidth = 6;
             this.cookieldAccount.Name = "cookieldAccount";
             this.cookieldAccount.Width = 60;
             // 
@@ -701,6 +721,7 @@ namespace AutoLike
             dataGridViewCellStyle11.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.tokenldAccount.DefaultCellStyle = dataGridViewCellStyle11;
             this.tokenldAccount.HeaderText = "Token LD";
+            this.tokenldAccount.MinimumWidth = 6;
             this.tokenldAccount.Name = "tokenldAccount";
             this.tokenldAccount.Width = 60;
             // 
@@ -709,6 +730,7 @@ namespace AutoLike
             dataGridViewCellStyle12.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.emailAccount.DefaultCellStyle = dataGridViewCellStyle12;
             this.emailAccount.HeaderText = "Email";
+            this.emailAccount.MinimumWidth = 6;
             this.emailAccount.Name = "emailAccount";
             this.emailAccount.Width = 50;
             // 
@@ -717,6 +739,7 @@ namespace AutoLike
             dataGridViewCellStyle13.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.passmailAccount.DefaultCellStyle = dataGridViewCellStyle13;
             this.passmailAccount.HeaderText = "Pass Mail";
+            this.passmailAccount.MinimumWidth = 6;
             this.passmailAccount.Name = "passmailAccount";
             this.passmailAccount.Width = 50;
             // 
@@ -725,6 +748,7 @@ namespace AutoLike
             dataGridViewCellStyle14.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.namtaoAccount.DefaultCellStyle = dataGridViewCellStyle14;
             this.namtaoAccount.HeaderText = "Avatar";
+            this.namtaoAccount.MinimumWidth = 6;
             this.namtaoAccount.Name = "namtaoAccount";
             this.namtaoAccount.Width = 60;
             // 
@@ -735,6 +759,7 @@ namespace AutoLike
             this.tenAccount.DefaultCellStyle = dataGridViewCellStyle15;
             this.tenAccount.FillWeight = 150F;
             this.tenAccount.HeaderText = "Name";
+            this.tenAccount.MinimumWidth = 6;
             this.tenAccount.Name = "tenAccount";
             this.tenAccount.ReadOnly = true;
             this.tenAccount.Width = 60;
@@ -744,6 +769,7 @@ namespace AutoLike
             dataGridViewCellStyle16.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.birthdayAccount.DefaultCellStyle = dataGridViewCellStyle16;
             this.birthdayAccount.HeaderText = "Birthday";
+            this.birthdayAccount.MinimumWidth = 6;
             this.birthdayAccount.Name = "birthdayAccount";
             this.birthdayAccount.ReadOnly = true;
             this.birthdayAccount.Width = 60;
@@ -753,6 +779,7 @@ namespace AutoLike
             dataGridViewCellStyle17.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.friendsAccount.DefaultCellStyle = dataGridViewCellStyle17;
             this.friendsAccount.HeaderText = "Friends";
+            this.friendsAccount.MinimumWidth = 6;
             this.friendsAccount.Name = "friendsAccount";
             this.friendsAccount.ReadOnly = true;
             this.friendsAccount.Width = 50;
@@ -762,6 +789,7 @@ namespace AutoLike
             dataGridViewCellStyle18.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.groupsAccount.DefaultCellStyle = dataGridViewCellStyle18;
             this.groupsAccount.HeaderText = "Groups";
+            this.groupsAccount.MinimumWidth = 6;
             this.groupsAccount.Name = "groupsAccount";
             this.groupsAccount.ReadOnly = true;
             this.groupsAccount.Width = 50;
@@ -771,6 +799,7 @@ namespace AutoLike
             dataGridViewCellStyle19.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.genderAccount.DefaultCellStyle = dataGridViewCellStyle19;
             this.genderAccount.HeaderText = "Gender";
+            this.genderAccount.MinimumWidth = 6;
             this.genderAccount.Name = "genderAccount";
             this.genderAccount.ReadOnly = true;
             this.genderAccount.Width = 50;
@@ -781,6 +810,7 @@ namespace AutoLike
             dataGridViewCellStyle20.ForeColor = System.Drawing.Color.Green;
             this.tinhtrangAccount.DefaultCellStyle = dataGridViewCellStyle20;
             this.tinhtrangAccount.HeaderText = "Live/Die";
+            this.tinhtrangAccount.MinimumWidth = 6;
             this.tinhtrangAccount.Name = "tinhtrangAccount";
             this.tinhtrangAccount.ReadOnly = true;
             this.tinhtrangAccount.Width = 60;
@@ -790,6 +820,7 @@ namespace AutoLike
             dataGridViewCellStyle21.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.proxyAccount.DefaultCellStyle = dataGridViewCellStyle21;
             this.proxyAccount.HeaderText = "Proxy";
+            this.proxyAccount.MinimumWidth = 6;
             this.proxyAccount.Name = "proxyAccount";
             this.proxyAccount.Width = 50;
             // 
@@ -799,6 +830,7 @@ namespace AutoLike
             dataGridViewCellStyle22.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.lastactiveAccount.DefaultCellStyle = dataGridViewCellStyle22;
             this.lastactiveAccount.HeaderText = "Last Active";
+            this.lastactiveAccount.MinimumWidth = 6;
             this.lastactiveAccount.Name = "lastactiveAccount";
             this.lastactiveAccount.Width = 50;
             // 
@@ -807,6 +839,7 @@ namespace AutoLike
             dataGridViewCellStyle23.ForeColor = System.Drawing.Color.Navy;
             this.tenfileAccount.DefaultCellStyle = dataGridViewCellStyle23;
             this.tenfileAccount.HeaderText = "DM";
+            this.tenfileAccount.MinimumWidth = 6;
             this.tenfileAccount.Name = "tenfileAccount";
             this.tenfileAccount.Width = 60;
             // 
@@ -815,6 +848,7 @@ namespace AutoLike
             dataGridViewCellStyle24.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.ghichuAccount.DefaultCellStyle = dataGridViewCellStyle24;
             this.ghichuAccount.HeaderText = "Ghi chú";
+            this.ghichuAccount.MinimumWidth = 6;
             this.ghichuAccount.Name = "ghichuAccount";
             this.ghichuAccount.Width = 50;
             // 
@@ -823,6 +857,7 @@ namespace AutoLike
             dataGridViewCellStyle25.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.buAccount.DefaultCellStyle = dataGridViewCellStyle25;
             this.buAccount.HeaderText = "Ngày BU";
+            this.buAccount.MinimumWidth = 6;
             this.buAccount.Name = "buAccount";
             this.buAccount.Width = 60;
             // 
@@ -833,6 +868,7 @@ namespace AutoLike
             dataGridViewCellStyle26.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.trangthaiAccount.DefaultCellStyle = dataGridViewCellStyle26;
             this.trangthaiAccount.HeaderText = "Status";
+            this.trangthaiAccount.MinimumWidth = 6;
             this.trangthaiAccount.Name = "trangthaiAccount";
             this.trangthaiAccount.ReadOnly = true;
             // 
@@ -843,6 +879,7 @@ namespace AutoLike
             dataGridViewCellStyle27.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.pageNumberAccount.DefaultCellStyle = dataGridViewCellStyle27;
             this.pageNumberAccount.HeaderText = "Page Number";
+            this.pageNumberAccount.MinimumWidth = 6;
             this.pageNumberAccount.Name = "pageNumberAccount";
             this.pageNumberAccount.ReadOnly = true;
             // 
@@ -850,6 +887,7 @@ namespace AutoLike
             // 
             this.featuresContextMenuStrip.AllowDrop = true;
             this.featuresContextMenuStrip.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.featuresContextMenuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.featuresContextMenuStrip.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.featuresContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.selectAccountToolStripMenuItem,
@@ -960,12 +998,16 @@ namespace AutoLike
             // 
             // CreateProfileCookieTokenGroupBox
             // 
+            this.CreateProfileCookieTokenGroupBox.BackColor = System.Drawing.Color.White;
             this.CreateProfileCookieTokenGroupBox.Controls.Add(this.flowNumberLoginCookieTokenLabel);
             this.CreateProfileCookieTokenGroupBox.Controls.Add(this.flowNumberValueLoginCookieTokenNumericUpDown);
             this.CreateProfileCookieTokenGroupBox.Controls.Add(this.resetIpflowLoginCookieTokenCheckBox);
             this.CreateProfileCookieTokenGroupBox.Controls.Add(this.resetIpflowLoginCookieTokenNumericUpDown);
             this.CreateProfileCookieTokenGroupBox.Controls.Add(this.resetIpflowLoginCookieTokenLabel);
-            this.CreateProfileCookieTokenGroupBox.BackColor = System.Drawing.Color.White;
+            this.CreateProfileCookieTokenGroupBox.Controls.Add(this.useProxyflowLoginCookieTokenLabel);
+            this.CreateProfileCookieTokenGroupBox.Controls.Add(this.useProxyflowLoginCookieTokenComboBox);
+            this.CreateProfileCookieTokenGroupBox.Controls.Add(this.selectPathChromeProfileGroupBox);
+            this.CreateProfileCookieTokenGroupBox.Controls.Add(this.StartflowLoginCookieTokenButton);
             this.CreateProfileCookieTokenGroupBox.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CreateProfileCookieTokenGroupBox.Location = new System.Drawing.Point(4, 26);
             this.CreateProfileCookieTokenGroupBox.Name = "CreateProfileCookieTokenGroupBox";
@@ -984,6 +1026,162 @@ namespace AutoLike
             this.flowNumberLoginCookieTokenLabel.Size = new System.Drawing.Size(58, 13);
             this.flowNumberLoginCookieTokenLabel.TabIndex = 62;
             this.flowNumberLoginCookieTokenLabel.Text = "Số Luồng";
+            // 
+            // flowNumberValueLoginCookieTokenNumericUpDown
+            // 
+            this.flowNumberValueLoginCookieTokenNumericUpDown.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.flowNumberValueLoginCookieTokenNumericUpDown.Location = new System.Drawing.Point(80, 27);
+            this.flowNumberValueLoginCookieTokenNumericUpDown.Maximum = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
+            this.flowNumberValueLoginCookieTokenNumericUpDown.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.flowNumberValueLoginCookieTokenNumericUpDown.Name = "flowNumberValueLoginCookieTokenNumericUpDown";
+            this.flowNumberValueLoginCookieTokenNumericUpDown.Size = new System.Drawing.Size(42, 21);
+            this.flowNumberValueLoginCookieTokenNumericUpDown.TabIndex = 63;
+            this.flowNumberValueLoginCookieTokenNumericUpDown.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            // 
+            // resetIpflowLoginCookieTokenCheckBox
+            // 
+            this.resetIpflowLoginCookieTokenCheckBox.AutoSize = true;
+            this.resetIpflowLoginCookieTokenCheckBox.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.resetIpflowLoginCookieTokenCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.resetIpflowLoginCookieTokenCheckBox.Location = new System.Drawing.Point(6, 60);
+            this.resetIpflowLoginCookieTokenCheckBox.Name = "resetIpflowLoginCookieTokenCheckBox";
+            this.resetIpflowLoginCookieTokenCheckBox.Size = new System.Drawing.Size(97, 17);
+            this.resetIpflowLoginCookieTokenCheckBox.TabIndex = 55;
+            this.resetIpflowLoginCookieTokenCheckBox.Text = "Reset IP sau";
+            this.resetIpflowLoginCookieTokenCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // resetIpflowLoginCookieTokenNumericUpDown
+            // 
+            this.resetIpflowLoginCookieTokenNumericUpDown.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.resetIpflowLoginCookieTokenNumericUpDown.Location = new System.Drawing.Point(110, 60);
+            this.resetIpflowLoginCookieTokenNumericUpDown.Name = "resetIpflowLoginCookieTokenNumericUpDown";
+            this.resetIpflowLoginCookieTokenNumericUpDown.Size = new System.Drawing.Size(42, 21);
+            this.resetIpflowLoginCookieTokenNumericUpDown.TabIndex = 56;
+            this.resetIpflowLoginCookieTokenNumericUpDown.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // resetIpflowLoginCookieTokenLabel
+            // 
+            this.resetIpflowLoginCookieTokenLabel.AutoSize = true;
+            this.resetIpflowLoginCookieTokenLabel.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.resetIpflowLoginCookieTokenLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.resetIpflowLoginCookieTokenLabel.Location = new System.Drawing.Point(165, 65);
+            this.resetIpflowLoginCookieTokenLabel.Name = "resetIpflowLoginCookieTokenLabel";
+            this.resetIpflowLoginCookieTokenLabel.Size = new System.Drawing.Size(30, 13);
+            this.resetIpflowLoginCookieTokenLabel.TabIndex = 53;
+            this.resetIpflowLoginCookieTokenLabel.Text = "lượt";
+            // 
+            // useProxyflowLoginCookieTokenLabel
+            // 
+            this.useProxyflowLoginCookieTokenLabel.AutoSize = true;
+            this.useProxyflowLoginCookieTokenLabel.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.useProxyflowLoginCookieTokenLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.useProxyflowLoginCookieTokenLabel.Location = new System.Drawing.Point(6, 100);
+            this.useProxyflowLoginCookieTokenLabel.Name = "useProxyflowLoginCookieTokenLabel";
+            this.useProxyflowLoginCookieTokenLabel.Size = new System.Drawing.Size(89, 13);
+            this.useProxyflowLoginCookieTokenLabel.TabIndex = 62;
+            this.useProxyflowLoginCookieTokenLabel.Text = "Sử dụng Proxy";
+            // 
+            // useProxyflowLoginCookieTokenComboBox
+            // 
+            this.useProxyflowLoginCookieTokenComboBox.FormattingEnabled = true;
+            this.useProxyflowLoginCookieTokenComboBox.Items.AddRange(new object[] {
+            "Use Proxy",
+            "No Proxy"});
+            this.useProxyflowLoginCookieTokenComboBox.Location = new System.Drawing.Point(100, 100);
+            this.useProxyflowLoginCookieTokenComboBox.Name = "useProxyflowLoginCookieTokenComboBox";
+            this.useProxyflowLoginCookieTokenComboBox.Size = new System.Drawing.Size(100, 21);
+            this.useProxyflowLoginCookieTokenComboBox.TabIndex = 1;
+            // 
+            // selectPathChromeProfileGroupBox
+            // 
+            this.selectPathChromeProfileGroupBox.Controls.Add(this.selectPathChromeProfileLabel);
+            this.selectPathChromeProfileGroupBox.Controls.Add(this.selectPathChromeProfileLabel1);
+            this.selectPathChromeProfileGroupBox.Controls.Add(this.selectPathChromeProfileTextBox);
+            this.selectPathChromeProfileGroupBox.Controls.Add(this.selectPathChromeButton);
+            this.selectPathChromeProfileGroupBox.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.selectPathChromeProfileGroupBox.Location = new System.Drawing.Point(6, 140);
+            this.selectPathChromeProfileGroupBox.Name = "selectPathChromeProfileGroupBox";
+            this.selectPathChromeProfileGroupBox.Size = new System.Drawing.Size(455, 94);
+            this.selectPathChromeProfileGroupBox.TabIndex = 44;
+            this.selectPathChromeProfileGroupBox.TabStop = false;
+            // 
+            // selectPathChromeProfileLabel
+            // 
+            this.selectPathChromeProfileLabel.AutoSize = true;
+            this.selectPathChromeProfileLabel.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.selectPathChromeProfileLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.selectPathChromeProfileLabel.Location = new System.Drawing.Point(19, 15);
+            this.selectPathChromeProfileLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.selectPathChromeProfileLabel.Name = "selectPathChromeProfileLabel";
+            this.selectPathChromeProfileLabel.Size = new System.Drawing.Size(155, 13);
+            this.selectPathChromeProfileLabel.TabIndex = 36;
+            this.selectPathChromeProfileLabel.Text = "Đường dẫn Chrome Profile";
+            // 
+            // selectPathChromeProfileLabel1
+            // 
+            this.selectPathChromeProfileLabel1.AutoSize = true;
+            this.selectPathChromeProfileLabel1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.selectPathChromeProfileLabel1.ForeColor = System.Drawing.Color.Teal;
+            this.selectPathChromeProfileLabel1.Location = new System.Drawing.Point(11, 48);
+            this.selectPathChromeProfileLabel1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.selectPathChromeProfileLabel1.Name = "selectPathChromeProfileLabel1";
+            this.selectPathChromeProfileLabel1.Size = new System.Drawing.Size(35, 13);
+            this.selectPathChromeProfileLabel1.TabIndex = 36;
+            this.selectPathChromeProfileLabel1.Text = "Chọn";
+            // 
+            // selectPathChromeProfileTextBox
+            // 
+            this.selectPathChromeProfileTextBox.Location = new System.Drawing.Point(50, 46);
+            this.selectPathChromeProfileTextBox.Margin = new System.Windows.Forms.Padding(4);
+            this.selectPathChromeProfileTextBox.Name = "selectPathChromeProfileTextBox";
+            this.selectPathChromeProfileTextBox.Size = new System.Drawing.Size(350, 21);
+            this.selectPathChromeProfileTextBox.TabIndex = 35;
+            // 
+            // selectPathChromeButton
+            // 
+            this.selectPathChromeButton.BackColor = System.Drawing.Color.White;
+            this.selectPathChromeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.selectPathChromeButton.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.selectPathChromeButton.ForeColor = System.Drawing.Color.Black;
+            this.selectPathChromeButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.selectPathChromeButton.Location = new System.Drawing.Point(405, 40);
+            this.selectPathChromeButton.Name = "selectPathChromeButton";
+            this.selectPathChromeButton.Size = new System.Drawing.Size(40, 30);
+            this.selectPathChromeButton.TabIndex = 34;
+            this.selectPathChromeButton.Text = "Mở";
+            this.selectPathChromeButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.selectPathChromeButton.UseVisualStyleBackColor = false;
+            this.selectPathChromeButton.Click += new System.EventHandler(this.selectPathChromeButton_Click);
+            // 
+            // StartflowLoginCookieTokenButton
+            // 
+            this.StartflowLoginCookieTokenButton.BackColor = System.Drawing.Color.ForestGreen;
+            this.StartflowLoginCookieTokenButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.StartflowLoginCookieTokenButton.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Bold);
+            this.StartflowLoginCookieTokenButton.ForeColor = System.Drawing.Color.White;
+            this.StartflowLoginCookieTokenButton.Location = new System.Drawing.Point(60, 400);
+            this.StartflowLoginCookieTokenButton.Name = "StartflowLoginCookieTokenButton";
+            this.StartflowLoginCookieTokenButton.Size = new System.Drawing.Size(64, 32);
+            this.StartflowLoginCookieTokenButton.TabIndex = 79;
+            this.StartflowLoginCookieTokenButton.Text = "START";
+            this.StartflowLoginCookieTokenButton.UseVisualStyleBackColor = false;
+            this.StartflowLoginCookieTokenButton.Click += new System.EventHandler(this.StartflowLoginCookieTokenButton_Click);
             // 
             // loadingPictureBox
             // 
@@ -1092,69 +1290,6 @@ namespace AutoLike
             this.totalAccountSelectedValueLabel.TabIndex = 37;
             this.totalAccountSelectedValueLabel.Text = "...";
             // 
-            // flowNumberValueLoginCookieTokenNumericUpDown
-            // 
-            this.flowNumberValueLoginCookieTokenNumericUpDown.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.flowNumberValueLoginCookieTokenNumericUpDown.Location = new System.Drawing.Point(80, 27);
-            this.flowNumberValueLoginCookieTokenNumericUpDown.Maximum = new decimal(new int[] {
-            20,
-            0,
-            0,
-            0});
-            this.flowNumberValueLoginCookieTokenNumericUpDown.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.flowNumberValueLoginCookieTokenNumericUpDown.Name = "flowNumberValueLoginCookieTokenLabel";
-            this.flowNumberValueLoginCookieTokenNumericUpDown.Size = new System.Drawing.Size(42, 21);
-            this.flowNumberValueLoginCookieTokenNumericUpDown.TabIndex = 63;
-            this.flowNumberValueLoginCookieTokenNumericUpDown.Value = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            // 
-            // resetIpflowLoginCookieTokenCheckBox
-            // 
-            this.resetIpflowLoginCookieTokenCheckBox.AutoSize = true;
-            this.resetIpflowLoginCookieTokenCheckBox.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.resetIpflowLoginCookieTokenCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.resetIpflowLoginCookieTokenCheckBox.Location = new System.Drawing.Point(6, 60);
-            this.resetIpflowLoginCookieTokenCheckBox.Name = "resetIpflowLoginCookieTokenCheckBox";
-            this.resetIpflowLoginCookieTokenCheckBox.Size = new System.Drawing.Size(97, 17);
-            this.resetIpflowLoginCookieTokenCheckBox.TabIndex = 55;
-            this.resetIpflowLoginCookieTokenCheckBox.Text = "Reset IP sau";
-            this.resetIpflowLoginCookieTokenCheckBox.UseVisualStyleBackColor = true;
-            //this.resetIpflowLoginCookieToken.CheckedChanged += new System.EventHandler(this.checkBox23_CheckedChanged);
-            //this.flowNumberValueLoginCookieTokenLabel.ValueChanged += new System.EventHandler(this.numLuongBU_ValueChanged);
-            // 
-            // resetIpflowLoginCookieTokenNumericUpDown
-            // 
-            this.resetIpflowLoginCookieTokenNumericUpDown.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.resetIpflowLoginCookieTokenNumericUpDown.Location = new System.Drawing.Point(110, 60);
-            this.resetIpflowLoginCookieTokenNumericUpDown.Name = "resetIpflowLoginCookieTokenNumericUpDown";
-            this.resetIpflowLoginCookieTokenNumericUpDown.Size = new System.Drawing.Size(42, 21);
-            this.resetIpflowLoginCookieTokenNumericUpDown.TabIndex = 56;
-            this.resetIpflowLoginCookieTokenNumericUpDown.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            //this.resetIpflowLoginCookieTokenNumericUpDown.ValueChanged += new System.EventHandler(this.numericUpDown6_ValueChanged);
-            // 
-            // resetIpflowLoginCookieTokenLabel
-            // 
-            this.resetIpflowLoginCookieTokenLabel.AutoSize = true;
-            this.resetIpflowLoginCookieTokenLabel.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.resetIpflowLoginCookieTokenLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.resetIpflowLoginCookieTokenLabel.Location = new System.Drawing.Point(165, 65);
-            this.resetIpflowLoginCookieTokenLabel.Name = "resetIpflowLoginCookieTokenLabel";
-            this.resetIpflowLoginCookieTokenLabel.Size = new System.Drawing.Size(140, 13);
-            this.resetIpflowLoginCookieTokenLabel.TabIndex = 53;
-            this.resetIpflowLoginCookieTokenLabel.Text = "lượt";
-            //this.resetIpflowLoginCookieTokenNumericUpDown.Click += new System.EventHandler(this.label132_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1203,6 +1338,10 @@ namespace AutoLike
             this.loginTabPage.ResumeLayout(false);
             this.CreateProfileCookieTokenGroupBox.ResumeLayout(false);
             this.CreateProfileCookieTokenGroupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.flowNumberValueLoginCookieTokenNumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.resetIpflowLoginCookieTokenNumericUpDown)).EndInit();
+            this.selectPathChromeProfileGroupBox.ResumeLayout(false);
+            this.selectPathChromeProfileGroupBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.loadingPictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -1299,6 +1438,14 @@ namespace AutoLike
         private System.Windows.Forms.CheckBox resetIpflowLoginCookieTokenCheckBox;
         private System.Windows.Forms.NumericUpDown resetIpflowLoginCookieTokenNumericUpDown;
         private System.Windows.Forms.Label resetIpflowLoginCookieTokenLabel;
+        private System.Windows.Forms.Label useProxyflowLoginCookieTokenLabel;
+        private System.Windows.Forms.ComboBox useProxyflowLoginCookieTokenComboBox;
+        private System.Windows.Forms.GroupBox selectPathChromeProfileGroupBox;
+        private System.Windows.Forms.Label selectPathChromeProfileLabel;
+        private System.Windows.Forms.Label selectPathChromeProfileLabel1;
+        private System.Windows.Forms.TextBox selectPathChromeProfileTextBox;
+        private System.Windows.Forms.Button selectPathChromeButton;
+        private System.Windows.Forms.Button StartflowLoginCookieTokenButton;
 
     }
 }
