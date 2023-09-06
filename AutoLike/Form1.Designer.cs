@@ -158,6 +158,8 @@ namespace AutoLike
             this.totalAccountLiveValueLabel = new System.Windows.Forms.Label();
             this.totalAccountDieValueLabel = new System.Windows.Forms.Label();
             this.totalAccountSelectedValueLabel = new System.Windows.Forms.Label();
+            this.LoginToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.flowLoginCookieTOkenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogoShop)).BeginInit();
             this.tabControl.SuspendLayout();
@@ -891,7 +893,8 @@ namespace AutoLike
             this.featuresContextMenuStrip.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.featuresContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.selectAccountToolStripMenuItem,
-            this.unSelectAccountToolStripMenuItem});
+            this.unSelectAccountToolStripMenuItem,
+            this.LoginToolStripMenuItem});
             this.featuresContextMenuStrip.Name = "featuresContextMenuStrip";
             this.featuresContextMenuStrip.Size = new System.Drawing.Size(114, 48);
             // 
@@ -1175,7 +1178,7 @@ namespace AutoLike
             this.StartflowLoginCookieTokenButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.StartflowLoginCookieTokenButton.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Bold);
             this.StartflowLoginCookieTokenButton.ForeColor = System.Drawing.Color.White;
-            this.StartflowLoginCookieTokenButton.Location = new System.Drawing.Point(60, 400);
+            this.StartflowLoginCookieTokenButton.Location = new System.Drawing.Point(350, 400);
             this.StartflowLoginCookieTokenButton.Name = "StartflowLoginCookieTokenButton";
             this.StartflowLoginCookieTokenButton.Size = new System.Drawing.Size(64, 32);
             this.StartflowLoginCookieTokenButton.TabIndex = 79;
@@ -1289,6 +1292,24 @@ namespace AutoLike
             this.totalAccountSelectedValueLabel.Size = new System.Drawing.Size(16, 13);
             this.totalAccountSelectedValueLabel.TabIndex = 37;
             this.totalAccountSelectedValueLabel.Text = "...";
+            // 
+            // LoginToolStripMenuItem
+            // 
+            this.LoginToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.flowLoginCookieTOkenToolStripMenuItem
+            });
+            this.LoginToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginToolStripMenuItem.ForeColor = System.Drawing.Color.DarkGreen;
+            this.LoginToolStripMenuItem.Name = "LoginToolStripMenuItem";
+            this.LoginToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
+            this.LoginToolStripMenuItem.Text = "ĐĂNG NHẬP";
+            // 
+            // flowLoginCookieTOkenToolStripMenuItem
+            // 
+            this.flowLoginCookieTOkenToolStripMenuItem.Name = "tạoProfileCookieTokenToolStripMenuItem";
+            this.flowLoginCookieTOkenToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
+            this.flowLoginCookieTOkenToolStripMenuItem.Text = "Tạo Profile(Cookie-Token)";
+            this.flowLoginCookieTOkenToolStripMenuItem.Click += new System.EventHandler(this.flowLoginCookieTOkenToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -1446,6 +1467,8 @@ namespace AutoLike
         private System.Windows.Forms.TextBox selectPathChromeProfileTextBox;
         private System.Windows.Forms.Button selectPathChromeButton;
         private System.Windows.Forms.Button StartflowLoginCookieTokenButton;
+        private System.Windows.Forms.ToolStripMenuItem LoginToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem flowLoginCookieTOkenToolStripMenuItem;
 
     }
 }

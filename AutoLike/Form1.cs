@@ -246,21 +246,26 @@ namespace AutoLike
                 {
                     selectPathChromeProfileTextBox.Text = folder.SelectedPath;
                 }
-                if (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\KitDoAutoFB\Profile.txt"))
-                {
-                    File.Delete(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\KitDoAutoFB\Profile.txt");
-                }
-                using (TextWriter wr = new StreamWriter(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\KitDoAutoFB\Profile.txt"))
-                {
-                    wr.WriteLine(selectPathChromeProfileTextBox.Text);
-                    wr.Close();
-                }
+                //if (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\AutoLike\Profile.txt"))
+                //{
+                //    File.Delete(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\AutoLike\Profile.txt");
+                //}
+                //using (TextWriter wr = new StreamWriter(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\AutoLike\Profile.txt"))
+                //{
+                //    wr.WriteLine(selectPathChromeProfileTextBox.Text);
+                //    wr.Close();
+                //}
             }));
         }
 
         private void StartflowLoginCookieTokenButton_Click(object sender, EventArgs e)
         {
             tabControl.SelectTab(doashBoardTabPage);
+        }
+
+        private void flowLoginCookieTOkenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            tabControl.SelectTab(loginTabPage);
         }
     }
 }
