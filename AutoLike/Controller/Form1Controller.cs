@@ -1,13 +1,18 @@
 ﻿using AutoLike.Model;
 using AutoLike.Utils;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -20,6 +25,7 @@ namespace AutoLike.Controller
         private List<account> _listAccounts;
         private SQLiteUtils _sqliteUtils;
         private Form1 form1;
+        private ChormeDriverUtils _chormeDriverUtils;
 
         public Form1Controller()
         {
@@ -27,6 +33,7 @@ namespace AutoLike.Controller
             _account = new account();
             _listAccounts = new List<account>();
             _sqliteUtils = new SQLiteUtils();
+            _chormeDriverUtils = new ChormeDriverUtils();
         }
 
         public Boolean SelectFile()
@@ -179,6 +186,87 @@ namespace AutoLike.Controller
 
             return list;
 
+        }
+
+        public async void LoginChromeWithCookieToken(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, ComboBox selectProxy)
+        {
+           //ChromeDriver chromeDriver = _chormeDriverUtils.initChrome(ProfileFolderPath,uid, uidFromCookie, proxy, index, flowNum, selectProxy);
+
+            List<account> danhSach = new List<account>(); // Thay thế kiểu dữ liệu tùy theo nhu cầu của bạn
+
+            for(int i = 0;i < dataGridView.Rows.Count;i++)
+            {
+                if(dataGridView.Rows[i].Cells["checkboxItemAccount"].Value.ToString() == "True")
+                {
+                    account acc = new account();
+                    acc.UID = dataGridView.Rows[i].Cells["uidAccount"].Value.ToString();
+                    acc.PASS = dataGridView.Rows[i].Cells["passAccount"].Value.ToString();
+                    danhSach.Add(acc);
+                }
+            }
+
+           await ProcessLoginChromeCookieToke(ProfileFolderPath, dataGridView, flowNum, selectProxy, danhSach);
+            // Điền danh sách của bạn với các phần tử
+
+            //int batchSize = 10; // Số lượng phần tử mỗi lần chạy parallel
+
+            //Parallel.ForEach(
+            //    Partitioner.Create(0, danhSach.Count, batchSize),
+            //    range =>
+            //    {
+            //        for (int i = range.Item1; i < range.Item2; i++)
+            //        {
+            //            // Thực hiện công việc của bạn trên danhSach[i]
+            //        }
+            //    });
+        }
+
+        public async Task ProcessLoginChromeCookieToke(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, ComboBox selectProxy, List<account> listAcccounts)
+        {
+            int maxConcurrency = 5; // Số lượng luồng tối đa được sử dụng
+            int batchSize = 10; // Số lượng phần tử mỗi lần xử lý
+            int indexItem = 0;
+            var semaphore = new SemaphoreSlim(maxConcurrency);
+
+            async Task ProcessBatchAsync(List<account> batch)
+            {
+                foreach (var item in batch)
+                {
+                    indexItem++;
+                    // Thực hiện công việc của bạn trên item ở đây
+                    ChromeDriver chromeDriver = _chormeDriverUtils.initChrome(ProfileFolderPath, item, indexItem, flowNum, selectProxy);
+                    await Task.Delay(1000); // Ví dụ: Giả định công việc mất 1 giây để hoàn thành.
+                }
+            }
+
+            var batches = listAcccounts
+                .Select((item, index) => new { Item = item, Index = index })
+                .GroupBy(x => x.Index / batchSize)
+                .Select(group => group.Select(x => x.Item).ToList())
+                .ToList();
+
+            var tasks = new List<Task>();
+
+            foreach (var batch in batches)
+            {
+                await semaphore.WaitAsync(); // Chờ để lấy quyền sử dụng luồng
+                tasks.Add(Task.Run(async () =>
+                {
+                    try
+                    {
+                        await ProcessBatchAsync(batch);
+                    }
+                    finally
+                    {
+                        semaphore.Release(); // Hoàn thành công việc, giải phóng luồng
+                    }
+                }));
+            }
+
+            await Task.WhenAll(tasks);
+
+            // Khi tất cả công việc đã hoàn thành
+            Console.WriteLine("Tất cả công việc đã hoàn thành.");
         }
     }
 }

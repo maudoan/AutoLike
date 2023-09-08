@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium.Chrome;
+﻿using AutoLike.Model;
+using OpenQA.Selenium.Chrome;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace AutoLike.Utils
         int screenHeight = SystemInformation.VirtualScreen.Height;
         int screenWidth = SystemInformation.VirtualScreen.Width;
 
-        public ChromeDriver initChrome(string ProfileFolderPath, string uid, string uidFromCookie, string proxy, int index, NumericUpDown flowNum, ComboBox selectProxy)
+        public ChromeDriver initChrome(string ProfileFolderPath,account account,int index, NumericUpDown flowNum, ComboBox selectProxy)
         {
 
           
@@ -26,7 +27,7 @@ namespace AutoLike.Utils
             chromeDriverService.HideCommandPromptWindow = true; //ẩn CMD điều khiển chrome
             if (selectProxy.Text == "Use Proxy")
             {
-                co.AddArguments("--proxy-server=" + proxy);
+                co.AddArguments("--proxy-server=" + account.PROXY);
                 co.Proxy = null;
             }
             co.AddArgument("--disable-background-networking");
@@ -95,14 +96,14 @@ namespace AutoLike.Utils
 
 
 
-            string nameCount = uidFromCookie;
-            if (uid == "")
-            {
-                nameCount = uidFromCookie;
-            }
-            else
-            {
-            }
+            string nameCount = account.UID;
+            //if (uid == "")
+            //{
+            //    nameCount = uidFromCookie;
+            //}
+            //else
+            //{
+            //}
             try
             {
                 // drivers[uid].Quit();
