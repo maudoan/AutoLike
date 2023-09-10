@@ -31,5 +31,6 @@ namespace AutoLike.Model
         public string GHICHU { get; set; }
         public string NGAYBU { get; set; }
         public string TRANGTHAI { get; set; }
+        public string SOPAGE { get; set; }
     }
 }

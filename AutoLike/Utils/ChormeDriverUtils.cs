@@ -1,10 +1,6 @@
 ﻿using AutoLike.Model;
 using OpenQA.Selenium.Chrome;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AutoLike.Utils
@@ -25,11 +21,11 @@ namespace AutoLike.Utils
             ChromeOptions co = new ChromeOptions(); //khaibao option chrome
             ChromeDriverService chromeDriverService = ChromeDriverService.CreateDefaultService();
             chromeDriverService.HideCommandPromptWindow = true; //ẩn CMD điều khiển chrome
-            if (selectProxy.Text == "Use Proxy")
-            {
-                co.AddArguments("--proxy-server=" + account.PROXY);
-                co.Proxy = null;
-            }
+            //if (selectProxy.Text == "Use Proxy")
+            //{
+            //    co.AddArguments("--proxy-server=" + account.PROXY);
+            //    co.Proxy = null;
+            //}
             co.AddArgument("--disable-background-networking");
             co.AddArgument("--disable-client-side-phishing-detection");
             co.AddArgument("--disable-default-apps");

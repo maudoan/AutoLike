@@ -1,16 +1,11 @@
 ﻿using AutoLike.Model;
 using AutoLike.Utils;
-using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -56,7 +51,7 @@ namespace AutoLike.Controller
             return _file.Name;
         }
 
-        public void SaveToDbFromImportFile(String fullPath)
+        public void SaveToDbFromImportFile(string fullPath)
         {
             try
             {
@@ -66,33 +61,33 @@ namespace AutoLike.Controller
                     string line;
                     while ((line = sr.ReadLine()) != null)
                     {
-
+                        account account = new account();
                         string[] elements = line.Split(new string[] { "//" }, StringSplitOptions.None);
-                        _account.CATELOGE =elements.Length >=0 ? elements[0] : "";
-                        _account.UID = elements.Length > 1 ? elements[1] : "";
-                        _account.PASS = elements.Length > 2 ? elements[2] : "";
-                        _account.M2FA = elements.Length > 3 ? elements[3] : "";
-                        _account.COOKIE = elements.Length > 4 ? elements[4] : "";
-                        _account.TOKEN = elements.Length > 5 ? elements[5] : "";
-                        _account.COOKIELD = elements.Length > 6 ? elements[6] : "";
-                        _account.TOKENLD = elements.Length > 7 ? elements[7] : "";
-                        _account.EMAIL = elements.Length > 8 ? elements[8] : "";
-                        _account.PASSMAIL = elements.Length > 9 ? elements[9] : "";
-                        _account.NAMTAO = elements.Length > 10 ? elements[10] : "";
-                        _account.TEN = elements.Length > 11 ? elements[11] : "";
-                        _account.SINHNHAT = elements.Length > 12 ? elements[12] : "";
-                        _account.FRIEND = elements.Length > 13 ? elements[13] : "";
-                        _account.GROUP = elements.Length > 14 ? elements[14] : "";
-                        _account.GENDER = elements.Length > 15 ? elements[15] : "";
-                        _account.LIVE = elements.Length > 16 ? elements[16] : "";
-                        _account.PROXY = elements.Length > 17 ? elements[17] : "";
-                        _account.LASTACTIVE = elements.Length > 18 ? elements[18] : "";
-                        _account.DANHMUC = elements.Length > 19 ? elements[19] : "";
-                        _account.GHICHU = elements.Length > 20 ? elements[20] : "";
-                        _account.NGAYBU = elements.Length > 21 ? elements[21] : "";
-                        _account.TRANGTHAI = elements.Length > 22 ? elements[22] : "";
+                        account.CATELOGE =elements.Length >=0 ? elements[0] : "";
+                        account.UID = elements.Length > 1 ? elements[1] : "";
+                        account.PASS = elements.Length > 2 ? elements[2] : "";
+                        account.M2FA = elements.Length > 3 ? elements[3] : "";
+                        account.COOKIE = elements.Length > 4 ? elements[4] : "";
+                        account.TOKEN = elements.Length > 5 ? elements[5] : "";
+                        account.COOKIELD = elements.Length > 6 ? elements[6] : "";
+                        account.TOKENLD = elements.Length > 7 ? elements[7] : "";
+                        account.EMAIL = elements.Length > 8 ? elements[8] : "";
+                        account.PASSMAIL = elements.Length > 9 ? elements[9] : "";
+                        account.NAMTAO = elements.Length > 10 ? elements[10] : "";
+                        account.TEN = elements.Length > 11 ? elements[11] : "";
+                        account.SINHNHAT = elements.Length > 12 ? elements[12] : "";
+                        account.FRIEND = elements.Length > 13 ? elements[13] : "";
+                        account.GROUP = elements.Length > 14 ? elements[14] : "";
+                        account.GENDER = elements.Length > 15 ? elements[15] : "";
+                        account.LIVE = elements.Length > 16 ? elements[16] : "";
+                        account.PROXY = elements.Length > 17 ? elements[17] : "";
+                        account.LASTACTIVE = elements.Length > 18 ? elements[18] : "";
+                        account.DANHMUC = elements.Length > 19 ? elements[19] : "";
+                        account.GHICHU = elements.Length > 20 ? elements[20] : "";
+                        account.NGAYBU = elements.Length > 21 ? elements[21] : "";
+                        account.TRANGTHAI = elements.Length > 22 ? elements[22] : "";
 
-                        _listAccounts.Add( _account );
+                        _listAccounts.Add(account);
                     }
                 }
                 _sqliteUtils.insertListAccount(_listAccounts);
