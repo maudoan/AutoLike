@@ -677,7 +677,7 @@ namespace AutoLike
             // 
             dataGridViewCellStyle6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.passAccount.DefaultCellStyle = dataGridViewCellStyle6;
-            this.passAccount.HeaderText = "Pass Mail";
+            this.passAccount.HeaderText = "Password";
             this.passAccount.MinimumWidth = 6;
             this.passAccount.Name = "passAccount";
             this.passAccount.Width = 50;

@@ -10,7 +10,7 @@ namespace AutoLike.Features
     public class Login
     {
 
-        public static async void loginWithUID(ChromeDriver driver, account acc)
+        public static async Task loginWithUID(ChromeDriver driver, account acc)
         {
             string UID = acc.UID;
             string pass = acc.PASS;
@@ -109,7 +109,7 @@ namespace AutoLike.Features
 
                     }
 
-                    //await ChromeDriverUtils.FindClickElementInChrome(driver, "Đăng nhập", "Login", true);
+                    //await ChromeDriverUtils.FindClickElementInChrome(driver, "Đăng nhập", "Log in", true);
                     await Task.Delay(3000);
                 }
                 catch

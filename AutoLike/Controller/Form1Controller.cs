@@ -88,6 +88,7 @@ namespace AutoLike.Controller
                         account.GHICHU = elements.Length > 20 ? elements[20] : "";
                         account.NGAYBU = elements.Length > 21 ? elements[21] : "";
                         account.TRANGTHAI = elements.Length > 22 ? elements[22] : "";
+                        account.SOPAGE = elements.Length > 23 ? elements[23] : "";
 
                         _listAccounts.Add(account);
                     }
@@ -150,7 +151,7 @@ namespace AutoLike.Controller
 
                     StringBuilder sb = new StringBuilder();
                     sb.Append((rowCount + 1).ToString()).Append(",").Append(false);
-                    for (int i = 0; i < 22; i++)
+                    for (int i = 0; i < 23; i++)
                     {
                         sb.Append(",").Append(i == 10 ? acc[10].Replace("\"", "'") : acc[i]);
                     }
@@ -223,22 +224,71 @@ namespace AutoLike.Controller
                     chromeDriver.Navigate().GoToUrl("https://www.facebook.com");
                     await Task.Delay(1000);
                     
-                    if(await ChromeDriverUtils.FindClickElementInChrome(chromeDriver, "Đăng nhập", "Login", false))
+                    if(await ChromeDriverUtils.FindClickElementInChrome(chromeDriver, "Đăng nhập", "Log in", false))
                     {
-                        Login.loginWithUID(chromeDriver, item);
+                        await  Login.loginWithUID(chromeDriver, item);
                     }
                     else if (await ChromeDriverUtils.FindTextInChrome(chromeDriver, "Trang chủ", "Home"))
                     {
                         try
                         {
-                            //getcookie(driver, i);
-
+                           string cookie = await ChromeDriverUtils.getcookie(chromeDriver);
+                           if(cookie != null)
+                            {
+                                item.COOKIE = cookie;
+                            }
                         }
                         catch { }
                     }
 
-
                     await Task.Delay(1000); // Ví dụ: Giả định công việc mất 1 giây để hoàn thành.
+
+                    try
+                    {
+                        if (await ChromeDriverUtils.FindTextInChrome(chromeDriver, "Quên mật khẩu?", "Password") ||
+                        await ChromeDriverUtils.FindTextInChrome(chromeDriver, "mật khẩu cũ", "old"))
+                        {
+                            item.TRANGTHAI = "Sai password....";
+                            await ChromeDriverUtils.ChromeDetroy(chromeDriver);
+                        }
+                        else if (await ChromeDriverUtils.FindTextInChrome(chromeDriver, "tạm thời bị khóa", "lock"))
+                        {
+                            item.LIVE = "Checkpoint";
+                            item.TRANGTHAI = "Checkpoint !...";
+                            await ChromeDriverUtils.ChromeDetroy(chromeDriver);
+
+                        }
+                        else if (await ChromeDriverUtils.FindTextInChrome(chromeDriver, "Trang chủ", "Home"))
+                        {
+                            try
+                            {
+                                string cookie = await ChromeDriverUtils.getcookie(chromeDriver);
+                                if (cookie != null)
+                                {
+                                    item.COOKIE = cookie;
+                                }
+
+                            }
+                            catch { }
+
+                            item.LIVE = "Live";
+                            item.TRANGTHAI = "Login Facebook thành công !...";
+                         
+                        }
+                    }
+                    catch
+                    {
+                        if (chromeDriver.FindElement(By.XPath("/html/body/div[1]/div[2]/div[1]/div/div[2]/div[2]/form/div[1]/div[1]")).Text.Contains("mật khẩu"))
+                        {
+
+                            item.TRANGTHAI = "Sai Password!...";
+                            await ChromeDriverUtils.ChromeDetroy(chromeDriver);
+                        }
+                    }
+
+                    SQLiteUtils.updateByUID(item);
+
+
 
                     // Sau khi hoàn thành công việc, thêm item này vào danh sách đã hoàn thành
                     completedItems.Add(item);
@@ -283,7 +333,7 @@ namespace AutoLike.Controller
 
 
             // Khi tất cả công việc đã hoàn thành
-            Console.WriteLine("ALl TASK DONE!!!");
+            Console.WriteLine("ALL TASK DONE!!!");
         }
     }
 }

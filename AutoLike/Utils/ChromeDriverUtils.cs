@@ -3,6 +3,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OtpNet;
 using System;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -121,10 +122,10 @@ namespace AutoLike.Utils
             return new ChromeDriver(chromeDriverService, co);
         }
 
-        public static void ChromeDetroy(ChromeDriver driver)
+        public static async Task ChromeDetroy(ChromeDriver driver)
         {
-            driver.Close();
-            driver.Quit();
+           driver.Close();
+           driver.Quit();
         }
 
         public static async Task<bool> FindTextInChrome(ChromeDriver driver, string textVN, string textEN)
@@ -219,6 +220,55 @@ namespace AutoLike.Utils
                 dem++;
             }
             return result;
+        }
+
+        public static async Task<string> getcookie(ChromeDriver driver)
+        {
+            string cookie = "";
+            int dem = 0;
+        l:
+            string lines = "";
+
+            for (int t1 = 0; t1 < 8; t1++)
+            {
+                try
+                {
+                    var cookiees = driver.Manage().Cookies.AllCookies;
+                    lines = cookiees[t1].ToString() + ";" + lines;
+                }
+                catch { }
+            }
+            string c_user = Regex.Match(lines, "c_user=[0-9]{0,}").ToString();
+            string wd = Regex.Match(lines, "wd=[0-9a-zA-Z_.%-]{0,}").ToString();
+            string datr = Regex.Match(lines, "datr=[a-zA-Z0-]{0,}").ToString();
+            string sub = Regex.Match(lines, "sb=[0-9a-zA-Z_.%-]{0,}").ToString();
+            string fr = Regex.Match(lines, "fr=[0-9a-zA-Z_.%-]{0,}").ToString();
+            string xs = Regex.Match(lines, "xs=[0-9a-zA-Z_.%-]{0,}").ToString();
+            string cookieget;
+            cookieget = c_user + ";" + datr + ";" + sub + ";" + fr + ";" + xs + ";" + wd;
+            if (cookieget.Contains("c_user"))
+            {
+                return cookie;
+            }
+            else
+            {
+                if (await ChromeDriverUtils.FindTextInChrome(driver, "Bạn phải đăng nhập", "Bạn phải đăng nhập"))
+                {
+                    cookie = "";
+                    goto end;
+                }
+                if (dem == 2)
+                {
+                    cookie = "";
+                    goto end;
+                }
+                dem++;
+
+                goto l;
+            }
+        end:
+            return cookie;
+
         }
 
     }
