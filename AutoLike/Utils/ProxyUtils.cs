@@ -35,6 +35,24 @@ namespace AutoLike.Utils
             return proxy;
         }
 
-       
+        public async Task<string> getCurrentProxy()
+        {
+            var proxy = string.Empty;
+            using (var client = new HttpClient())
+            {
+                HttpResponseMessage result = await client.GetAsync(Url);
+                if (result.IsSuccessStatusCode)
+                {
+                    proxy = await result.Content.ReadAsStringAsync();
+                    JObject json = JObject.Parse(proxy);
+                    proxy = json["data"]["proxy"].ToString();
+                }
+            }
+
+
+            return proxy;
+        }
+
+
     }
 }

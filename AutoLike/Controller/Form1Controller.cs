@@ -1,5 +1,7 @@
-﻿using AutoLike.Model;
+﻿using AutoLike.Features;
+using AutoLike.Model;
 using AutoLike.Utils;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System;
 using System.Collections.Generic;
@@ -20,7 +22,7 @@ namespace AutoLike.Controller
         private List<account> _listAccounts;
         private SQLiteUtils _sqliteUtils;
         private Form1 form1;
-        private ChormeDriverUtils _chormeDriverUtils;
+        private ChromeDriverUtils _chormeDriverUtils;
 
         public Form1Controller()
         {
@@ -28,7 +30,7 @@ namespace AutoLike.Controller
             _account = new account();
             _listAccounts = new List<account>();
             _sqliteUtils = new SQLiteUtils();
-            _chormeDriverUtils = new ChormeDriverUtils();
+            _chormeDriverUtils = new ChromeDriverUtils();
         }
 
         public Boolean SelectFile()
@@ -185,9 +187,8 @@ namespace AutoLike.Controller
 
         public async void LoginChromeWithCookieToken(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, ComboBox selectProxy)
         {
-           //ChromeDriver chromeDriver = _chormeDriverUtils.initChrome(ProfileFolderPath,uid, uidFromCookie, proxy, index, flowNum, selectProxy);
 
-            List<account> danhSach = new List<account>(); // Thay thế kiểu dữ liệu tùy theo nhu cầu của bạn
+            List<account> danhSach = new List<account>(); 
 
             for(int i = 0;i < dataGridView.Rows.Count;i++)
             {
@@ -196,24 +197,12 @@ namespace AutoLike.Controller
                     account acc = new account();
                     acc.UID = dataGridView.Rows[i].Cells["uidAccount"].Value.ToString();
                     acc.PASS = dataGridView.Rows[i].Cells["passAccount"].Value.ToString();
+                    acc.M2FA = dataGridView.Rows[i].Cells["code2faAccount"].Value.ToString();
                     danhSach.Add(acc);
                 }
             }
 
            await ProcessLoginChromeCookieToke(ProfileFolderPath, dataGridView, flowNum, selectProxy, danhSach);
-            // Điền danh sách của bạn với các phần tử
-
-            //int batchSize = 10; // Số lượng phần tử mỗi lần chạy parallel
-
-            //Parallel.ForEach(
-            //    Partitioner.Create(0, danhSach.Count, batchSize),
-            //    range =>
-            //    {
-            //        for (int i = range.Item1; i < range.Item2; i++)
-            //        {
-            //            // Thực hiện công việc của bạn trên danhSach[i]
-            //        }
-            //    });
         }
 
         public async Task ProcessLoginChromeCookieToke(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, ComboBox selectProxy, List<account> listAcccounts)
@@ -222,6 +211,7 @@ namespace AutoLike.Controller
             int batchSize = 10; // Số lượng phần tử mỗi lần xử lý
             int indexItem = 0;
             var semaphore = new SemaphoreSlim(maxConcurrency);
+            var completedItems = new List<account>();
 
             async Task ProcessBatchAsync(List<account> batch)
             {
@@ -230,7 +220,52 @@ namespace AutoLike.Controller
                     indexItem++;
                     // Thực hiện công việc của bạn trên item ở đây
                     ChromeDriver chromeDriver = _chormeDriverUtils.initChrome(ProfileFolderPath, item, indexItem, flowNum, selectProxy);
+                    chromeDriver.Navigate().GoToUrl("https://www.facebook.com");
+                    await Task.Delay(1000);
+               
+                    Login.loginWithUID(chromeDriver, item);
+
+                    try
+                    {
+                        if (await ChromeDriverUtils.FindTextInChrome(chromeDriver, "Quên mật khẩu?", "Password") ||
+                         await ChromeDriverUtils.FindTextInChrome(chromeDriver, "mật khẩu cũ", "old"))
+                        {
+
+                            ChromeDriverUtils.ChromeDetroy(chromeDriver);
+                        }
+                        else if (await ChromeDriverUtils.FindTextInChrome(chromeDriver, "tạm thời bị khóa", "lock"))
+                        {
+                            ChromeDriverUtils.ChromeDetroy(chromeDriver);
+                        }
+                        else if (await ChromeDriverUtils.FindTextInChrome(chromeDriver, "Trang chủ", "Home"))
+                        {
+                            try
+                            {
+                                //getcookie(driver, i);
+                                ChromeDriverUtils.ChromeDetroy(chromeDriver);
+
+                            }
+                            catch { }
+
+                        }
+                        else if (chromeDriver.Url.Contains("/checkpoint"))
+                        {
+                            ChromeDriverUtils.ChromeDetroy(chromeDriver);
+                        }
+                    }
+                    catch
+                    {
+                        if (chromeDriver.FindElement(By.XPath("/html/body/div[1]/div[2]/div[1]/div/div[2]/div[2]/form/div[1]/div[1]")).Text.Contains("mật khẩu"))
+                        {
+
+                            ChromeDriverUtils.ChromeDetroy(chromeDriver);
+                        }
+                    }
+
                     await Task.Delay(1000); // Ví dụ: Giả định công việc mất 1 giây để hoàn thành.
+
+                    // Sau khi hoàn thành công việc, thêm item này vào danh sách đã hoàn thành
+                    completedItems.Add(item);
                 }
             }
 
@@ -260,8 +295,19 @@ namespace AutoLike.Controller
 
             await Task.WhenAll(tasks);
 
+            // Xử lý các item còn lại sau khi tất cả các batch đã hoàn thành
+            var remainingItems = listAcccounts.Except(completedItems).ToList();
+            foreach (var item in remainingItems)
+            {
+                // Thực hiện xử lý cho các item còn lại ở đây
+                indexItem++;
+                ChromeDriver chromeDriver = _chormeDriverUtils.initChrome(ProfileFolderPath, item, indexItem, flowNum, selectProxy);
+                await Task.Delay(1000); // Ví dụ: Giả định công việc mất 1 giây để hoàn thành.
+            }
+
+
             // Khi tất cả công việc đã hoàn thành
-            Console.WriteLine("Tất cả công việc đã hoàn thành.");
+            Console.WriteLine("ALl TASK DONE!!!");
         }
     }
 }

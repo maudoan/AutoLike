@@ -1,11 +1,15 @@
 ﻿using AutoLike.Model;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OtpNet;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AutoLike.Utils
 {
-    public class ChormeDriverUtils
+    public class ChromeDriverUtils
     {
         int screenHeight = SystemInformation.VirtualScreen.Height;
         int screenWidth = SystemInformation.VirtualScreen.Width;
@@ -21,11 +25,11 @@ namespace AutoLike.Utils
             ChromeOptions co = new ChromeOptions(); //khaibao option chrome
             ChromeDriverService chromeDriverService = ChromeDriverService.CreateDefaultService();
             chromeDriverService.HideCommandPromptWindow = true; //ẩn CMD điều khiển chrome
-            //if (selectProxy.Text == "Use Proxy")
-            //{
-            //    co.AddArguments("--proxy-server=" + account.PROXY);
-            //    co.Proxy = null;
-            //}
+            if (selectProxy.Items.Equals("Use Proxy"))
+            {
+                co.AddArguments("--proxy-server=" + account.PROXY);
+                co.Proxy = null;
+            }
             co.AddArgument("--disable-background-networking");
             co.AddArgument("--disable-client-side-phishing-detection");
             co.AddArgument("--disable-default-apps");
@@ -114,12 +118,107 @@ namespace AutoLike.Utils
               
             }
 
-
-
             return new ChromeDriver(chromeDriverService, co);
+        }
 
+        public static void ChromeDetroy(ChromeDriver driver)
+        {
+            driver.Close();
+            driver.Quit();
+        }
 
+        public static async Task<bool> FindTextInChrome(ChromeDriver driver, string textVN, string textEN)
+        {
+            bool result = false;
+            try
+            {
 
+                int dem = 0;
+                while (true)
+                {
+                    String find = driver.FindElement(By.TagName("body")).Text;
+                    if (find.ToLower().Contains(textVN.ToLower()) || find.ToLower().Contains(textEN.ToLower()))
+                    {
+                        if (find.ToLower().Contains(textVN.ToLower()))
+                        {
+                            //Trangthaichrome(i, "OK: " + text1);
+                        }
+                        else
+                        {
+                            //Trangthaichrome(i, "OK: " + text2);
+                        }
+                        result = true;
+                        break;
+                    }
+                    else
+                    {
+                        //dataGridView1.Rows[i].Cells["Trangthai"].Value = "NOT: " + text2;
+
+                    }
+                    if (dem == 1)
+                    {
+                        break;
+                    }
+                    dem++;
+                    await Task.Delay(200);
+                }
+
+            }
+            catch { }
+            return result;
+        }
+
+        public static async Task<bool> FindClickElementInChrome(ChromeDriver driver, string textVN, string textEN, bool click)
+        {
+            bool result = false;
+            int dem = 0;
+            while (true)
+            {
+                String find = driver.FindElement(By.TagName("body")).Text;
+                try
+                {
+                    var a = driver.FindElement(By.XPath("//*[text()='" + textVN + "']"));
+                    if (a.Displayed)
+                    {
+                        if (click)
+                        {
+                            //Trangthaichrome(i, "Click: " + text1);
+                            a.Click();
+                        }
+                        result = true;
+                        break;
+                    }
+                }
+                catch
+                {
+                    try
+                    {
+                        var a = driver.FindElement(By.XPath("//*[text()='" + textEN + "']"));
+                        if (a.Displayed)
+                        {
+                            if (click)
+                            {
+                                //Trangthaichrome(i, "Click: " + text2);
+
+                                a.Click();
+                            }
+                            result = true;
+                            break;
+                        }
+                    }
+                    catch
+                    {
+
+                    }
+                }
+                if (dem == 2)
+                {
+                    break;
+                }
+                await Task.Delay(1000);
+                dem++;
+            }
+            return result;
         }
 
     }
