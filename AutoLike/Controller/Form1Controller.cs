@@ -225,43 +225,6 @@ namespace AutoLike.Controller
                
                     Login.loginWithUID(chromeDriver, item);
 
-                    try
-                    {
-                        if (await ChromeDriverUtils.FindTextInChrome(chromeDriver, "Quên mật khẩu?", "Password") ||
-                         await ChromeDriverUtils.FindTextInChrome(chromeDriver, "mật khẩu cũ", "old"))
-                        {
-
-                            ChromeDriverUtils.ChromeDetroy(chromeDriver);
-                        }
-                        else if (await ChromeDriverUtils.FindTextInChrome(chromeDriver, "tạm thời bị khóa", "lock"))
-                        {
-                            ChromeDriverUtils.ChromeDetroy(chromeDriver);
-                        }
-                        else if (await ChromeDriverUtils.FindTextInChrome(chromeDriver, "Trang chủ", "Home"))
-                        {
-                            try
-                            {
-                                //getcookie(driver, i);
-                                ChromeDriverUtils.ChromeDetroy(chromeDriver);
-
-                            }
-                            catch { }
-
-                        }
-                        else if (chromeDriver.Url.Contains("/checkpoint"))
-                        {
-                            ChromeDriverUtils.ChromeDetroy(chromeDriver);
-                        }
-                    }
-                    catch
-                    {
-                        if (chromeDriver.FindElement(By.XPath("/html/body/div[1]/div[2]/div[1]/div/div[2]/div[2]/form/div[1]/div[1]")).Text.Contains("mật khẩu"))
-                        {
-
-                            ChromeDriverUtils.ChromeDetroy(chromeDriver);
-                        }
-                    }
-
                     await Task.Delay(1000); // Ví dụ: Giả định công việc mất 1 giây để hoàn thành.
 
                     // Sau khi hoàn thành công việc, thêm item này vào danh sách đã hoàn thành
