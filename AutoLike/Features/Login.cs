@@ -79,7 +79,7 @@ namespace AutoLike.Features
                                     catch
                                     {
                                         //Trangthaichrome(i, "Lỗi Element Pass " + k);
-                                        driver.Navigate().Refresh();
+                                        //driver.Navigate().Refresh();
                                         driver.Navigate().GoToUrl("https://www.facebook.com/");
                                         await Task.Delay(3000);
                                         goto lai;
@@ -91,7 +91,7 @@ namespace AutoLike.Features
                         }
 
                     }
-                    driver.FindElement(By.Id("pass")).SendKeys(pass);
+                    //driver.FindElement(By.Id("pass")).SendKeys(pass);
                     await Task.Delay(3000);
                     await ChromeDriverUtils.FindClickElementInChrome(driver, "Nhớ mật khẩu", "Remember password", true);
                     await Task.Delay(3000);
@@ -109,13 +109,13 @@ namespace AutoLike.Features
 
                     }
 
-                    await ChromeDriverUtils.FindClickElementInChrome(driver, "Đăng nhập", "Login", true);
+                    //await ChromeDriverUtils.FindClickElementInChrome(driver, "Đăng nhập", "Login", true);
                     await Task.Delay(3000);
                 }
                 catch
                 {
                     driver.Navigate().Refresh();
-                    driver.Navigate().GoToUrl("https://www.facebook.com/");
+                    //driver.Navigate().GoToUrl("https://www.facebook.com/");
                     while (true)
                     {
                         if (await ChromeDriverUtils.FindTextInChrome(driver, "Đăng nhập", "Log in"))

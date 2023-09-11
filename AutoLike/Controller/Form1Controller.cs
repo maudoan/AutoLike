@@ -222,8 +222,21 @@ namespace AutoLike.Controller
                     ChromeDriver chromeDriver = _chormeDriverUtils.initChrome(ProfileFolderPath, item, indexItem, flowNum, selectProxy);
                     chromeDriver.Navigate().GoToUrl("https://www.facebook.com");
                     await Task.Delay(1000);
-               
-                    Login.loginWithUID(chromeDriver, item);
+                    
+                    if(await ChromeDriverUtils.FindClickElementInChrome(chromeDriver, "Đăng nhập", "Login", false))
+                    {
+                        Login.loginWithUID(chromeDriver, item);
+                    }
+                    else if (await ChromeDriverUtils.FindTextInChrome(chromeDriver, "Trang chủ", "Home"))
+                    {
+                        try
+                        {
+                            //getcookie(driver, i);
+
+                        }
+                        catch { }
+                    }
+
 
                     await Task.Delay(1000); // Ví dụ: Giả định công việc mất 1 giây để hoàn thành.
 
