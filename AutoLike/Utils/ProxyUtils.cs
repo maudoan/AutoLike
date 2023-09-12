@@ -8,16 +8,7 @@ namespace AutoLike.Utils
     public class ProxyUtils
     {
 
-        private string Url;
-        private string Key;
-        ProxyUtils(string Url, string key) 
-        {
-            this.Url = Url;
-            this.Key = key;
-        }
-
-
-        public async Task<string> getNewProxy() 
+        public async Task<string> getNewProxy(String Url) 
         {
             var proxy = string.Empty;
             using (var client = new HttpClient())
@@ -35,7 +26,7 @@ namespace AutoLike.Utils
             return proxy;
         }
 
-        public async Task<string> getCurrentProxy()
+        public async Task<string> getCurrentProxy(String Url)
         {
             var proxy = string.Empty;
             using (var client = new HttpClient())

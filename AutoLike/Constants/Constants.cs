@@ -13,12 +13,12 @@ namespace AutoLike.Constants
 
         public static string GetNewProxyShopLike(string accessToken)
         {
-            return getNewProxyShopLike + "?accessToken=" + accessToken;
+            return getNewProxyShopLike + "?access_token=" + accessToken;
         }
 
         public static string GetCurrentProxyShopLike(string accessToken, string location)
         {
-            return getCurrentProxyShopLike + "?accessToken=" + accessToken + "&&location=" + location;
+            return getCurrentProxyShopLike + "?access_token=" + accessToken + "&&location=" + location;
         }
     }
 }

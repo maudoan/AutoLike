@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Header;
 
 namespace AutoLike.Controller
 {
@@ -65,7 +66,7 @@ namespace AutoLike.Controller
                     {
                         account account = new account();
                         string[] elements = line.Split(new string[] { "//" }, StringSplitOptions.None);
-                        account.CATELOGE =elements.Length >=0 ? elements[0] : "";
+                        account.CATELOGE = elements.Length >= 0 ? elements[0] : "";
                         account.UID = elements.Length > 1 ? elements[1] : "";
                         account.PASS = elements.Length > 2 ? elements[2] : "";
                         account.M2FA = elements.Length > 3 ? elements[3] : "";
@@ -105,18 +106,18 @@ namespace AutoLike.Controller
             }
             catch (Exception ex)
             {
-               
+
                 Console.WriteLine("Lỗi khi đọc tệp: " + ex.Message);
             }
 
         }
 
-        public void  LoadFileAccount(DataGridView dataGridView)
+        public void LoadFileAccount(DataGridView dataGridView)
         {
             List<string> dm = _sqliteUtils.getListCategory("DM");
             for (int i = 0; i < dm.Count; i++)
             {
-                 dataGridView.Rows.Add(dm[i]);
+                dataGridView.Rows.Add(dm[i]);
             }
         }
 
@@ -175,25 +176,25 @@ namespace AutoLike.Controller
                     }
 
                 }
-                catch (Exception ex) 
+                catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
                 }
-                
+
             }
 
             return list;
 
         }
 
-        public async void LoginChromeWithCookieToken(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, ComboBox selectProxy)
+        public void LoginChromeWithCookieToken(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, ComboBox selectProxy, TextBox apiKeyTextBox)
         {
 
-            List<account> danhSach = new List<account>(); 
+            List<account> danhSach = new List<account>();
 
-            for(int i = 0;i < dataGridView.Rows.Count;i++)
+            for (int i = 0; i < dataGridView.Rows.Count; i++)
             {
-                if(dataGridView.Rows[i].Cells["checkboxItemAccount"].Value.ToString() == "True")
+                if (dataGridView.Rows[i].Cells["checkboxItemAccount"].Value.ToString() == "True")
                 {
                     account acc = new account();
                     acc.UID = dataGridView.Rows[i].Cells["uidAccount"].Value.ToString();
@@ -203,137 +204,267 @@ namespace AutoLike.Controller
                 }
             }
 
-           await ProcessLoginChromeCookieToke(ProfileFolderPath, dataGridView, flowNum, selectProxy, danhSach);
+            ProcessLoginChromeCookieToken(ProfileFolderPath, dataGridView, flowNum, selectProxy, danhSach, apiKeyTextBox);
         }
 
-        public async Task ProcessLoginChromeCookieToke(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, ComboBox selectProxy, List<account> listAcccounts)
-        {
-            int maxConcurrency = 5; // Số lượng luồng tối đa được sử dụng
-            int batchSize = 10; // Số lượng phần tử mỗi lần xử lý
-            int indexItem = 0;
-            var semaphore = new SemaphoreSlim(maxConcurrency);
-            var completedItems = new List<account>();
+        //public async Task ProcessLoginChromeCookieToke(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, ComboBox selectProxy, List<account> listAcccounts, TextBox apiKeyTextBox)
+        //{
+        //    int maxConcurrency = 5; // Số lượng luồng tối đa được sử dụng
+        //    int batchSize = 10;// Số lượng phần tử mỗi lần xử lý
+        //    int indexItem = 0;
+        //    var semaphore = new SemaphoreSlim(maxConcurrency);
+        //    var completedItems = new List<account>();
 
-            async Task ProcessBatchAsync(List<account> batch)
+        //    ProxyUtils proxyUtils = new ProxyUtils();
+
+        //    if (apiKeyTextBox.Text != null && apiKeyTextBox.Text != "")
+        //    {
+        //        await proxyUtils.getNewProxy(Constants.Constants.GetNewProxyShopLike(apiKeyTextBox.Text));
+        //    }
+
+        //    async Task ProcessBatchAsync(List<account> batch, string proxy)
+        //    {
+        //        foreach (var item in batch)
+        //        {
+        //            item.PROXY = proxy;
+        //            indexItem++;
+        //            // Thực hiện công việc của bạn trên item ở đây
+        //            ChromeDriver chromeDriver = _chormeDriverUtils.initChrome(ProfileFolderPath, item, indexItem, flowNum, selectProxy);
+        //            chromeDriver.Navigate().GoToUrl("https://www.facebook.com");
+        //            await Task.Delay(1000);
+
+        //            if (await ChromeDriverUtils.FindClickElementInChrome(chromeDriver, "Đăng nhập", "Log in", false))
+        //            {
+        //                await Login.LoginWithUID(chromeDriver, item);
+        //            }
+        //            else if (await ChromeDriverUtils.FindTextInChrome(chromeDriver, "Trang chủ", "Home"))
+        //            {
+        //                try
+        //                {
+        //                    string cookie = await ChromeDriverUtils.getcookie(chromeDriver);
+        //                    if (cookie != null)
+        //                    {
+        //                        item.COOKIE = cookie;
+        //                    }
+        //                }
+        //                catch { }
+        //            }
+
+        //            await Task.Delay(1000); // Ví dụ: Giả định công việc mất 1 giây để hoàn thành.
+
+        //            try
+        //            {
+        //                if (await ChromeDriverUtils.FindTextInChrome(chromeDriver, "Quên mật khẩu?", "Password") ||
+        //                await ChromeDriverUtils.FindTextInChrome(chromeDriver, "mật khẩu cũ", "old"))
+        //                {
+        //                    item.TRANGTHAI = "Sai password....";
+        //                    await ChromeDriverUtils.ChromeDetroy(chromeDriver);
+        //                }
+        //                else if (await ChromeDriverUtils.FindTextInChrome(chromeDriver, "tạm thời bị khóa", "lock"))
+        //                {
+        //                    item.LIVE = "Checkpoint";
+        //                    item.TRANGTHAI = "Checkpoint !...";
+        //                    await ChromeDriverUtils.ChromeDetroy(chromeDriver);
+
+        //                }
+        //                else if (await ChromeDriverUtils.FindTextInChrome(chromeDriver, "Trang chủ", "Home"))
+        //                {
+        //                    try
+        //                    {
+        //                        string cookie = await ChromeDriverUtils.getcookie(chromeDriver);
+        //                        if (cookie != null)
+        //                        {
+        //                            item.COOKIE = cookie;
+        //                        }
+
+        //                    }
+        //                    catch { }
+
+        //                    item.LIVE = "Live";
+        //                    item.TRANGTHAI = "Login Facebook thành công !...";
+
+        //                }
+        //            }
+        //            catch
+        //            {
+        //                if (chromeDriver.FindElement(By.XPath("/html/body/div[1]/div[2]/div[1]/div/div[2]/div[2]/form/div[1]/div[1]")).Text.Contains("mật khẩu"))
+        //                {
+
+        //                    item.TRANGTHAI = "Sai Password!...";
+        //                    await ChromeDriverUtils.ChromeDetroy(chromeDriver);
+        //                }
+        //            }
+
+        //            SQLiteUtils.updateByUID(item);
+
+
+
+        //            // Sau khi hoàn thành công việc, thêm item này vào danh sách đã hoàn thành
+        //            completedItems.Add(item);
+        //        }
+        //    }
+
+        //    var batches = listAcccounts
+        //        .Select((item, index) => new { Item = item, Index = index })
+        //        .GroupBy(x => x.Index / batchSize)
+        //        .Select(group => group.Select(x => x.Item).ToList())
+        //        .ToList();
+
+        //    var tasks = new List<Task>();
+
+        //    foreach (var batch in batches)
+        //    {
+        //        await semaphore.WaitAsync(); // Chờ để lấy quyền sử dụng luồng
+        //        tasks.Add(Task.Run(async () =>
+        //        {
+        //            try
+        //            {
+        //                string proxy = "";
+
+        //                proxy = await proxyUtils.getCurrentProxy(Constants.Constants.GetCurrentProxyShopLike(apiKeyTextBox.Text, "hd"));
+        //                await ProcessBatchAsync(batch, proxy);
+        //            }
+        //            finally
+        //            {
+        //                semaphore.Release(); // Hoàn thành công việc, giải phóng luồng
+        //            }
+        //        }));
+        //    }
+
+        //    // Xử lý các item còn lại sau khi tất cả các batch đã hoàn thành
+        //    var remainingItems = listAcccounts.Except(completedItems).ToList();
+        //    foreach (var item in remainingItems)
+        //    {
+        //        // Thực hiện xử lý cho các item còn lại ở đây
+        //        indexItem++;
+        //        ChromeDriver chromeDriver = _chormeDriverUtils.initChrome(ProfileFolderPath, item, indexItem, flowNum, selectProxy);
+        //        await Task.Delay(1000); // Ví dụ: Giả định công việc mất 1 giây để hoàn thành.
+        //    }
+
+        //    await Task.WhenAll(tasks);
+        //    semaphore.Dispose();
+
+        //    // Khi tất cả công việc đã hoàn thành
+        //    Console.WriteLine("ALL TASK DONE!!!");
+        //}
+
+        public async void ProcessLoginChromeCookieToken(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, ComboBox selectProxy, List<account> listAcccounts, TextBox apiKeyTextBox)
+        {
+
+
+            int batchSize = 5; // Số lượng item mỗi lần xử lý
+            int maxThreads = 5; // Số lượng luồng tối đa
+
+            int itemindex = 0;
+            ProxyUtils proxyUtils = new ProxyUtils();
+
+            if (apiKeyTextBox.Text != null && apiKeyTextBox.Text != "")
+            {
+                await proxyUtils.getNewProxy(Constants.Constants.GetNewProxyShopLike(apiKeyTextBox.Text));
+
+            }
+
+            ParallelOptions options = new ParallelOptions
+            {
+                MaxDegreeOfParallelism = maxThreads
+            };
+
+            // Chia danh sách thành các phần (batch)
+            var batches = PartitionList(listAcccounts, batchSize);
+
+            Parallel.ForEach(batches, options, async batch =>
             {
                 foreach (var item in batch)
                 {
-                    indexItem++;
-                    // Thực hiện công việc của bạn trên item ở đây
-                    ChromeDriver chromeDriver = _chormeDriverUtils.initChrome(ProfileFolderPath, item, indexItem, flowNum, selectProxy);
-                    chromeDriver.Navigate().GoToUrl("https://www.facebook.com");
-                    await Task.Delay(1000);
-                    
-                    if(await ChromeDriverUtils.FindClickElementInChrome(chromeDriver, "Đăng nhập", "Log in", false))
-                    {
-                        await  Login.loginWithUID(chromeDriver, item);
-                    }
-                    else if (await ChromeDriverUtils.FindTextInChrome(chromeDriver, "Trang chủ", "Home"))
-                    {
-                        try
-                        {
-                           string cookie = await ChromeDriverUtils.getcookie(chromeDriver);
-                           if(cookie != null)
-                            {
-                                item.COOKIE = cookie;
-                            }
-                        }
-                        catch { }
-                    }
-
-                    await Task.Delay(1000); // Ví dụ: Giả định công việc mất 1 giây để hoàn thành.
-
-                    try
-                    {
-                        if (await ChromeDriverUtils.FindTextInChrome(chromeDriver, "Quên mật khẩu?", "Password") ||
-                        await ChromeDriverUtils.FindTextInChrome(chromeDriver, "mật khẩu cũ", "old"))
-                        {
-                            item.TRANGTHAI = "Sai password....";
-                            await ChromeDriverUtils.ChromeDetroy(chromeDriver);
-                        }
-                        else if (await ChromeDriverUtils.FindTextInChrome(chromeDriver, "tạm thời bị khóa", "lock"))
-                        {
-                            item.LIVE = "Checkpoint";
-                            item.TRANGTHAI = "Checkpoint !...";
-                            await ChromeDriverUtils.ChromeDetroy(chromeDriver);
-
-                        }
-                        else if (await ChromeDriverUtils.FindTextInChrome(chromeDriver, "Trang chủ", "Home"))
-                        {
-                            try
-                            {
-                                string cookie = await ChromeDriverUtils.getcookie(chromeDriver);
-                                if (cookie != null)
-                                {
-                                    item.COOKIE = cookie;
-                                }
-
-                            }
-                            catch { }
-
-                            item.LIVE = "Live";
-                            item.TRANGTHAI = "Login Facebook thành công !...";
-                         
-                        }
-                    }
-                    catch
-                    {
-                        if (chromeDriver.FindElement(By.XPath("/html/body/div[1]/div[2]/div[1]/div/div[2]/div[2]/form/div[1]/div[1]")).Text.Contains("mật khẩu"))
-                        {
-
-                            item.TRANGTHAI = "Sai Password!...";
-                            await ChromeDriverUtils.ChromeDetroy(chromeDriver);
-                        }
-                    }
-
-                    SQLiteUtils.updateByUID(item);
-
-
-
-                    // Sau khi hoàn thành công việc, thêm item này vào danh sách đã hoàn thành
-                    completedItems.Add(item);
+                    string proxy = "";
+                    itemindex++;
+                    proxy = await proxyUtils.getCurrentProxy(Constants.Constants.GetCurrentProxyShopLike(apiKeyTextBox.Text, "hd"));
+                    ProcessItem(ProfileFolderPath,item, itemindex, flowNum, selectProxy, proxy);
                 }
+            });
+        }
+        public void ProcessItem(string ProfileFolderPath, account item, int itemindex, NumericUpDown flowNum, ComboBox selectProxy, string proxy)
+        {
+            // Đây là nơi bạn thực hiện công việc xử lý trên mỗi item
+
+            item.PROXY = proxy;
+            // Thực hiện công việc của bạn trên item ở đây
+            ChromeDriver chromeDriver = _chormeDriverUtils.initChrome(ProfileFolderPath, item, itemindex, flowNum, selectProxy);
+            chromeDriver.Navigate().GoToUrl("https://www.facebook.com");
+            Thread.Sleep(1000);
+
+            if (ChromeDriverUtils.FindClickElementInChrome(chromeDriver, "Đăng nhập", "Log in", false))
+            {
+                Login.LoginWithUID(chromeDriver, item);
+            }
+            else if (ChromeDriverUtils.FindTextInChrome(chromeDriver, "Trang chủ", "Home"))
+            {
+                try
+                {
+                    string cookie = ChromeDriverUtils.getcookie(chromeDriver);
+                    if (cookie != null)
+                    {
+                        item.COOKIE = cookie;
+                    }
+                }
+                catch { }
             }
 
-            var batches = listAcccounts
-                .Select((item, index) => new { Item = item, Index = index })
-                .GroupBy(x => x.Index / batchSize)
-                .Select(group => group.Select(x => x.Item).ToList())
-                .ToList();
+            Thread.Sleep(1000); // Ví dụ: Giả định công việc mất 1 giây để hoàn thành.
 
-            var tasks = new List<Task>();
-
-            foreach (var batch in batches)
+            try
             {
-                await semaphore.WaitAsync(); // Chờ để lấy quyền sử dụng luồng
-                tasks.Add(Task.Run(async () =>
+                if (ChromeDriverUtils.FindTextInChrome(chromeDriver, "Quên mật khẩu?", "Password") ||
+                ChromeDriverUtils.FindTextInChrome(chromeDriver, "mật khẩu cũ", "old"))
+                {
+                    item.TRANGTHAI = "Sai password....";
+                    ChromeDriverUtils.ChromeDetroy(chromeDriver);
+                }
+                else if (ChromeDriverUtils.FindTextInChrome(chromeDriver, "tạm thời bị khóa", "lock"))
+                {
+                    item.LIVE = "Checkpoint";
+                    item.TRANGTHAI = "Checkpoint !...";
+                    ChromeDriverUtils.ChromeDetroy(chromeDriver);
+
+                }
+                else if (ChromeDriverUtils.FindTextInChrome(chromeDriver, "Trang chủ", "Home"))
                 {
                     try
                     {
-                        await ProcessBatchAsync(batch);
+                        string cookie = ChromeDriverUtils.getcookie(chromeDriver);
+                        if (cookie != null)
+                        {
+                            item.COOKIE = cookie;
+                        }
+
                     }
-                    finally
-                    {
-                        semaphore.Release(); // Hoàn thành công việc, giải phóng luồng
-                    }
-                }));
+                    catch { }
+
+                    item.LIVE = "Live";
+                    item.TRANGTHAI = "Login Facebook thành công !...";
+
+                }
             }
-
-            await Task.WhenAll(tasks);
-
-            // Xử lý các item còn lại sau khi tất cả các batch đã hoàn thành
-            var remainingItems = listAcccounts.Except(completedItems).ToList();
-            foreach (var item in remainingItems)
+            catch
             {
-                // Thực hiện xử lý cho các item còn lại ở đây
-                indexItem++;
-                ChromeDriver chromeDriver = _chormeDriverUtils.initChrome(ProfileFolderPath, item, indexItem, flowNum, selectProxy);
-                await Task.Delay(1000); // Ví dụ: Giả định công việc mất 1 giây để hoàn thành.
+                if (chromeDriver.FindElement(By.XPath("/html/body/div[1]/div[2]/div[1]/div/div[2]/div[2]/form/div[1]/div[1]")).Text.Contains("mật khẩu"))
+                {
+
+                    item.TRANGTHAI = "Sai Password!...";
+                    ChromeDriverUtils.ChromeDetroy(chromeDriver);
+                }
             }
 
+            SQLiteUtils.updateByUID(item);
+            Console.WriteLine($"Processing item: {item}");
+        }
 
-            // Khi tất cả công việc đã hoàn thành
-            Console.WriteLine("ALL TASK DONE!!!");
+        public static IEnumerable<List<T>> PartitionList<T>(List<T> source, int batchSize)
+        {
+            for (int i = 0; i < source.Count; i += batchSize)
+            {
+                yield return source.GetRange(i, Math.Min(batchSize, source.Count - i));
+            }
         }
     }
 }

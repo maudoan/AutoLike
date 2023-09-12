@@ -28,8 +28,12 @@ namespace AutoLike.Utils
             chromeDriverService.HideCommandPromptWindow = true; //ẩn CMD điều khiển chrome
             if (selectProxy.Items.Equals("Use Proxy"))
             {
-                co.AddArguments("--proxy-server=" + account.PROXY);
-                co.Proxy = null;
+                if(account.PROXY != "")
+                {
+                    co.AddArguments("--proxy-server=" + account.PROXY);
+                    co.Proxy = null;
+                }
+               
             }
             co.AddArgument("--disable-background-networking");
             co.AddArgument("--disable-client-side-phishing-detection");
@@ -122,13 +126,13 @@ namespace AutoLike.Utils
             return new ChromeDriver(chromeDriverService, co);
         }
 
-        public static async Task ChromeDetroy(ChromeDriver driver)
+        public static void ChromeDetroy(ChromeDriver driver)
         {
            driver.Close();
            driver.Quit();
         }
 
-        public static async Task<bool> FindTextInChrome(ChromeDriver driver, string textVN, string textEN)
+        public static bool FindTextInChrome(ChromeDriver driver, string textVN, string textEN)
         {
             bool result = false;
             try
@@ -161,7 +165,7 @@ namespace AutoLike.Utils
                         break;
                     }
                     dem++;
-                    await Task.Delay(200);
+                    Thread.Sleep(100);
                 }
 
             }
@@ -169,7 +173,7 @@ namespace AutoLike.Utils
             return result;
         }
 
-        public static async Task<bool> FindClickElementInChrome(ChromeDriver driver, string textVN, string textEN, bool click)
+        public static bool FindClickElementInChrome(ChromeDriver driver, string textVN, string textEN, bool click)
         {
             bool result = false;
             int dem = 0;
@@ -216,13 +220,13 @@ namespace AutoLike.Utils
                 {
                     break;
                 }
-                await Task.Delay(1000);
+                Thread.Sleep(100);
                 dem++;
             }
             return result;
         }
 
-        public static async Task<string> getcookie(ChromeDriver driver)
+        public static string getcookie(ChromeDriver driver)
         {
             string cookie = "";
             int dem = 0;
@@ -252,7 +256,7 @@ namespace AutoLike.Utils
             }
             else
             {
-                if (await ChromeDriverUtils.FindTextInChrome(driver, "Bạn phải đăng nhập", "Bạn phải đăng nhập"))
+                if (ChromeDriverUtils.FindTextInChrome(driver, "Bạn phải đăng nhập", "Bạn phải đăng nhập"))
                 {
                     cookie = "";
                     goto end;

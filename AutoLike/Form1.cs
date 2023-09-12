@@ -243,7 +243,7 @@ namespace AutoLike
 
         private void StartflowLoginCookieTokenButton_Click(object sender, EventArgs e)
         {
-            _form1Controller.LoginChromeWithCookieToken(selectPathChromeProfileTextBox.Text, detailListAccountsDataGridView, flowNumberValueLoginCookieTokenNumericUpDown, useProxyflowLoginCookieTokenComboBox);
+            _form1Controller.LoginChromeWithCookieToken(selectPathChromeProfileTextBox.Text, detailListAccountsDataGridView, flowNumberValueLoginCookieTokenNumericUpDown, useProxyflowLoginCookieTokenComboBox, apiKeyLoginTextBox);
             tabControl.SelectTab(doashBoardTabPage);
         }
 
