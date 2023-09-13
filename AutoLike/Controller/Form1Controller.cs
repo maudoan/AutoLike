@@ -209,38 +209,83 @@ namespace AutoLike.Controller
 
         public async void ProcessLoginChromeCookieToken(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, ComboBox selectProxy, List<account> listAcccounts, TextBox apiKeyTextBox)
         {
-
-
-            int batchSize = 5; // Số lượng item mỗi lần xử lý
             int maxThreads = 5; // Số lượng luồng tối đa
-
             int itemindex = 0;
             ProxyUtils proxyUtils = new ProxyUtils();
 
             if (apiKeyTextBox.Text != null && apiKeyTextBox.Text != "")
             {
                 await proxyUtils.getNewProxy(Constants.Constants.GetNewProxyShopLike(apiKeyTextBox.Text));
-
             }
+            var cancellationTokenSource = new CancellationTokenSource();
+            var cancellationToken = cancellationTokenSource.Token;
 
-            ParallelOptions options = new ParallelOptions
-            {
-                MaxDegreeOfParallelism = maxThreads
-            };
+            List<Task> tasks = new List<Task>();
 
-            // Chia danh sách thành các phần (batch)
-            var batches = PartitionList(listAcccounts, batchSize);
+            // Chia danh sách thành các phần (batch) mỗi phần chỉ chứa 1 item
+            var batches = listAcccounts.Select(item => new List<account> { item }).ToList();
 
-            Parallel.ForEach(batches, options, async batch =>
+            Parallel.ForEach(batches, new ParallelOptions { MaxDegreeOfParallelism = maxThreads }, async batch =>
             {
                 foreach (var item in batch)
                 {
-                    string proxy = "";
                     itemindex++;
-                    proxy = await proxyUtils.getCurrentProxy(Constants.Constants.GetCurrentProxyShopLike(apiKeyTextBox.Text, "hd"));
-                    ProcessItem(ProfileFolderPath,item, itemindex, flowNum, selectProxy, proxy);
+                    string proxy = await proxyUtils.getCurrentProxy(Constants.Constants.GetCurrentProxyShopLike(apiKeyTextBox.Text, "hd"));
+                    Task task = Task.Run(() => ProcessItem(ProfileFolderPath, item, itemindex, flowNum, selectProxy, proxy), cancellationToken);
+                    tasks.Add(task);
+
+                    if (tasks.Count >= maxThreads)
+                    {
+                        Task completedTask = await Task.WhenAny(tasks);
+                        tasks.Remove(completedTask);
+                    }
+                    // Đợi khi có ít nhất một công việc hoàn thành (luồng xử lý xong một item)
+                    //Task completedTask = await Task.WhenAny(tasks);
+                    //tasks.Remove(completedTask);
                 }
             });
+
+            // Đợi tất cả các công việc hoàn thành (tất cả item đã xử lý)
+            await Task.WhenAll(tasks);
+
+            Console.WriteLine("DONE ALL TASK!!!");
+
+
+
+
+
+            //int batchSize = 5; // Số lượng item mỗi lần xử lý
+            //int maxThreads = 5; // Số lượng luồng tối đa
+
+            //int itemindex = 0;
+            //ProxyUtils proxyUtils = new ProxyUtils();
+
+            //if (apiKeyTextBox.Text != null && apiKeyTextBox.Text != "")
+            //{
+            //    await proxyUtils.getNewProxy(Constants.Constants.GetNewProxyShopLike(apiKeyTextBox.Text));
+
+            //}
+
+            //ParallelOptions options = new ParallelOptions
+            //{
+            //    MaxDegreeOfParallelism = maxThreads
+            //};
+
+            //// Chia danh sách thành các phần (batch)
+            //var batches = PartitionList(listAcccounts, batchSize);
+
+            //Parallel.ForEach(batches, options, async batch =>
+            //{
+            //    foreach (var item in batch)
+            //    {
+            //        string proxy = "";
+            //        itemindex++;
+            //        proxy = await proxyUtils.getCurrentProxy(Constants.Constants.GetCurrentProxyShopLike(apiKeyTextBox.Text, "hd"));
+            //        ProcessItem(ProfileFolderPath,item, itemindex, flowNum, selectProxy, proxy);
+            //    }
+            //});
+
+            //Console.WriteLine("DONE ALL TASK!!!");
         }
         public void ProcessItem(string ProfileFolderPath, account item, int itemindex, NumericUpDown flowNum, ComboBox selectProxy, string proxy)
         {
@@ -282,9 +327,15 @@ namespace AutoLike.Controller
                 else if (ChromeDriverUtils.FindTextInChrome(chromeDriver, "tạm thời bị khóa", "lock"))
                 {
                     item.LIVE = "Checkpoint";
-                    item.TRANGTHAI = "Checkpoint !...";
+                    item.TRANGTHAI = "Tạm thời bị khóa !...";
                     ChromeDriverUtils.ChromeDetroy(chromeDriver);
 
+                }
+                else if (ChromeDriverUtils.FindTextInChrome(chromeDriver, "Chúng tôi đã đình chỉ tài khoản của bạn", "We suspend"))
+                {
+                    item.LIVE = "Checkpoint";
+                    item.TRANGTHAI = "Đình chỉ tài khoản !...";
+                    ChromeDriverUtils.ChromeDetroy(chromeDriver);
                 }
                 else if (ChromeDriverUtils.FindTextInChrome(chromeDriver, "Trang chủ", "Home"))
                 {
@@ -315,6 +366,7 @@ namespace AutoLike.Controller
             }
 
             SQLiteUtils.updateByUID(item);
+            ChromeDriverUtils.ChromeDetroy(chromeDriver);
             Console.WriteLine($"Processing item: {item}");
         }
 
@@ -324,6 +376,58 @@ namespace AutoLike.Controller
             {
                 yield return source.GetRange(i, Math.Min(batchSize, source.Count - i));
             }
+        }
+
+        /*
+         * 
+         * Feature Reg Page
+         * 
+         * 
+         */
+
+        private string fullPathNamePage = string.Empty;
+
+        /*
+         * Select path File Name Page
+         */
+        public string selectFileNamePage()
+        {
+            var fullFilePath = string.Empty;
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Text Files|*.txt";
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                fullFilePath = openFileDialog.FileName;
+                fullPathNamePage = fullFilePath;
+                return fullFilePath;
+            }
+            return fullFilePath;
+        }
+
+        /*
+         * Get random Name Page
+         */
+
+        public string getNamePage()
+        {
+            var namePage = string.Empty;
+            if (!string.IsNullOrEmpty(fullPathNamePage))
+            {
+                List<string> lines = File.ReadAllLines(fullPathNamePage).ToList();
+
+                // Kiểm tra xem tệp tin có dòng nào không
+                if (lines.Count == 0)
+                {
+                    Console.WriteLine("Tệp tin trống.");
+                }
+
+                // Sử dụng một số ngẫu nhiên để chọn một dòng ngẫu nhiên
+                Random rng = new Random();
+                int randomIndex = rng.Next(0, lines.Count);
+                namePage = lines[randomIndex];
+            }
+           
+            return namePage;
         }
     }
 }

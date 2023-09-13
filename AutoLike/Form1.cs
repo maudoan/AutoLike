@@ -251,5 +251,20 @@ namespace AutoLike
         {
             tabControl.SelectTab(loginTabPage);
         }
+
+        private void regAndSeedingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            tabControl.SelectTab(regAndSeedingTabPage);
+        }
+
+        private void selectPathNamePageButton_Click(object sender, EventArgs e)
+        {
+            string path = _form1Controller.selectFileNamePage();
+
+            if(path != "")
+            {
+                selectPathNamePageTextBox.Text = path;
+            }
+        }
     }
 }

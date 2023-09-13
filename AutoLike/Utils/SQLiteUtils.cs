@@ -246,7 +246,7 @@ namespace AutoLike.Utils
                 Thread.Sleep(1);
                 try
                 {
-                    string text = string.Format("UPDATE data set COOKIE='{0}', LIVE='{1}', TRANGTHAI='{2}' where UID='{3}'", item.COOKIE, item.LIVE,item.TRANGTHAI, item.UID);
+                    string text = string.Format("UPDATE data set COOKIE='{0}',PROXY='{1}', LIVE='{2}', TRANGTHAI='{3}' where UID='{4}'", item.COOKIE,item.PROXY, item.LIVE,item.TRANGTHAI, item.UID);
                     SQLiteConnection sqliteConnection = new SQLiteConnection();
                     sqliteConnection.ConnectionString = "Data Source=Data.sqlite3;Version=3;";
                     sqliteConnection.Open();
