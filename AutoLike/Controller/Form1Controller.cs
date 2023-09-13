@@ -187,6 +187,15 @@ namespace AutoLike.Controller
 
         }
 
+        /*
+         * 
+         * Feature Create Profile
+         * 
+         */
+
+        /*
+         * init Login
+         */
         public void LoginChromeWithCookieToken(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, ComboBox selectProxy, TextBox apiKeyTextBox)
         {
 
@@ -207,92 +216,53 @@ namespace AutoLike.Controller
             ProcessLoginChromeCookieToken(ProfileFolderPath, dataGridView, flowNum, selectProxy, danhSach, apiKeyTextBox);
         }
 
+        /*
+         * Process Login
+         */
         public async void ProcessLoginChromeCookieToken(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, ComboBox selectProxy, List<account> listAcccounts, TextBox apiKeyTextBox)
         {
             int maxThreads = 5; // Số lượng luồng tối đa
             int itemindex = 0;
             ProxyUtils proxyUtils = new ProxyUtils();
 
-            if (apiKeyTextBox.Text != null && apiKeyTextBox.Text != "")
+            if (!string.IsNullOrEmpty(apiKeyTextBox.Text))
             {
                 await proxyUtils.getNewProxy(Constants.Constants.GetNewProxyShopLike(apiKeyTextBox.Text));
             }
+
             var cancellationTokenSource = new CancellationTokenSource();
             var cancellationToken = cancellationTokenSource.Token;
 
+            // Sử dụng Semaphore để giới hạn số lượng luồng được tạo ra đồng thời
+            SemaphoreSlim semaphore = new SemaphoreSlim(maxThreads, maxThreads);
+
             List<Task> tasks = new List<Task>();
 
-            // Chia danh sách thành các phần (batch) mỗi phần chỉ chứa 1 item
-            var batches = listAcccounts.Select(item => new List<account> { item }).ToList();
-
-            Parallel.ForEach(batches, new ParallelOptions { MaxDegreeOfParallelism = maxThreads }, async batch =>
+            foreach (var item in listAcccounts)
             {
-                foreach (var item in batch)
-                {
-                    itemindex++;
-                    string proxy = await proxyUtils.getCurrentProxy(Constants.Constants.GetCurrentProxyShopLike(apiKeyTextBox.Text, "hd"));
-                    Task task = Task.Run(() => ProcessItem(ProfileFolderPath, item, itemindex, flowNum, selectProxy, proxy), cancellationToken);
-                    tasks.Add(task);
+                itemindex++;
+                string proxy = await proxyUtils.getCurrentProxy(Constants.Constants.GetCurrentProxyShopLike(apiKeyTextBox.Text, "hd"));
+                item.PROXY = proxy;
+                await semaphore.WaitAsync(); // Chờ cho đến khi có sẵn slot trong Semaphore
+                Task task = Task.Run(() => ProcessItemLoginAcc(ProfileFolderPath, item, itemindex, flowNum, selectProxy), cancellationToken)
+                    .ContinueWith((t) => semaphore.Release()); // Giải phóng slot khi hoàn thành
 
-                    if (tasks.Count >= maxThreads)
-                    {
-                        Task completedTask = await Task.WhenAny(tasks);
-                        tasks.Remove(completedTask);
-                    }
-                    // Đợi khi có ít nhất một công việc hoàn thành (luồng xử lý xong một item)
-                    //Task completedTask = await Task.WhenAny(tasks);
-                    //tasks.Remove(completedTask);
-                }
-            });
+                tasks.Add(task);
+            }
 
             // Đợi tất cả các công việc hoàn thành (tất cả item đã xử lý)
             await Task.WhenAll(tasks);
 
             Console.WriteLine("DONE ALL TASK!!!");
 
-
-
-
-
-            //int batchSize = 5; // Số lượng item mỗi lần xử lý
-            //int maxThreads = 5; // Số lượng luồng tối đa
-
-            //int itemindex = 0;
-            //ProxyUtils proxyUtils = new ProxyUtils();
-
-            //if (apiKeyTextBox.Text != null && apiKeyTextBox.Text != "")
-            //{
-            //    await proxyUtils.getNewProxy(Constants.Constants.GetNewProxyShopLike(apiKeyTextBox.Text));
-
-            //}
-
-            //ParallelOptions options = new ParallelOptions
-            //{
-            //    MaxDegreeOfParallelism = maxThreads
-            //};
-
-            //// Chia danh sách thành các phần (batch)
-            //var batches = PartitionList(listAcccounts, batchSize);
-
-            //Parallel.ForEach(batches, options, async batch =>
-            //{
-            //    foreach (var item in batch)
-            //    {
-            //        string proxy = "";
-            //        itemindex++;
-            //        proxy = await proxyUtils.getCurrentProxy(Constants.Constants.GetCurrentProxyShopLike(apiKeyTextBox.Text, "hd"));
-            //        ProcessItem(ProfileFolderPath,item, itemindex, flowNum, selectProxy, proxy);
-            //    }
-            //});
-
-            //Console.WriteLine("DONE ALL TASK!!!");
         }
-        public void ProcessItem(string ProfileFolderPath, account item, int itemindex, NumericUpDown flowNum, ComboBox selectProxy, string proxy)
-        {
-            // Đây là nơi bạn thực hiện công việc xử lý trên mỗi item
 
-            item.PROXY = proxy;
-            // Thực hiện công việc của bạn trên item ở đây
+        /*
+        * Process Login with item Account
+        */
+        public void ProcessItemLoginAcc(string ProfileFolderPath, account item, int itemindex, NumericUpDown flowNum, ComboBox selectProxy)
+        {
+
             ChromeDriver chromeDriver = _chormeDriverUtils.initChrome(ProfileFolderPath, item, itemindex, flowNum, selectProxy);
             chromeDriver.Navigate().GoToUrl("https://www.facebook.com");
             Thread.Sleep(1000);
@@ -314,7 +284,7 @@ namespace AutoLike.Controller
                 catch { }
             }
 
-            Thread.Sleep(1000); // Ví dụ: Giả định công việc mất 1 giây để hoàn thành.
+            Thread.Sleep(1000);
 
             try
             {
@@ -352,7 +322,7 @@ namespace AutoLike.Controller
 
                     item.LIVE = "Live";
                     item.TRANGTHAI = "Login Facebook thành công !...";
-
+                    ChromeDriverUtils.ChromeDetroy(chromeDriver);
                 }
             }
             catch
@@ -366,9 +336,12 @@ namespace AutoLike.Controller
             }
 
             SQLiteUtils.updateByUID(item);
-            ChromeDriverUtils.ChromeDetroy(chromeDriver);
             Console.WriteLine($"Processing item: {item}");
         }
+
+        /*
+        * chia nhỏ Item
+        */
 
         public static IEnumerable<List<T>> PartitionList<T>(List<T> source, int batchSize)
         {
@@ -385,7 +358,7 @@ namespace AutoLike.Controller
          * 
          */
 
-        private string fullPathNamePage = string.Empty;
+        string fullPathNamePage = string.Empty;
 
         /*
          * Select path File Name Page
@@ -407,7 +380,6 @@ namespace AutoLike.Controller
         /*
          * Get random Name Page
          */
-
         public string getNamePage()
         {
             var namePage = string.Empty;
@@ -428,6 +400,88 @@ namespace AutoLike.Controller
             }
            
             return namePage;
+        }
+        
+        /*
+         * init regPage
+         */
+
+        public void regPage(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, ComboBox selectProxy, TextBox apiKeyTextBox)
+        {
+
+            List<account> danhSach = new List<account>();
+
+            for (int i = 0; i < dataGridView.Rows.Count; i++)
+            {
+                if (dataGridView.Rows[i].Cells["checkboxItemAccount"].Value.ToString() == "True")
+                {
+                    account acc = new account();
+                    acc.UID = dataGridView.Rows[i].Cells["uidAccount"].Value.ToString();
+                    acc.PASS = dataGridView.Rows[i].Cells["passAccount"].Value.ToString();
+                    acc.M2FA = dataGridView.Rows[i].Cells["code2faAccount"].Value.ToString();
+                    acc.SOPAGE = dataGridView.Rows[i].Cells["pageNumberAccount"].Value.ToString();
+                    danhSach.Add(acc);
+                }
+            }
+
+            ProcessRegPage(ProfileFolderPath, dataGridView, flowNum, selectProxy, danhSach, apiKeyTextBox);
+        }
+
+        /*
+         * Process Reg Page
+         */
+
+        public async void ProcessRegPage(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, ComboBox selectProxy, List<account> listAcccounts, TextBox apiKeyTextBox)
+        {
+            int maxThreads = 5; // Số lượng luồng tối đa
+            int itemindex = 0;
+            ProxyUtils proxyUtils = new ProxyUtils();
+
+            if (!string.IsNullOrEmpty(apiKeyTextBox.Text))
+            {
+                await proxyUtils.getNewProxy(Constants.Constants.GetNewProxyShopLike(apiKeyTextBox.Text));
+            }
+
+            var cancellationTokenSource = new CancellationTokenSource();
+            var cancellationToken = cancellationTokenSource.Token;
+
+            // Sử dụng Semaphore để giới hạn số lượng luồng được tạo ra đồng thời
+            SemaphoreSlim semaphore = new SemaphoreSlim(maxThreads, maxThreads);
+
+            List<Task> tasks = new List<Task>();
+
+            foreach (var item in listAcccounts)
+            {
+                itemindex++;
+                string proxy = await proxyUtils.getCurrentProxy(Constants.Constants.GetCurrentProxyShopLike(apiKeyTextBox.Text, "hd"));
+                item.PROXY = proxy;
+                await semaphore.WaitAsync(); // Chờ cho đến khi có sẵn slot trong Semaphore
+                Task task = Task.Run(() => processItemRegPageAcc(ProfileFolderPath, item, itemindex, flowNum, selectProxy), cancellationToken)
+                    .ContinueWith((t) => semaphore.Release()); // Giải phóng slot khi hoàn thành
+
+                tasks.Add(task);
+            }
+
+            // Đợi tất cả các công việc hoàn thành (tất cả item đã xử lý)
+            await Task.WhenAll(tasks);
+
+            Console.WriteLine("DONE ALL TASK!!!");
+
+        }
+
+        /*
+         * Process Reg Page for Item Acc
+         */
+        public void processItemRegPageAcc(string ProfileFolderPath, account item, int itemindex, NumericUpDown flowNum, ComboBox selectProxy)
+        {
+
+            ChromeDriver chromeDriver = _chormeDriverUtils.initChrome(ProfileFolderPath, item, itemindex, flowNum, selectProxy);      
+            Thread.Sleep(1000);
+            RegPage regPage = new RegPage();
+            regPage.RegPageWithUID(chromeDriver, fullPathNamePage);
+
+            SQLiteUtils.updateByUID(item);
+            Console.WriteLine($"Processing item: {item}");
         }
     }
 }
