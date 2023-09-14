@@ -1323,6 +1323,7 @@ namespace AutoLike
             this.startRegPageButton.TabIndex = 80;
             this.startRegPageButton.Text = "START";
             this.startRegPageButton.UseVisualStyleBackColor = false;
+            this.startRegPageButton.Click += new System.EventHandler(this.startRegPageButton_Click);
             // 
             // setRuleAdminRegPageCheckBox
             // 
@@ -1558,6 +1559,21 @@ namespace AutoLike
             this.flowNumberRegAndSeedingNumericUpDown.Name = "flowNumberRegAndSeedingNumericUpDown";
             this.flowNumberRegAndSeedingNumericUpDown.Size = new System.Drawing.Size(38, 20);
             this.flowNumberRegAndSeedingNumericUpDown.TabIndex = 2;
+            this.flowNumberRegAndSeedingNumericUpDown.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.flowNumberRegAndSeedingNumericUpDown.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.flowNumberRegAndSeedingNumericUpDown.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
             // 
             // flowNumberRegAndSeedinglabel
             // 

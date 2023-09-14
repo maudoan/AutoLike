@@ -266,5 +266,11 @@ namespace AutoLike
                 selectPathNamePageTextBox.Text = path;
             }
         }
+
+        private void startRegPageButton_Click(object sender, EventArgs e)
+        {
+            _form1Controller.LoginChromeWithCookieToken(selectPathChromeProfileRegAndSeedingTextBox.Text, detailListAccountsDataGridView, flowNumberRegAndSeedingNumericUpDown, userProxyRegAndSeedingComboBox, checkApiKeyRegAndSeedingTextBox);
+            tabControl.SelectTab(doashBoardTabPage);
+        }
     }
 }

@@ -65,13 +65,13 @@ namespace AutoLike.Features
                             //Trangthaichrome(i, "Chặn Reg");
                             //dataGridView1.Rows[i].Cells["tinhtrang1"].Value = "Checkpoint";
                             //dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.DarkRed;
-                            //goto end2;
+                            goto end2;
                         }
                         else if (ChromeDriverUtils.FindTextInChrome(driver, "Creat New Account", "Đăng nhập"))
                         {
                             //Trangthaichrome(i, "LOGOUT");
                             //dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.DarkRed;
-                            //goto end2;
+                            goto end2;
                         }
                         else
                         {
@@ -129,20 +129,20 @@ namespace AutoLike.Features
                         if (num >= 15)
                         {
                             //Trangthaichrome(i, "Bị chặn Reg Page");
-                            //goto end2;
+                            goto end2;
                         }
                         if (ChromeDriverUtils.FindTextInChrome(driver, "tài khoản của bạn đã bị khóa", "has been lock"))
                         {
                             //Trangthaichrome(i, "Checkpoint");
                             //dataGridView1.Rows[i].Cells["tinhtrang1"].Value = "Checkpoint";
                             //dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.DarkRed;
-                            //goto end2;
+                            goto end2;
                         }
                         else if (ChromeDriverUtils.FindTextInChrome(driver, "Creat New Account", "Đăng nhập"))
                         {
                             //Trangthaichrome(i, "LOGOUT");
                             //dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.DarkRed;
-                            //goto end2;
+                            goto end2;
                         }
                         num++;
                         Thread.Sleep(1000);
@@ -198,7 +198,7 @@ namespace AutoLike.Features
                         {
                             //Trangthaichrome(i, "Bị khóa chức năng");
                             //dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.DarkRed;
-                            //goto end2;
+                            goto end2;
                         }
                         //try
                         //{
@@ -255,7 +255,7 @@ namespace AutoLike.Features
                                         //Trangthaichrome(i, "Checkpoint");
                                         //dataGridView1.Rows[i].Cells["tinhtrang1"].Value = "Checkpoint";
                                         //dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.DarkRed;
-                                        //goto end2;
+                                        goto end2;
                                     }
                                     Thread.Sleep(100);
                                 }
@@ -274,7 +274,7 @@ namespace AutoLike.Features
                                     //Trangthaichrome(i, "Checkpoint");
                                     //dataGridView1.Rows[i].Cells["tinhtrang1"].Value = "Checkpoint";
                                     //dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.DarkRed;
-                                    //goto end2;
+                                    goto end2;
                                 }
                                 Thread.Sleep(100);
                             }
@@ -286,13 +286,20 @@ namespace AutoLike.Features
                             //Trangthaichrome(i, "Checkpoint");
                             //dataGridView1.Rows[i].Cells["tinhtrang1"].Value = "Checkpoint";
                             //dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.DarkRed;
-                            //goto end2;
+                            goto end2;
                         }
                         Thread.Sleep(100);
                     }
                     countpage++;
                 }
                 //Trangthaichrome(i, "Tạo Page Thành công");
+            }
+            catch { }
+        end2:
+            Thread.Sleep(10);
+            try
+            {
+                driver.Quit();
             }
             catch { }
         }

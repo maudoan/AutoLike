@@ -419,6 +419,9 @@ namespace AutoLike.Controller
                     acc.UID = dataGridView.Rows[i].Cells["uidAccount"].Value.ToString();
                     acc.PASS = dataGridView.Rows[i].Cells["passAccount"].Value.ToString();
                     acc.M2FA = dataGridView.Rows[i].Cells["code2faAccount"].Value.ToString();
+                    acc.LIVE = dataGridView.Rows[i].Cells["tinhtrangAccount"].Value.ToString();
+                    acc.PROXY = dataGridView.Rows[i].Cells["proxyAccount"].Value.ToString();
+                    acc.TRANGTHAI = dataGridView.Rows[i].Cells["trangthaiAccount"].Value.ToString();
                     acc.SOPAGE = dataGridView.Rows[i].Cells["pageNumberAccount"].Value.ToString();
                     danhSach.Add(acc);
                 }
