@@ -433,14 +433,15 @@ namespace AutoLike.Controller
         /*
          * Process Reg Page
          */
+        DateTime currentTime = DateTime.Now;
 
         public async void ProcessRegPage(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, ComboBox selectProxy, List<account> listAcccounts, TextBox apiKeyTextBox)
         {
             int maxThreads = 5; // Số lượng luồng tối đa
             int itemindex = 0;
             ProxyUtils proxyUtils = new ProxyUtils();
-
-            if (!string.IsNullOrEmpty(apiKeyTextBox.Text))
+            DateTime currentTimeSecond = DateTime.Now;
+            if (!string.IsNullOrEmpty(apiKeyTextBox.Text) && currentTimeSecond > currentTime.AddSeconds(60))
             {
                 await proxyUtils.getNewProxy(Constants.Constants.GetNewProxyShopLike(apiKeyTextBox.Text));
             }

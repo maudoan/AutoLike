@@ -34,6 +34,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>kissclipart-seo-icon-like-icon-e02520685a815c38.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -115,6 +118,7 @@
     <None Include="Resources\Images\468.gif" />
     <None Include="Resources\Images\739.gif" />
     <None Include="Resources\Images\76.gif" />
+    <Content Include="kissclipart-seo-icon-like-icon-e02520685a815c38.ico" />
     <Content Include="Resources\Images\add.png" />
     <Content Include="Resources\Images\add1.png" />
     <Content Include="Resources\Images\add2.png" />
@@ -128,6 +132,7 @@
     <Content Include="Resources\Images\download.png" />
     <Content Include="Resources\Images\edit.png" />
     <None Include="Resources\Images\kissclipart-seo-icon-like-icon-e02520685a815c38.png" />
+    <Content Include="Resources\Images\kissclipart-seo-icon-like-icon-e02520685a815c38.ico" />
     <Content Include="Resources\Images\LDbackground.png" />
     <Content Include="Resources\Images\LDbackground6.png" />
     <Content Include="Resources\Images\link.png" />

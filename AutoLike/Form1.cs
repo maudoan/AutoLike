@@ -269,7 +269,7 @@ namespace AutoLike
 
         private void startRegPageButton_Click(object sender, EventArgs e)
         {
-            _form1Controller.LoginChromeWithCookieToken(selectPathChromeProfileRegAndSeedingTextBox.Text, detailListAccountsDataGridView, flowNumberRegAndSeedingNumericUpDown, userProxyRegAndSeedingComboBox, checkApiKeyRegAndSeedingTextBox);
+            _form1Controller.regPage(selectPathChromeProfileRegAndSeedingTextBox.Text, detailListAccountsDataGridView, flowNumberRegAndSeedingNumericUpDown, userProxyRegAndSeedingComboBox, checkApiKeyRegAndSeedingTextBox);
             tabControl.SelectTab(doashBoardTabPage);
         }
     }
