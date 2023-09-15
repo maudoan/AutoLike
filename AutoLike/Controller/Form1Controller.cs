@@ -317,6 +317,12 @@ namespace AutoLike.Controller
                     item.TRANGTHAI = "Đình chỉ tài khoản !...";
                     ChromeDriverUtils.ChromeDetroy(chromeDriver);
                 }
+                else if(ChromeDriverUtils.FindTextInChrome(chromeDriver, "chúng tôi cần xác nhận rằng tài khoản này thuộc về bạn", "We need to confirm"))
+                {
+                    item.LIVE = "Checkpoint";
+                    item.TRANGTHAI = "Xác nhận tài khoản !...";
+                    ChromeDriverUtils.ChromeDetroy(chromeDriver);
+                }
                 else if (ChromeDriverUtils.FindTextInChrome(chromeDriver, "Trang chủ", "Home"))
                 {
                     try
@@ -479,7 +485,7 @@ namespace AutoLike.Controller
                 string proxy = await proxyUtils.getCurrentProxy(Constants.Constants.GetCurrentProxyShopLike(randomKey, "hd"));
                 item.PROXY = proxy;
                 await semaphore.WaitAsync(); // Chờ cho đến khi có sẵn slot trong Semaphore
-                Task task = Task.Run(() => processItemRegPageAcc(ProfileFolderPath, item, itemindex, flowNum, selectProxy), cancellationToken)
+                Task task = Task.Run(() => processItemRegPageAcc(ProfileFolderPath, item, itemindex, flowNum, selectProxy, dataGridView), cancellationToken)
                     .ContinueWith((t) => semaphore.Release()); // Giải phóng slot khi hoàn thành
 
                 tasks.Add(task);
@@ -495,13 +501,13 @@ namespace AutoLike.Controller
         /*
          * Process Reg Page for Item Acc
          */
-        public void processItemRegPageAcc(string ProfileFolderPath, account item, int itemindex, NumericUpDown flowNum, ComboBox selectProxy)
+        public void processItemRegPageAcc(string ProfileFolderPath, account item, int itemindex, NumericUpDown flowNum, ComboBox selectProxy,DataGridView dataGridView)
         {
 
             ChromeDriver chromeDriver = _chormeDriverUtils.initChrome(ProfileFolderPath, item, itemindex, flowNum, selectProxy);      
             Thread.Sleep(1000);
             RegPage regPage = new RegPage();
-            regPage.RegPageWithUID(chromeDriver, fullPathNamePage);
+            regPage.RegPageWithUID(chromeDriver, fullPathNamePage,dataGridView,item);
 
             SQLiteUtils.updateByUID(item);
             Console.WriteLine($"Processing item: {item}");

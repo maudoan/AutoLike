@@ -3,6 +3,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OtpNet;
 using System;
+using System.Drawing;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -272,6 +273,33 @@ namespace AutoLike.Utils
             }
         end:
             return cookie;
+
+        }
+
+        public static void updateStatusChrome(DataGridView dataGridView,account item, string text)
+        {
+            for(int i = 0; i < dataGridView.Rows.Count; i++)
+            {
+                if(item.UID == dataGridView.Rows[i].Cells["uidAccount"].Value.ToString())
+                {
+                    dataGridView.Rows[i].Cells["trangthaiAccount"].Value = "--> " + text;
+                    item.TRANGTHAI = dataGridView.Rows[i].Cells["trangthaiAccount"].Value.ToString();
+                }
+            }
+            
+        }
+
+        public static void updateStausAcc(DataGridView dataGridView, account item, string text)
+        {
+            for (int i = 0; i < dataGridView.Rows.Count; i++)
+            {
+                if (item.UID == dataGridView.Rows[i].Cells["uidAccount"].Value.ToString())
+                {
+                    dataGridView.Rows[i].Cells["tinhtrangAccount"].Value = text;
+                    dataGridView.Rows[i].DefaultCellStyle.ForeColor = Color.DarkRed;
+                    item.LIVE = dataGridView.Rows[i].Cells["tinhtrangAccount"].Value.ToString();
+                }
+            }
 
         }
 

@@ -1,4 +1,5 @@
-﻿using AutoLike.Utils;
+﻿using AutoLike.Model;
+using AutoLike.Utils;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System;
@@ -15,7 +16,7 @@ namespace AutoLike.Features
 {
     public class RegPage
     {
-        public void RegPageWithUID(ChromeDriver driver, string pathNamePage) 
+        public void RegPageWithUID(ChromeDriver driver, string pathNamePage, DataGridView dataGridView, account item) 
         {
             try
             {
@@ -23,7 +24,8 @@ namespace AutoLike.Features
                 for (int k = 0; k < 3; k++)
                 {
                     Random random = new Random();
-                    //Trangthaichrome(i, "Bắt đầu Reg Page thứ : " + countpage);
+    
+                    ChromeDriverUtils.updateStatusChrome(dataGridView, item, "Bắt đầu Reg Page thứ : " + countpage);
                     driver.Navigate().GoToUrl("https://www.facebook.com/pages/creation/?ref_type=launch_point");
                     while (true)
                     {
@@ -33,7 +35,9 @@ namespace AutoLike.Features
                             {
                                 string chuoiNgauNhien = string.Join("", Enumerable.Range(0, 4).Select(_ => random.Next(10)));
                                 string namePage = getNamePage(pathNamePage) + chuoiNgauNhien;
-                                //Trangthaichrome(i, "Nhập tên Page: " + ten);
+
+                                ChromeDriverUtils.updateStatusChrome(dataGridView, item, "Nhập tên Page: " + namePage);
+
                                 driver.FindElement(By.XPath("/html/body/div[1]/div/div[1]/div/div[3]/div/div/div/div[1]/div[1]/div[1]/div/div[2]/div[1]/div[2]/div/div/div/div[1]/div/label/div/div/input")).SendKeys(namePage);
                                 Thread.Sleep(1000);
                                 driver.FindElement(By.XPath("/html/body/div[1]/div/div[1]/div/div[3]/div/div/div/div[1]/div[1]/div[1]/div/div[2]/div[1]/div[2]/div/div/div/div[3]/div/div/div/div/label/div/div/div/input")).SendKeys("giải trí");
@@ -52,7 +56,9 @@ namespace AutoLike.Features
                                 int index = random.Next(4);
                                 string chuoiNgauNhien = string.Join("", Enumerable.Range(0, 4).Select(_ => random.Next(10)));
                                 string namePage = getNamePage(pathNamePage) + chuoiNgauNhien;
-                                //Trangthaichrome(i, "Nhập tên Page: " + ten);
+
+                                ChromeDriverUtils.updateStatusChrome(dataGridView,item, "Nhập tên Page: " + namePage);
+
                                 driver.FindElement(By.XPath("/html/body/div[1]/div/div[1]/div/div[5]/div/div/div[3]/div/div/div[1]/div[1]/div[1]/div/div[2]/div[1]/div[2]/div/div/div/div[1]/div/label/div/div/input")).SendKeys(namePage);
                                 Thread.Sleep(1000);
                                 driver.FindElement(By.XPath("/html/body/div[1]/div/div[1]/div/div[5]/div/div/div[3]/div/div/div[1]/div[1]/div[1]/div/div[2]/div[1]/div[2]/div/div/div/div[3]/div/div/div/div/label/div/div/div/input")).SendKeys("giải trí");
@@ -66,15 +72,16 @@ namespace AutoLike.Features
                         }
                         if (ChromeDriverUtils.FindTextInChrome(driver, "Bạn hiện không xem được nội dung này", "Bạn hiện không xem được nội dung này"))
                         {
-                            //Trangthaichrome(i, "Chặn Reg");
-                            //dataGridView1.Rows[i].Cells["tinhtrang1"].Value = "Checkpoint";
-                            //dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.DarkRed;
+                            ChromeDriverUtils.updateStatusChrome(dataGridView, item, "Chặn Reg");
+
+                            ChromeDriverUtils.updateStausAcc(dataGridView, item, "Checkpoint");
+                           
                             goto end2;
                         }
                         else if (ChromeDriverUtils.FindTextInChrome(driver, "Creat New Account", "Đăng nhập"))
                         {
-                            //Trangthaichrome(i, "LOGOUT");
-                            //dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.DarkRed;
+                            ChromeDriverUtils.updateStatusChrome(dataGridView, item, "LOGOUT");
+                          
                             goto end2;
                         }
                         else
@@ -92,7 +99,9 @@ namespace AutoLike.Features
                         {
                             if (ChromeDriverUtils.FindTextInChrome(driver, "Hoàn tất quá trình thiết lập Trang", "Hoàn tất quá trình thiết lập Trang"))
                             {
-                                //Trangthaichrome(i, "Tạo Page Thành công");
+                             
+                                ChromeDriverUtils.updateStatusChrome(dataGridView, item, "Tạo Page Thành công");
+
                                 Thread.Sleep(1000);
                                 driver.FindElement(By.XPath("/html/body/div[1]/div/div[1]/div/div[5]/div/div/div[3]/div/div/div[1]/div[1]/div[1]/div/div[3]/div[2]/div[2]/div/div/div[1]/div/span/span")).Click();
                                 Thread.Sleep(1000);
@@ -107,7 +116,8 @@ namespace AutoLike.Features
                         }
                         catch
                         {
-                            //Trangthaichrome(i, "Tạo Page Thành công");
+                            ChromeDriverUtils.updateStatusChrome(dataGridView, item, "Tạo Page Thành công");
+
                             Thread.Sleep(1000);
                             driver.FindElement(By.XPath("/html/body/div[1]/div/div[1]/div/div[3]/div/div/div/div[1]/div[1]/div[1]/div/div[3]/div[2]/div[2]/div/div/div[1]/div/span/span")).Click();
                             Thread.Sleep(1000);
@@ -124,7 +134,7 @@ namespace AutoLike.Features
                         {
                             if (ChromeDriverUtils.FindTextInChrome(driver, "Hoàn tất quá trình thiết lập Trang", "Hoàn tất quá trình thiết lập Trang"))
                             {
-                                //Trangthaichrome(i, "Tạo Page Thành công");
+                                ChromeDriverUtils.updateStatusChrome(dataGridView, item, "Tạo Page Thành công");
 
                                 break;
                             }
@@ -132,20 +142,22 @@ namespace AutoLike.Features
                         catch { }
                         if (num >= 15)
                         {
-                            //Trangthaichrome(i, "Bị chặn Reg Page");
+                    
+                            ChromeDriverUtils.updateStatusChrome(dataGridView, item, "Bị chặn Reg Page");
                             goto end2;
                         }
                         if (ChromeDriverUtils.FindTextInChrome(driver, "tài khoản của bạn đã bị khóa", "has been lock"))
                         {
-                            //Trangthaichrome(i, "Checkpoint");
-                            //dataGridView1.Rows[i].Cells["tinhtrang1"].Value = "Checkpoint";
-                            //dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.DarkRed;
+            
+                            ChromeDriverUtils.updateStatusChrome(dataGridView, item, "Checkpoint");
+                            ChromeDriverUtils.updateStausAcc(dataGridView, item, "Checkpoint");
                             goto end2;
                         }
                         else if (ChromeDriverUtils.FindTextInChrome(driver, "Creat New Account", "Đăng nhập"))
                         {
-                            //Trangthaichrome(i, "LOGOUT");
-                            //dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.DarkRed;
+                        
+                            ChromeDriverUtils.updateStatusChrome(dataGridView, item, "LOGOUT");
+                            
                             goto end2;
                         }
                         num++;
@@ -200,27 +212,17 @@ namespace AutoLike.Features
                         }
                         if (ChromeDriverUtils.FindTextInChrome(driver, "Chúng tôi đã tạm thời khóa", "Chúng tôi đã tạm thời khóa"))
                         {
-                            //Trangthaichrome(i, "Bị khóa chức năng");
-                            //dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.DarkRed;
+                            ChromeDriverUtils.updateStatusChrome(dataGridView, item, "Bị khóa chức năng");
+                          
                             goto end2;
                         }
-                        //try
-                        //{
-                        //    if (driver.FindElement(By.Name("pass")).Displayed)
-                        //    {
-                        //        Trangthaichrome(i, "Sai pass");
-                        //        dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.DarkRed;
-                        //        goto end2;
-                        //    }
-
-                        //}
-                        //catch { }
+            
                         try
                         {
                             if (ChromeDriverUtils.FindTextInChrome(driver, "Thêm mới", "Thêm mới"))
                             {
-                                //Trangthaichrome(i, "Nhập link Admin");
-
+                          
+                                ChromeDriverUtils.updateStatusChrome(dataGridView, item, "Nhập link Admin");
                                 while (true)
                                 {
                                     try
@@ -256,9 +258,9 @@ namespace AutoLike.Features
                                     catch { }
                                     if (ChromeDriverUtils.FindTextInChrome(driver, "tài khoản của bạn đã bị khóa", "has been lock"))
                                     {
-                                        //Trangthaichrome(i, "Checkpoint");
-                                        //dataGridView1.Rows[i].Cells["tinhtrang1"].Value = "Checkpoint";
-                                        //dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.DarkRed;
+
+                                        ChromeDriverUtils.updateStatusChrome(dataGridView, item, "Checkpoint");
+                                        ChromeDriverUtils.updateStausAcc(dataGridView, item, "Checkpoint");
                                         goto end2;
                                     }
                                     Thread.Sleep(100);
@@ -275,9 +277,9 @@ namespace AutoLike.Features
                                 }
                                 if (ChromeDriverUtils.FindTextInChrome(driver, "tài khoản của bạn đã bị khóa", "has been lock"))
                                 {
-                                    //Trangthaichrome(i, "Checkpoint");
-                                    //dataGridView1.Rows[i].Cells["tinhtrang1"].Value = "Checkpoint";
-                                    //dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.DarkRed;
+                                   
+                                    ChromeDriverUtils.updateStatusChrome(dataGridView, item, "Checkpoint");
+                                    ChromeDriverUtils.updateStausAcc(dataGridView, item, "Checkpoint");
                                     goto end2;
                                 }
                                 Thread.Sleep(100);
@@ -287,23 +289,23 @@ namespace AutoLike.Features
                         catch { }
                         if (ChromeDriverUtils.FindTextInChrome(driver, "tài khoản của bạn đã bị khóa", "has been lock"))
                         {
-                            //Trangthaichrome(i, "Checkpoint");
-                            //dataGridView1.Rows[i].Cells["tinhtrang1"].Value = "Checkpoint";
-                            //dataGridView1.Rows[i].DefaultCellStyle.ForeColor = Color.DarkRed;
+                            ChromeDriverUtils.updateStatusChrome(dataGridView, item, "Checkpoint");
+
+                            ChromeDriverUtils.updateStausAcc(dataGridView, item, "Checkpoint");
                             goto end2;
                         }
                         Thread.Sleep(100);
                     }
                     countpage++;
                 }
-                //Trangthaichrome(i, "Tạo Page Thành công");
+                ChromeDriverUtils.updateStatusChrome(dataGridView, item, "Tạo Page thành công");
             }
             catch { }
         end2:
             Thread.Sleep(10);
             try
             {
-                driver.Quit();
+                ChromeDriverUtils.ChromeDetroy(driver);
             }
             catch { }
         }
