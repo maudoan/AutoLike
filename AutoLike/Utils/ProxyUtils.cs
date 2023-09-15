@@ -11,16 +11,23 @@ namespace AutoLike.Utils
         public async Task<string> getNewProxy(String Url) 
         {
             var proxy = string.Empty;
-            using (var client = new HttpClient())
+            try
             {
-                HttpResponseMessage result = await  client.GetAsync(Url);
-                if (result.IsSuccessStatusCode)
+                using (var client = new HttpClient())
                 {
-                    proxy = await result.Content.ReadAsStringAsync();
-                    JObject json = JObject.Parse(proxy);
-                    proxy = json["data"]["proxy"].ToString();
+                    HttpResponseMessage result = await client.GetAsync(Url);
+                    if (result.IsSuccessStatusCode)
+                    {
+                        proxy = await result.Content.ReadAsStringAsync();
+                        JObject json = JObject.Parse(proxy);
+                        proxy = json["data"]["proxy"].ToString();
+                    }
                 }
+            } catch (Exception ex)
+            {
+                Console.WriteLine(ex);
             }
+         
 
            
             return proxy;
@@ -29,16 +36,25 @@ namespace AutoLike.Utils
         public async Task<string> getCurrentProxy(String Url)
         {
             var proxy = string.Empty;
-            using (var client = new HttpClient())
+
+            try
             {
-                HttpResponseMessage result = await client.GetAsync(Url);
-                if (result.IsSuccessStatusCode)
+                using (var client = new HttpClient())
                 {
-                    proxy = await result.Content.ReadAsStringAsync();
-                    JObject json = JObject.Parse(proxy);
-                    proxy = json["data"]["proxy"].ToString();
+                    HttpResponseMessage result = await client.GetAsync(Url);
+                    if (result.IsSuccessStatusCode)
+                    {
+                        proxy = await result.Content.ReadAsStringAsync();
+                        JObject json = JObject.Parse(proxy);
+                        proxy = json["data"]["proxy"].ToString();
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+         
 
 
             return proxy;

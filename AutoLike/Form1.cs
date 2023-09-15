@@ -298,8 +298,14 @@ namespace AutoLike
             if (apiLine.Length == 0)
             {
                 MessageBox.Show("Vui lòng chọn nhập Key !", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            } else
+            {
+                foreach (string line in apiLine)
+                {
+                    keyApiList.Add(line);
+                }
             }
-            keyApiList.AddRange(apiLine);
+            
         }
 
         private void generalSetingUserProxyComboBox_SelectedIndexChanged(object sender, EventArgs e)

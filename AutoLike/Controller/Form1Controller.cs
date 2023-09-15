@@ -225,8 +225,7 @@ namespace AutoLike.Controller
             int itemindex = 0;
             ProxyUtils proxyUtils = new ProxyUtils();
          
-            DateTime currentTimeSecond = DateTime.Now;
-            if (apiKeyList.Count > 0 && currentTimeSecond > currentTime.AddSeconds(60))
+            if (apiKeyList.Count > 0)
             {
                 for(int i = 0; i < apiKeyList.Count; i++)
                 {
@@ -449,15 +448,14 @@ namespace AutoLike.Controller
         /*
          * Process Reg Page
          */
-        DateTime currentTime = DateTime.Now;
 
         public async void ProcessRegPage(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, ComboBox selectProxy, List<account> listAcccounts, List<string> apiKeyList)
         {
             int maxThreads = 5; // Số lượng luồng tối đa
             int itemindex = 0;
             ProxyUtils proxyUtils = new ProxyUtils();
-            DateTime currentTimeSecond = DateTime.Now;
-            if (apiKeyList.Count > 0 && currentTimeSecond > currentTime.AddSeconds(60))
+
+            if (apiKeyList.Count > 0)
             {
                 for (int i = 0; i < apiKeyList.Count; i++)
                 {
