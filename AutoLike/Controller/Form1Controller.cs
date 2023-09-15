@@ -196,7 +196,7 @@ namespace AutoLike.Controller
         /*
          * init Login
          */
-        public void LoginChromeWithCookieToken(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, ComboBox selectProxy, TextBox apiKeyTextBox)
+        public void LoginChromeWithCookieToken(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, ComboBox selectProxy, List<string> apiKeyList)
         {
 
             List<account> danhSach = new List<account>();
@@ -213,21 +213,26 @@ namespace AutoLike.Controller
                 }
             }
 
-            ProcessLoginChromeCookieToken(ProfileFolderPath, dataGridView, flowNum, selectProxy, danhSach, apiKeyTextBox);
+            ProcessLoginChromeCookieToken(ProfileFolderPath, dataGridView, flowNum, selectProxy, danhSach, apiKeyList);
         }
 
         /*
          * Process Login
          */
-        public async void ProcessLoginChromeCookieToken(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, ComboBox selectProxy, List<account> listAcccounts, TextBox apiKeyTextBox)
+        public async void ProcessLoginChromeCookieToken(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, ComboBox selectProxy, List<account> listAcccounts, List<string> apiKeyList)
         {
             int maxThreads = 5; // Số lượng luồng tối đa
             int itemindex = 0;
             ProxyUtils proxyUtils = new ProxyUtils();
-
-            if (!string.IsNullOrEmpty(apiKeyTextBox.Text))
+         
+            DateTime currentTimeSecond = DateTime.Now;
+            if (apiKeyList.Count > 0 && currentTimeSecond > currentTime.AddSeconds(60))
             {
-                await proxyUtils.getNewProxy(Constants.Constants.GetNewProxyShopLike(apiKeyTextBox.Text));
+                for(int i = 0; i < apiKeyList.Count; i++)
+                {
+                    await proxyUtils.getNewProxy(Constants.Constants.GetNewProxyShopLike(apiKeyList[i]));
+                }
+                
             }
 
             var cancellationTokenSource = new CancellationTokenSource();
@@ -241,7 +246,12 @@ namespace AutoLike.Controller
             foreach (var item in listAcccounts)
             {
                 itemindex++;
-                string proxy = await proxyUtils.getCurrentProxy(Constants.Constants.GetCurrentProxyShopLike(apiKeyTextBox.Text, "hd"));
+                Random random = new Random();
+
+                // Lấy một phần tử ngẫu nhiên từ danh sách
+                int index = random.Next(apiKeyList.Count);
+                string randomKey = apiKeyList[index];
+                string proxy = await proxyUtils.getCurrentProxy(Constants.Constants.GetCurrentProxyShopLike(randomKey, "hd"));
                 item.PROXY = proxy;
                 await semaphore.WaitAsync(); // Chờ cho đến khi có sẵn slot trong Semaphore
                 Task task = Task.Run(() => ProcessItemLoginAcc(ProfileFolderPath, item, itemindex, flowNum, selectProxy), cancellationToken)
@@ -301,7 +311,7 @@ namespace AutoLike.Controller
                     ChromeDriverUtils.ChromeDetroy(chromeDriver);
 
                 }
-                else if (ChromeDriverUtils.FindTextInChrome(chromeDriver, "Chúng tôi đã đình chỉ tài khoản của bạn", "We suspend"))
+                else if (ChromeDriverUtils.FindTextInChrome(chromeDriver, "chúng tôi đã đình chỉ tài khoản của bạn", "We suspend"))
                 {
                     item.LIVE = "Checkpoint";
                     item.TRANGTHAI = "Đình chỉ tài khoản !...";
@@ -406,7 +416,7 @@ namespace AutoLike.Controller
          * init regPage
          */
 
-        public void regPage(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, ComboBox selectProxy, TextBox apiKeyTextBox)
+        public void regPage(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, ComboBox selectProxy, List<string> apiKeyList)
         {
 
             List<account> danhSach = new List<account>();
@@ -427,7 +437,7 @@ namespace AutoLike.Controller
                 }
             }
 
-            ProcessRegPage(ProfileFolderPath, dataGridView, flowNum, selectProxy, danhSach, apiKeyTextBox);
+            ProcessRegPage(ProfileFolderPath, dataGridView, flowNum, selectProxy, danhSach, apiKeyList);
         }
 
         /*
@@ -435,15 +445,19 @@ namespace AutoLike.Controller
          */
         DateTime currentTime = DateTime.Now;
 
-        public async void ProcessRegPage(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, ComboBox selectProxy, List<account> listAcccounts, TextBox apiKeyTextBox)
+        public async void ProcessRegPage(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, ComboBox selectProxy, List<account> listAcccounts, List<string> apiKeyList)
         {
             int maxThreads = 5; // Số lượng luồng tối đa
             int itemindex = 0;
             ProxyUtils proxyUtils = new ProxyUtils();
             DateTime currentTimeSecond = DateTime.Now;
-            if (!string.IsNullOrEmpty(apiKeyTextBox.Text) && currentTimeSecond > currentTime.AddSeconds(60))
+            if (apiKeyList.Count > 0 && currentTimeSecond > currentTime.AddSeconds(60))
             {
-                await proxyUtils.getNewProxy(Constants.Constants.GetNewProxyShopLike(apiKeyTextBox.Text));
+                for (int i = 0; i < apiKeyList.Count; i++)
+                {
+                    await proxyUtils.getNewProxy(Constants.Constants.GetNewProxyShopLike(apiKeyList[i]));
+                }
+
             }
 
             var cancellationTokenSource = new CancellationTokenSource();
@@ -457,7 +471,12 @@ namespace AutoLike.Controller
             foreach (var item in listAcccounts)
             {
                 itemindex++;
-                string proxy = await proxyUtils.getCurrentProxy(Constants.Constants.GetCurrentProxyShopLike(apiKeyTextBox.Text, "hd"));
+                Random random = new Random();
+
+                // Lấy một phần tử ngẫu nhiên từ danh sách
+                int index = random.Next(apiKeyList.Count);
+                string randomKey = apiKeyList[index];
+                string proxy = await proxyUtils.getCurrentProxy(Constants.Constants.GetCurrentProxyShopLike(randomKey, "hd"));
                 item.PROXY = proxy;
                 await semaphore.WaitAsync(); // Chờ cho đến khi có sẵn slot trong Semaphore
                 Task task = Task.Run(() => processItemRegPageAcc(ProfileFolderPath, item, itemindex, flowNum, selectProxy), cancellationToken)

@@ -22,6 +22,7 @@ namespace AutoLike.Features
                 int countpage = 1;
                 for (int k = 0; k < 3; k++)
                 {
+                    Random random = new Random();
                     //Trangthaichrome(i, "Bắt đầu Reg Page thứ : " + countpage);
                     driver.Navigate().GoToUrl("https://www.facebook.com/pages/creation/?ref_type=launch_point");
                     while (true)
@@ -30,7 +31,8 @@ namespace AutoLike.Features
                         {
                             if (ChromeDriverUtils.FindTextInChrome(driver, "Tạo Trang", "Tạo Trang"))
                             {
-                                string namePage = getNamePage(pathNamePage);
+                                string chuoiNgauNhien = string.Join("", Enumerable.Range(0, 4).Select(_ => random.Next(10)));
+                                string namePage = getNamePage(pathNamePage) + chuoiNgauNhien;
                                 //Trangthaichrome(i, "Nhập tên Page: " + ten);
                                 driver.FindElement(By.XPath("/html/body/div[1]/div/div[1]/div/div[3]/div/div/div/div[1]/div[1]/div[1]/div/div[2]/div[1]/div[2]/div/div/div/div[1]/div/label/div/div/input")).SendKeys(namePage);
                                 Thread.Sleep(1000);
@@ -47,7 +49,9 @@ namespace AutoLike.Features
                         {
                             if (ChromeDriverUtils.FindTextInChrome(driver, "Tạo Trang", "Tạo Trang"))
                             {
-                                string namePage = getNamePage(pathNamePage);
+                                int index = random.Next(4);
+                                string chuoiNgauNhien = string.Join("", Enumerable.Range(0, 4).Select(_ => random.Next(10)));
+                                string namePage = getNamePage(pathNamePage) + chuoiNgauNhien;
                                 //Trangthaichrome(i, "Nhập tên Page: " + ten);
                                 driver.FindElement(By.XPath("/html/body/div[1]/div/div[1]/div/div[5]/div/div/div[3]/div/div/div[1]/div[1]/div[1]/div/div[2]/div[1]/div[2]/div/div/div/div[1]/div/label/div/div/input")).SendKeys(namePage);
                                 Thread.Sleep(1000);

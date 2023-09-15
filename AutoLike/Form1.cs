@@ -1,7 +1,9 @@
 ﻿using AutoLike.Controller;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace AutoLike
 {
@@ -228,28 +230,17 @@ namespace AutoLike
             totalAccountSelectedValueLabel.Text = "0";
         }
 
-        private void selectPathChromeButton_Click(object sender, EventArgs e)
-        {
-            this.Invoke(new Action(() =>
-            {
-                FolderBrowserDialog folder = new FolderBrowserDialog();
-                DialogResult result = folder.ShowDialog();
-                if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(folder.SelectedPath))
-                {
-                    selectPathChromeProfileTextBox.Text = folder.SelectedPath;
-                }
-            }));
-        }
-
-        private void StartflowLoginCookieTokenButton_Click(object sender, EventArgs e)
-        {
-            _form1Controller.LoginChromeWithCookieToken(selectPathChromeProfileTextBox.Text, detailListAccountsDataGridView, flowNumberValueLoginCookieTokenNumericUpDown, useProxyflowLoginCookieTokenComboBox,apiKeyLoginTextBox);
-            tabControl.SelectTab(doashBoardTabPage);
-        }
 
         private void flowLoginCookieTOkenToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            tabControl.SelectTab(loginTabPage);
+            if (selectPathProfileChromeTextBox.Text == string.Empty || generalSetingUserProxyComboBox.SelectedItem == null)
+            {
+                MessageBox.Show("Vui chọn đủ cài đặt cơ bản!", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                _form1Controller.LoginChromeWithCookieToken(selectPathProfileChromeTextBox.Text, detailListAccountsDataGridView, generalSettingflowNumberNumericUpDown, generalSetingUserProxyComboBox, keyApiList);
+            }
         }
 
         private void regAndSeedingToolStripMenuItem_Click(object sender, EventArgs e)
@@ -269,8 +260,61 @@ namespace AutoLike
 
         private void startRegPageButton_Click(object sender, EventArgs e)
         {
-            _form1Controller.regPage(selectPathChromeProfileRegAndSeedingTextBox.Text, detailListAccountsDataGridView, flowNumberRegAndSeedingNumericUpDown, userProxyRegAndSeedingComboBox, checkApiKeyRegAndSeedingTextBox);
+            if(selectPathProfileChromeTextBox.Text == string.Empty || generalSetingUserProxyComboBox.SelectedItem == null)
+            {
+                MessageBox.Show("Vui chọn đủ cài đặt cơ bản!", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            } else
+            {
+                _form1Controller.regPage(selectPathProfileChromeTextBox.Text, detailListAccountsDataGridView, generalSettingflowNumberNumericUpDown, generalSetingUserProxyComboBox, keyApiList);
+            }
+            
             tabControl.SelectTab(doashBoardTabPage);
+        }
+
+
+        /*
+         * General Setting
+         */
+      
+        List<string> keyApiList = new List<string>();
+        private void savegeneralSettingButton_Click(object sender, EventArgs e)
+        {
+
+            if (selectPathProfileChromeTextBox.Text ==  string.Empty)
+            {
+                MessageBox.Show("Vui lòng nhập đường dẫn Chrome !", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            
+            if (generalSetingUserProxyComboBox.SelectedItem != null)
+            {
+                
+            } else
+            {
+                MessageBox.Show("Vui lòng chọn Proxy !", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+       
+            string[]apiLine = apiKeyTextBox.Text.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+
+            if (apiLine.Length == 0)
+            {
+                MessageBox.Show("Vui lòng chọn nhập Key !", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            keyApiList.AddRange(apiLine);
+        }
+
+        private void generalSetingUserProxyComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Kiểm tra giá trị đã chọn trong ComboBox
+            if (generalSetingUserProxyComboBox.SelectedItem.ToString() == "Use Proxy")
+            {
+                // Nếu giá trị đã chọn là "Giá trị cụ thể", enable TextBox
+                apiKeyTextBox.Enabled = true;
+            }
+            else
+            {
+                // Nếu không, vô hiệu hóa TextBox
+                apiKeyTextBox.Enabled = false;
+            }
         }
     }
 }
