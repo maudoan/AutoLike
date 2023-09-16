@@ -322,5 +322,9 @@ namespace AutoLike
                 apiKeyTextBox.Enabled = false;
             }
         }
+        private void getInfoAccountsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _form1Controller.getInfoAccounts(detailListAccountsDataGridView);
+        }
     }
 }

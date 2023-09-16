@@ -189,6 +189,53 @@ namespace AutoLike.Controller
 
         /*
          * 
+         * Feature Get INFO
+         * 
+         */
+
+        public void getInfoAccounts(DataGridView dataGridView)
+        {
+            List<account> danhSach = new List<account>();
+
+            for (int i = 0; i < dataGridView.Rows.Count; i++)
+            {
+                if (dataGridView.Rows[i].Cells["checkboxItemAccount"].Value.ToString() == "True" && dataGridView.Rows[i].Cells["tinhtrangAccount"].Value.ToString() == "Live")
+                {
+                    account acc = new account();
+                    acc.UID = dataGridView.Rows[i].Cells["uidAccount"].Value.ToString();
+                    acc.COOKIE = dataGridView.Rows[i].Cells["cookieAccount"].Value.ToString();
+                    acc.TOKEN = dataGridView.Rows[i].Cells["tokenAccount"].Value.ToString();
+                    acc.PASS = dataGridView.Rows[i].Cells["passAccount"].Value.ToString();
+                    acc.M2FA = dataGridView.Rows[i].Cells["code2faAccount"].Value.ToString();
+                    acc.LIVE = dataGridView.Rows[i].Cells["tinhtrangAccount"].Value.ToString();
+                    acc.PROXY = dataGridView.Rows[i].Cells["proxyAccount"].Value.ToString();
+                    acc.TRANGTHAI = dataGridView.Rows[i].Cells["trangthaiAccount"].Value.ToString();
+                    acc.SOPAGE = dataGridView.Rows[i].Cells["pageNumberAccount"].Value.ToString();
+                    danhSach.Add(acc);
+                }
+              
+            }
+     
+            foreach(account item in danhSach)
+            {
+                if(item.COOKIE != "")
+                {
+                    List<string> listIdGroup = FacebookUtils.getListGroupFromCookie(item.COOKIE, "", "");
+                    if(listIdGroup.Count > 0)
+                    {
+                        item.SOPAGE = listIdGroup.Count.ToString();
+                        Console.WriteLine("====" + item.SOPAGE);
+                        SQLiteUtils.updateByUID(item);
+                    }
+                }
+                
+            }
+
+
+        }
+
+        /*
+         * 
          * Feature Create Profile
          * 
          */
@@ -207,8 +254,14 @@ namespace AutoLike.Controller
                 {
                     account acc = new account();
                     acc.UID = dataGridView.Rows[i].Cells["uidAccount"].Value.ToString();
+                    acc.COOKIE = dataGridView.Rows[i].Cells["cookieAccount"].Value.ToString();
+                    acc.TOKEN = dataGridView.Rows[i].Cells["tokenAccount"].Value.ToString();
                     acc.PASS = dataGridView.Rows[i].Cells["passAccount"].Value.ToString();
                     acc.M2FA = dataGridView.Rows[i].Cells["code2faAccount"].Value.ToString();
+                    acc.LIVE = dataGridView.Rows[i].Cells["tinhtrangAccount"].Value.ToString();
+                    acc.PROXY = dataGridView.Rows[i].Cells["proxyAccount"].Value.ToString();
+                    acc.TRANGTHAI = dataGridView.Rows[i].Cells["trangthaiAccount"].Value.ToString();
+                    acc.SOPAGE = dataGridView.Rows[i].Cells["pageNumberAccount"].Value.ToString();
                     danhSach.Add(acc);
                 }
             }
@@ -432,6 +485,8 @@ namespace AutoLike.Controller
                 {
                     account acc = new account();
                     acc.UID = dataGridView.Rows[i].Cells["uidAccount"].Value.ToString();
+                    acc.COOKIE = dataGridView.Rows[i].Cells["cookieAccount"].Value.ToString();
+                    acc.TOKEN = dataGridView.Rows[i].Cells["tokenAccount"].Value.ToString();
                     acc.PASS = dataGridView.Rows[i].Cells["passAccount"].Value.ToString();
                     acc.M2FA = dataGridView.Rows[i].Cells["code2faAccount"].Value.ToString();
                     acc.LIVE = dataGridView.Rows[i].Cells["tinhtrangAccount"].Value.ToString();

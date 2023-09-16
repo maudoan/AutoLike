@@ -253,6 +253,7 @@ namespace AutoLike.Utils
             cookieget = c_user + ";" + datr + ";" + sub + ";" + fr + ";" + xs + ";" + wd;
             if (cookieget.Contains("c_user"))
             {
+                cookie = cookieget;
                 return cookie;
             }
             else
