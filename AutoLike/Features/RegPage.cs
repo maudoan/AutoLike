@@ -16,7 +16,7 @@ namespace AutoLike.Features
 {
     public class RegPage
     {
-        public void RegPageWithUID(ChromeDriver driver, string pathNamePage, DataGridView dataGridView, account item) 
+        public void RegPageWithUID(ChromeDriver driver, string pathNamePage, DataGridView dataGridView, account item, List<ChromeDriver> listChromeDrivers) 
         {
             try
             {
@@ -74,7 +74,7 @@ namespace AutoLike.Features
                         {
                             ChromeDriverUtils.updateStatusChrome(dataGridView, item, "Chặn Reg");
 
-                            ChromeDriverUtils.updateStausAcc(dataGridView, item, "Checkpoint");
+                            ChromeDriverUtils.updateStatusAcc(dataGridView, item, "Checkpoint");
                            
                             goto end2;
                         }
@@ -150,7 +150,7 @@ namespace AutoLike.Features
                         {
             
                             ChromeDriverUtils.updateStatusChrome(dataGridView, item, "Checkpoint");
-                            ChromeDriverUtils.updateStausAcc(dataGridView, item, "Checkpoint");
+                            ChromeDriverUtils.updateStatusAcc(dataGridView, item, "Checkpoint");
                             goto end2;
                         }
                         else if (ChromeDriverUtils.FindTextInChrome(driver, "Creat New Account", "Đăng nhập"))
@@ -260,7 +260,7 @@ namespace AutoLike.Features
                                     {
 
                                         ChromeDriverUtils.updateStatusChrome(dataGridView, item, "Checkpoint");
-                                        ChromeDriverUtils.updateStausAcc(dataGridView, item, "Checkpoint");
+                                        ChromeDriverUtils.updateStatusAcc(dataGridView, item, "Checkpoint");
                                         goto end2;
                                     }
                                     Thread.Sleep(100);
@@ -279,7 +279,7 @@ namespace AutoLike.Features
                                 {
                                    
                                     ChromeDriverUtils.updateStatusChrome(dataGridView, item, "Checkpoint");
-                                    ChromeDriverUtils.updateStausAcc(dataGridView, item, "Checkpoint");
+                                    ChromeDriverUtils.updateStatusAcc(dataGridView, item, "Checkpoint");
                                     goto end2;
                                 }
                                 Thread.Sleep(100);
@@ -291,7 +291,7 @@ namespace AutoLike.Features
                         {
                             ChromeDriverUtils.updateStatusChrome(dataGridView, item, "Checkpoint");
 
-                            ChromeDriverUtils.updateStausAcc(dataGridView, item, "Checkpoint");
+                            ChromeDriverUtils.updateStatusAcc(dataGridView, item, "Checkpoint");
                             goto end2;
                         }
                         Thread.Sleep(100);
@@ -305,7 +305,7 @@ namespace AutoLike.Features
             Thread.Sleep(10);
             try
             {
-                ChromeDriverUtils.ChromeDetroy(driver);
+                ChromeDriverUtils.ChromeDetroy(driver, listChromeDrivers);
             }
             catch { }
         }

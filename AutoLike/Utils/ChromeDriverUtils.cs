@@ -3,6 +3,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OtpNet;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -55,66 +56,23 @@ namespace AutoLike.Utils
             co.AddArgument("--use-mock-keychain");
             co.AddArgument("--disable-notifications");
             co.AddArgument("mute-audio");
-            //if (checkBox8.Checked)
-            //{
-            //    co.AddArguments("--mute-audio", "--blink-settings=imagesEnabled=false", "--disable-notifications", "--ignore-certificate-errors", "--disable-gpu");
-            //    co.AddExcludedArgument("enable-automation");
-            //    co.AddAdditionalCapability("useAutomationExtension", false);
-            //}
-            //if (cbua.Checked)
-            //{
-            //    string ua = txtua.Text;
-            //    if (ua != "")
-            //    {
-            //        co.AddArguments("--user-agent=" + ua);
-            //    }
-
-            //}
-
-            //if (checkBox30.Checked == true)
-            //{
-            //    co.AddArguments("headless");
-            //}
-
-            //co.AddArgument("--app=https://facebook.com");
+           
             int X = 0;
             int Y = 0;
-            //if (cbseeding_chrome.Checked && cbsharegr_chrome.Checked)
-            //{
 
-            X = screenWidth / Convert.ToInt32(flowNum.Value);
+
+            X = screenWidth / Convert.ToInt32(5);
             Y = screenHeight;
-            //    co.AddArgument("--window-size=" + 1000 + "," + 1000);
-
-            //}
-            //else
-            //{
-            //    X = screenWidth / 2;
-            //    Y = screenHeight / 1;
-            //    co.AddArgument("--window-size=" + X + "," + Y);
-            //}
-
-
+            co.AddArgument("--window-size=" + 500 + "," + 500);
 
             int X1 = Convert.ToInt32((index - 1) % 2) * X;
-            int Y1 = Convert.ToInt32((index - 1) / 2) * (screenHeight / ((Convert.ToInt32(flowNum.Value) / 2) + 1));
+            int Y1 = Convert.ToInt32((index - 1) / 2) * (screenHeight / ((Convert.ToInt32(5) / 2) + 1));
             co.AddArgument("--window-position=" + X1 + "," + Y1);
 
 
 
             string nameCount = account.UID;
-            //if (uid == "")
-            //{
-            //    nameCount = uidFromCookie;
-            //}
-            //else
-            //{
-            //}
-            try
-            {
-                // drivers[uid].Quit();
-            }
-            catch { }
+  
             try
             {
                 co.AddArguments("user-data-dir=" + ProfileFolderPath + "\\" + nameCount);
@@ -127,10 +85,12 @@ namespace AutoLike.Utils
             return new ChromeDriver(chromeDriverService, co);
         }
 
-        public static void ChromeDetroy(ChromeDriver driver)
+        public static void ChromeDetroy(ChromeDriver driver, List<ChromeDriver> listChromeDriver)
         {
            driver.Close();
            driver.Quit();
+           listChromeDriver.Remove(driver);
+           sxepChrome(listChromeDriver);
         }
 
         public static bool FindTextInChrome(ChromeDriver driver, string textVN, string textEN)
@@ -290,7 +250,7 @@ namespace AutoLike.Utils
             
         }
 
-        public static void updateStausAcc(DataGridView dataGridView, account item, string text)
+        public static void updateStatusAcc(DataGridView dataGridView, account item, string text)
         {
             for (int i = 0; i < dataGridView.Rows.Count; i++)
             {
@@ -302,6 +262,53 @@ namespace AutoLike.Utils
                 }
             }
 
+        }
+
+        public static void sxepChrome(List<ChromeDriver> listChromeDrivers)
+        {
+            int screenHeight = SystemInformation.VirtualScreen.Height;
+            int screenWidth = SystemInformation.VirtualScreen.Width;
+            if (screenWidth > 1920)
+            {
+                screenWidth = 1920;
+            }
+            int x = 0;
+            int y = 0;
+            try
+            {
+                if (listChromeDrivers.Count > 0)
+                {
+
+                    for (int i = 0; i < listChromeDrivers.Count; i++)
+                    {
+                        if (i == 0 || i == 10 || i == 20 || i == 30)
+                        {
+                            y = 0;
+                            x = 0;
+                        }
+                        else if ((i > 0 && i < 5) || (i > 10 && i < 15) || (i > 20 && i < 25) || (i > 30 && i < 35))
+                        {
+                            y = 0;
+                            x += screenWidth / 5;
+                        }
+                        else if (i == 5 || i == 15 || i == 25 || i == 35)
+                        {
+                            y = screenHeight / 2;
+                            x = 0;
+                        }
+                        else if ((i > 5 && i < 10) || (i > 15 && i <= 20) || (i > 25 && i < 30) || (i > 35 && i < 40))
+                        {
+                            y = screenHeight / 2;
+                            x += screenWidth / 5;
+                        }
+                        else { }
+                        var newpos = listChromeDrivers[i];
+                        newpos.Manage().Window.Position = new Point(x, y);
+                    }
+                }
+
+            }
+            catch { }
         }
 
     }

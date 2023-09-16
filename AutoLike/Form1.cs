@@ -322,6 +322,10 @@ namespace AutoLike
                 apiKeyTextBox.Enabled = false;
             }
         }
+        private void getAccessTokenEAAG_Click(object sender, EventArgs e)
+        {
+            _form1Controller.getAccessTokenEAAG(detailListAccountsDataGridView);
+        }
         private void getInfoAccountsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _form1Controller.getInfoAccounts(detailListAccountsDataGridView);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ namespace AutoLike.Utils
 {
     public class FacebookUtils
     {
-        public static string GetTokenEAAG(string cookie, bool eaaz, string userAgent = "", string proxy = "")
+        public static string getTokenEAAG(string cookie, bool eaaz, string userAgent = "", string proxy = "")
         {
             HttpUtils request = new HttpUtils(cookie, userAgent, proxy);
             string token = "";
@@ -70,6 +71,33 @@ namespace AutoLike.Utils
             catch
             { return null; }
             return listGroup;
+        }
+        public static List<string> getListPage(string token, string uid, string userAgent = "", string proxy = "")
+        {
+            List<string> lis = new List<string>();
+            HttpUtils request = new HttpUtils("", "", "");
+            int c = 0;
+            while (true)
+            {
+                string GetDataToken = request.getRequest(@"https://graph.facebook.com/" + uid + "/accounts?access_token=" + token);
+                if (GetDataToken.Contains("id"))
+                {
+                    JObject json = JObject.Parse(GetDataToken);
+                    foreach (JToken item in ((IEnumerable<JToken>)json["data"]))
+                    { lis.Add(item["id"].ToString()); }
+                    break;
+                }
+                else
+                {
+                    if (c == 2)
+                    {
+                        break;
+                    }
+                    c++;
+                }
+            }
+            return lis;
+
         }
     }
 }

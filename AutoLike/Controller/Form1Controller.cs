@@ -24,6 +24,7 @@ namespace AutoLike.Controller
         private SQLiteUtils _sqliteUtils;
         private Form1 form1;
         private ChromeDriverUtils _chormeDriverUtils;
+        List<ChromeDriver> listDriver = new List<ChromeDriver>();
 
         public Form1Controller()
         {
@@ -218,9 +219,9 @@ namespace AutoLike.Controller
      
             foreach(account item in danhSach)
             {
-                if(item.COOKIE != "")
+                if(item.TOKEN != "")
                 {
-                    List<string> listIdGroup = FacebookUtils.getListGroupFromCookie(item.COOKIE, "", "");
+                    List<string> listIdGroup = FacebookUtils.getListPage(item.TOKEN, item.UID, "","");
                     if(listIdGroup.Count > 0)
                     {
                         item.SOPAGE = listIdGroup.Count.ToString();
@@ -229,6 +230,53 @@ namespace AutoLike.Controller
                     }
                 }
                 
+            }
+
+
+        }
+
+        /*
+         * 
+         * Feature get AccessTokenEAAG
+         * 
+         */
+
+
+        public void getAccessTokenEAAG(DataGridView dataGridView)
+        {
+            List<account> danhSach = new List<account>();
+
+            for (int i = 0; i < dataGridView.Rows.Count; i++)
+            {
+                if (dataGridView.Rows[i].Cells["checkboxItemAccount"].Value.ToString() == "True" && dataGridView.Rows[i].Cells["tinhtrangAccount"].Value.ToString() == "Live")
+                {
+                    account acc = new account();
+                    acc.UID = dataGridView.Rows[i].Cells["uidAccount"].Value.ToString();
+                    acc.COOKIE = dataGridView.Rows[i].Cells["cookieAccount"].Value.ToString();
+                    acc.TOKEN = dataGridView.Rows[i].Cells["tokenAccount"].Value.ToString();
+                    acc.PASS = dataGridView.Rows[i].Cells["passAccount"].Value.ToString();
+                    acc.M2FA = dataGridView.Rows[i].Cells["code2faAccount"].Value.ToString();
+                    acc.LIVE = dataGridView.Rows[i].Cells["tinhtrangAccount"].Value.ToString();
+                    acc.PROXY = dataGridView.Rows[i].Cells["proxyAccount"].Value.ToString();
+                    acc.TRANGTHAI = dataGridView.Rows[i].Cells["trangthaiAccount"].Value.ToString();
+                    acc.SOPAGE = dataGridView.Rows[i].Cells["pageNumberAccount"].Value.ToString();
+                    danhSach.Add(acc);
+                }
+
+            }
+
+            foreach (account item in danhSach)
+            {
+                if (item.COOKIE != "")
+                {
+                    string token = FacebookUtils.getTokenEAAG(item.COOKIE, false, "", "");
+                    if(token != null)
+                    {
+                        item.TOKEN = token;
+                        SQLiteUtils.updateByUID(item);
+                    }
+                }
+
             }
 
 
@@ -326,6 +374,7 @@ namespace AutoLike.Controller
         {
 
             ChromeDriver chromeDriver = _chormeDriverUtils.initChrome(ProfileFolderPath, item, itemindex, flowNum, selectProxy);
+            listDriver.Add(chromeDriver);
             chromeDriver.Navigate().GoToUrl("https://www.facebook.com");
             Thread.Sleep(1000);
 
@@ -354,26 +403,26 @@ namespace AutoLike.Controller
                 ChromeDriverUtils.FindTextInChrome(chromeDriver, "mật khẩu cũ", "old"))
                 {
                     item.TRANGTHAI = "Sai password....";
-                    ChromeDriverUtils.ChromeDetroy(chromeDriver);
+                    ChromeDriverUtils.ChromeDetroy(chromeDriver, listDriver);
                 }
                 else if (ChromeDriverUtils.FindTextInChrome(chromeDriver, "tạm thời bị khóa", "lock"))
                 {
                     item.LIVE = "Checkpoint";
                     item.TRANGTHAI = "Tạm thời bị khóa !...";
-                    ChromeDriverUtils.ChromeDetroy(chromeDriver);
+                    ChromeDriverUtils.ChromeDetroy(chromeDriver, listDriver);
 
                 }
                 else if (ChromeDriverUtils.FindTextInChrome(chromeDriver, "chúng tôi đã đình chỉ tài khoản của bạn", "We suspend"))
                 {
                     item.LIVE = "Checkpoint";
                     item.TRANGTHAI = "Đình chỉ tài khoản !...";
-                    ChromeDriverUtils.ChromeDetroy(chromeDriver);
+                    ChromeDriverUtils.ChromeDetroy(chromeDriver, listDriver);
                 }
                 else if(ChromeDriverUtils.FindTextInChrome(chromeDriver, "chúng tôi cần xác nhận rằng tài khoản này thuộc về bạn", "We need to confirm"))
                 {
                     item.LIVE = "Checkpoint";
                     item.TRANGTHAI = "Xác nhận tài khoản !...";
-                    ChromeDriverUtils.ChromeDetroy(chromeDriver);
+                    ChromeDriverUtils.ChromeDetroy(chromeDriver, listDriver);
                 }
                 else if (ChromeDriverUtils.FindTextInChrome(chromeDriver, "Trang chủ", "Home"))
                 {
@@ -390,7 +439,7 @@ namespace AutoLike.Controller
 
                     item.LIVE = "Live";
                     item.TRANGTHAI = "Login Facebook thành công !...";
-                    ChromeDriverUtils.ChromeDetroy(chromeDriver);
+                    ChromeDriverUtils.ChromeDetroy(chromeDriver, listDriver);
                 }
             }
             catch
@@ -399,7 +448,7 @@ namespace AutoLike.Controller
                 {
 
                     item.TRANGTHAI = "Sai Password!...";
-                    ChromeDriverUtils.ChromeDetroy(chromeDriver);
+                    ChromeDriverUtils.ChromeDetroy(chromeDriver, listDriver);
                 }
             }
 
@@ -557,10 +606,11 @@ namespace AutoLike.Controller
         public void processItemRegPageAcc(string ProfileFolderPath, account item, int itemindex, NumericUpDown flowNum, ComboBox selectProxy,DataGridView dataGridView)
         {
 
-            ChromeDriver chromeDriver = _chormeDriverUtils.initChrome(ProfileFolderPath, item, itemindex, flowNum, selectProxy);      
+            ChromeDriver chromeDriver = _chormeDriverUtils.initChrome(ProfileFolderPath, item, itemindex, flowNum, selectProxy);
+            listDriver.Add(chromeDriver);
             Thread.Sleep(1000);
             RegPage regPage = new RegPage();
-            regPage.RegPageWithUID(chromeDriver, fullPathNamePage,dataGridView,item);
+            regPage.RegPageWithUID(chromeDriver, fullPathNamePage,dataGridView,item, listDriver);
 
             SQLiteUtils.updateByUID(item);
             Console.WriteLine($"Processing item: {item}");
