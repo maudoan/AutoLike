@@ -11,9 +11,9 @@ namespace AutoLike.Utils
         public async Task<string> getNewProxy(String Url) 
         {
             var proxy = string.Empty;
-            try
+            using (var client = new HttpClient())
             {
-                using (var client = new HttpClient())
+                try
                 {
                     HttpResponseMessage result = await client.GetAsync(Url);
                     if (result.IsSuccessStatusCode)
@@ -23,13 +23,13 @@ namespace AutoLike.Utils
                         proxy = json["data"]["proxy"].ToString();
                     }
                 }
-            } catch (Exception ex)
-            {
-                Console.WriteLine(ex);
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
+               
             }
-         
 
-           
             return proxy;
         }
 
@@ -37,9 +37,9 @@ namespace AutoLike.Utils
         {
             var proxy = string.Empty;
 
-            try
+            using (var client = new HttpClient())
             {
-                using (var client = new HttpClient())
+               try
                 {
                     HttpResponseMessage result = await client.GetAsync(Url);
                     if (result.IsSuccessStatusCode)
@@ -49,14 +49,11 @@ namespace AutoLike.Utils
                         proxy = json["data"]["proxy"].ToString();
                     }
                 }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-            }
-         
-
-
             return proxy;
         }
 

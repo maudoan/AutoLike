@@ -166,29 +166,29 @@ namespace AutoLike.Features
                     //string uidpage = driver.Url.Replace("https://www.facebook.com/profile.php?id=", "").Replace("/", "");
                     //uidpage = uidpage.Split('-')[uidpage.Split('-').Length - 1];
                     driver.Navigate().GoToUrl("https://www.facebook.com/settings/?tab=profile_access");
-                    while (true)
-                    {
-                        try
-                        {
-                            if (ChromeDriverUtils.FindTextInChrome(driver, "Chào mừng bạn đến với Trang mới!", "Chào mừng bạn đến với Trang mới!"))
-                            {
-                                driver.FindElement(By.XPath("/html/body/div[4]/div[1]/div/div[2]/div/div/div/div[1]/div/div")).Click();
-                                Thread.Sleep(1000);
-                                driver.Navigate().GoToUrl("https://www.facebook.com/settings/?tab=profile_access");
-                                break;
-                            }
-                        }
-                        catch
-                        {
-                            if (ChromeDriverUtils.FindTextInChrome(driver, "Chào mừng bạn đến với Trang mới!", "Chào mừng bạn đến với Trang mới!"))
-                            {
-                                driver.FindElement(By.XPath("/html/body/div[2]/div[1]/div/div[2]/div/div/div/div[1]/div/i")).Click();
-                                Thread.Sleep(1000);
-                                driver.Navigate().GoToUrl("https://www.facebook.com/settings/?tab=profile_access");
-                                break;
-                            }
-                        }
-                    }
+                    //while (true)
+                    //{
+                    //    try
+                    //    {
+                    //        if (ChromeDriverUtils.FindTextInChrome(driver, "Chào mừng bạn đến với Trang mới!", "Chào mừng bạn đến với Trang mới!"))
+                    //        {
+                    //            driver.FindElement(By.XPath("/html/body/div[4]/div[1]/div/div[2]/div/div/div/div[1]/div/div")).Click();
+                    //            Thread.Sleep(1000);
+                    //            driver.Navigate().GoToUrl("https://www.facebook.com/settings/?tab=profile_access");
+                    //            break;
+                    //        }
+                    //    }
+                    //    catch
+                    //    {
+                    //        if (ChromeDriverUtils.FindTextInChrome(driver, "Chào mừng bạn đến với Trang mới!", "Chào mừng bạn đến với Trang mới!"))
+                    //        {
+                    //            driver.FindElement(By.XPath("/html/body/div[2]/div[1]/div/div[2]/div/div/div/div[1]/div/i")).Click();
+                    //            Thread.Sleep(1000);
+                    //            driver.Navigate().GoToUrl("https://www.facebook.com/settings/?tab=profile_access");
+                    //            break;
+                    //        }
+                    //    }
+                    //}
                     while (true)
 
                     {

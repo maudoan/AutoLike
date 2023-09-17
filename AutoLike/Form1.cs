@@ -310,25 +310,30 @@ namespace AutoLike
 
         private void generalSetingUserProxyComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Kiểm tra giá trị đã chọn trong ComboBox
+           
             if (generalSetingUserProxyComboBox.SelectedItem.ToString() == "Use Proxy")
             {
-                // Nếu giá trị đã chọn là "Giá trị cụ thể", enable TextBox
                 apiKeyTextBox.Enabled = true;
             }
             else
             {
-                // Nếu không, vô hiệu hóa TextBox
                 apiKeyTextBox.Enabled = false;
             }
         }
-        private void getAccessTokenEAAG_Click(object sender, EventArgs e)
+
+        private void getAccessTokenEAAGButton_Click(object sender, EventArgs e)
         {
             _form1Controller.getAccessTokenEAAG(detailListAccountsDataGridView);
         }
-        private void getInfoAccountsToolStripMenuItem_Click(object sender, EventArgs e)
+
+        private void getInfoAccountToken_Click(object sender, EventArgs e)
         {
             _form1Controller.getInfoAccounts(detailListAccountsDataGridView);
+        }
+
+        private void checkStatusCookieButton_Click(object sender, EventArgs e)
+        {
+            _form1Controller.checkStatusCookie(detailListAccountsDataGridView);
         }
     }
 }

@@ -379,7 +379,7 @@ namespace AutoLike.Features
             }
             try
             {
-                //getcookie(driver, i);
+                acc.COOKIE = ChromeDriverUtils.getcookie(driver);
 
             }
             catch { }

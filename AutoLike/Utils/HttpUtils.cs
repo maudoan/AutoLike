@@ -1,5 +1,7 @@
-﻿using System;
+﻿using OpenQA.Selenium.DevTools;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,7 +18,12 @@ namespace AutoLike.Utils
             bool CK = cookie != "";
             bool PX = proxy != "";
 
-
+            if (UA)
+            {
+                string[] ua = File.ReadAllText("user_agent.txt").Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                Random rd = new Random();
+                userAgent = ua[rd.Next(0, ua.Length)];
+            }
             request = new HttpRequest
             {
                 KeepAlive = true,
@@ -24,8 +31,28 @@ namespace AutoLike.Utils
                 Cookies = new CookieDictionary(false),
                 UserAgent = userAgent
             };
-            request.AddHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9");
-            request.AddHeader("Accept-Language", "en-US,en;q=0.5");
+            request.AddHeader("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7");
+            request.AddHeader("accept-language", "en-US,en;q=0.9,vi;q=0.8");
+            request.AddHeader("dpr", "1");
+            request.AddHeader("cache-control", "max-age=0");
+            request.AddHeader("sec-ch-prefers-color-scheme", "dark");
+            request.AddHeader("sec-ch-ua", "\"Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"115\", \"Chromium\";v=\"115\"");
+            request.AddHeader("sec-ch-ua-full-version-list", "\"Not/A)Brand\";v=\"99.0.0.0\", \"Google Chrome\";v=\"115.0.5790.173\", \"Chromium\";v=\"115.0.5790.173\"");
+            request.AddHeader("sec-ch-ua-mobile", "?0");
+            request.AddHeader("sec-ch-ua-model", "\"\"");
+            request.AddHeader("sec-ch-ua-platform", "\"Windows\"");
+            request.AddHeader("sec-ch-ua-platform-version", "\"15.0.0\"");
+            request.AddHeader("sec-fetch-dest", "document");
+            request.AddHeader("sec-fetch-mode", "navigate");
+            request.AddHeader("sec-fetch-site", "same-origin");
+            request.AddHeader("sec-fetch-user", "?1");
+            request.AddHeader("user-agent", userAgent);
+            request.AddHeader("viewport-width", "601");
+            request.AddHeader("upgrade-insecure-requests", "1");
+            request.AddHeader("cookie", cookie);
+            //request.AddHeader("Referer", "https://mbasic.facebook.com/");
+            //request.AddHeader("Origin", "https://mbasic.facebook.com/");
+            request.AddHeader("Referrer-Policy", "strict-origin-when-cross-origin");
 
             if (CK)
             {
@@ -68,20 +95,25 @@ namespace AutoLike.Utils
             }
         }
 
-        public string getRequest(string Url, string Referer = "", string ContentType = "")
+        internal string getRequest(string Url, string Referer = "", string ContentType = "")
         {
             if (Referer != "")
+            {
                 request.AddHeader("Referer", Referer);
+                request.AddHeader("Origin", Referer);
+            }
+               
+            request.AddHeader("Origin", Referer);
             if (ContentType == "")
                 ContentType = @"application/x-www-form-urlencoded";
             request.AddHeader("ContentType", ContentType);
-            string result = "";
+            string rs = "";
             try
             {
-                result = request.Get(Url, null).ToString();
+                rs = request.Get(Url, null).ToString();
             }
             catch { }
-            return result;
+            return rs;
 
         }
     }

@@ -63,11 +63,15 @@ namespace AutoLike.Utils
 
             X = screenWidth / Convert.ToInt32(5);
             Y = screenHeight;
-            co.AddArgument("--window-size=" + 500 + "," + 500);
+            co.AddArgument("--window-size=" + 200 + "," + 400);
 
-            int X1 = Convert.ToInt32((index - 1) % 2) * X;
-            int Y1 = Convert.ToInt32((index - 1) / 2) * (screenHeight / ((Convert.ToInt32(5) / 2) + 1));
-            co.AddArgument("--window-position=" + X1 + "," + Y1);
+            //int X1 = Convert.ToInt32((index - 1) % 2) * X;
+            //int Y1 = Convert.ToInt32((index - 1) / 2) * (screenHeight / ((Convert.ToInt32(5) / 2) + 1));
+            int row = index / 5;
+            int col = index % 5;
+            int xOffset = col * (screenWidth / 5);
+            int yOffset = row * (screenHeight / 2);
+            co.AddArgument("--window-position=" + xOffset + "," + yOffset);
 
 
 
@@ -102,7 +106,7 @@ namespace AutoLike.Utils
                 int dem = 0;
                 while (true)
                 {
-                    String find = driver.FindElement(By.TagName("body")).Text;
+                    string find = driver.FindElement(By.TagName("body")).Text;
                     if (find.ToLower().Contains(textVN.ToLower()) || find.ToLower().Contains(textEN.ToLower()))
                     {
                         if (find.ToLower().Contains(textVN.ToLower()))
@@ -140,7 +144,7 @@ namespace AutoLike.Utils
             int dem = 0;
             while (true)
             {
-                String find = driver.FindElement(By.TagName("body")).Text;
+                string find = driver.FindElement(By.TagName("body")).Text;
                 try
                 {
                     var a = driver.FindElement(By.XPath("//*[text()='" + textVN + "']"));
@@ -214,7 +218,6 @@ namespace AutoLike.Utils
             if (cookieget.Contains("c_user"))
             {
                 cookie = cookieget;
-                return cookie;
             }
             else
             {

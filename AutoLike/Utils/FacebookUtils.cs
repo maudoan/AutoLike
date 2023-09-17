@@ -10,6 +10,42 @@ namespace AutoLike.Utils
 {
     public class FacebookUtils
     {
+        internal static string CheckLiveCookie(string cookie, string userAgent = "", string proxy = "")
+        {
+            string output = "";
+
+            string uid = Regex.Match(cookie, "c_user=(.*?);").Groups[1].Value;
+            if (uid.Contains("="))
+            {
+                uid = (uid.Split('='))[0];
+            }
+
+
+            HttpUtils request = new HttpUtils(cookie, userAgent, proxy);
+            bool flag = uid != "";
+            if (flag)
+            {
+                string html = request.getRequest("https://mbasic.facebook.com/", @"https://mbasic.facebook.com/").ToString();
+              
+                if (html.Contains(uid) && html.Contains("name=\"fb_dtsg\" value=\""))
+                {
+                    if (html.Contains("checkpoint_title"))
+                    {
+                        output = "Checkpoint";
+                    }
+                    else
+                    {
+                        output = "Live";
+                    }
+
+                }
+                else
+                {
+                    output = "Die";
+                }
+            }
+            return output;
+        }
         public static string getTokenEAAG(string cookie, bool eaaz, string userAgent = "", string proxy = "")
         {
             HttpUtils request = new HttpUtils(cookie, userAgent, proxy);
