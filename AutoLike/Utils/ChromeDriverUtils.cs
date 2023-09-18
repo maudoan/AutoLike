@@ -17,7 +17,7 @@ namespace AutoLike.Utils
         int screenHeight = SystemInformation.VirtualScreen.Height;
         int screenWidth = SystemInformation.VirtualScreen.Width;
 
-        public ChromeDriver initChrome(string ProfileFolderPath,account account,int index, NumericUpDown flowNum, ComboBox selectProxy)
+        public ChromeDriver initChrome(string ProfileFolderPath,account account,int index, NumericUpDown flowNum, ComboBox selectProxy, int x, int y)
         {
 
           
@@ -56,22 +56,22 @@ namespace AutoLike.Utils
             co.AddArgument("--use-mock-keychain");
             co.AddArgument("--disable-notifications");
             co.AddArgument("mute-audio");
-           
-            int X = 0;
-            int Y = 0;
+
+            //int X = 0;
+            //int Y = 0;
 
 
-            X = screenWidth / Convert.ToInt32(5);
-            Y = screenHeight;
-            co.AddArgument("--window-size=" + 200 + "," + 400);
+            //X = screenWidth / Convert.ToInt32(5);
+            //Y = screenHeight;
+            co.AddArgument("--window-size=" + 500 + "," + 500);
 
-            //int X1 = Convert.ToInt32((index - 1) % 2) * X;
-            //int Y1 = Convert.ToInt32((index - 1) / 2) * (screenHeight / ((Convert.ToInt32(5) / 2) + 1));
-            int row = index / 5;
-            int col = index % 5;
-            int xOffset = col * (screenWidth / 5);
-            int yOffset = row * (screenHeight / 2);
-            co.AddArgument("--window-position=" + xOffset + "," + yOffset);
+            ////int X1 = Convert.ToInt32((index - 1) % 2) * X;
+            ////int Y1 = Convert.ToInt32((index - 1) / 2) * (screenHeight / ((Convert.ToInt32(5) / 2) + 1));
+            //int row = index / 5;
+            //int col = index % 5;
+            //int xOffset = col * (screenWidth / 5);
+            //int yOffset = row * (screenHeight / 2);
+            co.AddArgument("--window-position=" + x + "," + y);
 
 
 
@@ -93,8 +93,8 @@ namespace AutoLike.Utils
         {
            driver.Close();
            driver.Quit();
-           listChromeDriver.Remove(driver);
-           sxepChrome(listChromeDriver);
+           //listChromeDriver.Remove(driver);
+           //sxepChrome(listChromeDriver);
         }
 
         public static bool FindTextInChrome(ChromeDriver driver, string textVN, string textEN)

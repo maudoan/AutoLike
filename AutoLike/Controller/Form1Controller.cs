@@ -6,6 +6,7 @@ using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.DevTools;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -14,6 +15,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Header;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace AutoLike.Controller
 {
@@ -369,7 +371,6 @@ namespace AutoLike.Controller
          */
         public async void ProcessLoginChromeCookieToken(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, ComboBox selectProxy, List<account> listAcccounts, List<string> apiKeyList)
         {
-            int maxThreads = 10; // Số lượng luồng tối đa
             int itemIndex = 0;
             ProxyUtils proxyUtils = new ProxyUtils();
          
@@ -382,45 +383,85 @@ namespace AutoLike.Controller
                 
             }
 
-            var cancellationTokenSource = new CancellationTokenSource();
-            var cancellationToken = cancellationTokenSource.Token;
-
-            // Sử dụng Semaphore để giới hạn số lượng luồng được tạo ra đồng thời
-            SemaphoreSlim semaphore = new SemaphoreSlim(maxThreads, maxThreads);
-
-            List<Task> tasks = new List<Task>();
-
-            foreach (var item in listAcccounts)
+            int batchSize = 10; // Số lượng item mỗi lần xử lý
+            int maxConcurrency = 10; // Số lượng luồng tối đa
+            int screenHeight = SystemInformation.VirtualScreen.Height;
+            int screenWidth = SystemInformation.VirtualScreen.Width;
+            if (screenHeight > 1920)
             {
-                itemIndex++;
-                Random random = new Random();
+                screenWidth = 1920;
+            }
+            SemaphoreSlim semaphore = new SemaphoreSlim(maxConcurrency);
+            int x = 0; int y = 0;
+            for (int i = 0; i < listAcccounts.Count; i += batchSize)
+            {
+                List<account> batch = listAcccounts.GetRange(i, Math.Min(batchSize, listAcccounts.Count - i));
+ 
 
-                // Lấy một phần tử ngẫu nhiên từ danh sách
-                int index = random.Next(apiKeyList.Count);
-                string randomKey = apiKeyList[index];
-                string proxy = await proxyUtils.getCurrentProxy(Constants.Constants.GetCurrentProxyShopLike(randomKey, "hd"));
-                item.PROXY = proxy;
-                await semaphore.WaitAsync(); // Chờ cho đến khi có sẵn slot trong Semaphore
-                Task task = Task.Run(() => ProcessItemLoginAcc(ProfileFolderPath, item, itemIndex, flowNum, selectProxy), cancellationToken)
-                    .ContinueWith((t) => semaphore.Release()); // Giải phóng slot khi hoàn thành
+                try
+                {
+                    await Task.WhenAll(batch.Select(async item =>
+                    {
+                        await semaphore.WaitAsync();
+                        try
+                        {
+                                Random random = new Random();
+                                int index = random.Next(apiKeyList.Count);
+                                string randomKey = apiKeyList[index];
+                                string proxy = await proxyUtils.getCurrentProxy(Constants.Constants.GetCurrentProxyShopLike(randomKey, "hd"));
+                                item.PROXY = proxy;
 
-                tasks.Add(task);
+                                if (itemIndex == 0 || itemIndex == 10 || itemIndex == 20 || itemIndex == 30)
+                                {
+                                    y = 0;
+                                    x = 0;
+                                }
+                                else if ((itemIndex > 0 && itemIndex < 5) || (itemIndex > 10 && itemIndex < 15) || (itemIndex > 20 && itemIndex < 25) || (itemIndex > 30 && itemIndex < 35))
+                                {
+                                    y = 0;
+                                    x += screenWidth / 5;
+                                }
+                                else if (itemIndex == 5 || itemIndex == 15 || itemIndex == 25 || itemIndex == 35)
+                                {
+                                    y = screenHeight / 2;
+                                    x = 0;
+                                }
+                                else if ((itemIndex > 5 && itemIndex < 10) || (itemIndex > 15 && itemIndex <= 20) || (itemIndex > 25 && itemIndex < 30) || (itemIndex > 35 && itemIndex < 40))
+                                {
+                                    y = screenHeight / 2;
+                                    x += screenWidth / 5;
+                                }
+                                else { }
+                                itemIndex++;
+                                await ProcessItemLoginAcc(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, x, y);
+                            
+                        }
+                        finally
+                        {
+                            semaphore.Release();
+                        }
+                    }));
+                }
+                finally
+                {
+                    // Sau khi hoàn thành một batch, đóng tất cả các ChromeDriver
+                    foreach (var driver in _listDriver)
+                    {
+                        driver.Quit();
+                    }
+                }
             }
 
-            // Đợi tất cả các công việc hoàn thành (tất cả item đã xử lý)
-            await Task.WhenAll(tasks);
-
             Console.WriteLine("DONE ALL TASK!!!");
-
         }
 
         /*
         * Process Login with item Account
         */
-        public void ProcessItemLoginAcc(string ProfileFolderPath, account item, int itemIndex, NumericUpDown flowNum, ComboBox selectProxy)
+        public async Task ProcessItemLoginAcc(string ProfileFolderPath, account item, int itemIndex, NumericUpDown flowNum, ComboBox selectProxy,int x, int y)
         {
 
-            ChromeDriver chromeDriver = _chromeDriverUtils.initChrome(ProfileFolderPath, item, itemIndex, flowNum, selectProxy);
+            ChromeDriver chromeDriver = _chromeDriverUtils.initChrome(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, x, y);
             _listDriver.Add(chromeDriver);
             _dictionaryDriver.Add(item.UID, chromeDriver);
             chromeDriver.Navigate().GoToUrl("https://www.facebook.com");
@@ -509,17 +550,6 @@ namespace AutoLike.Controller
             Console.WriteLine($"Processing item: ========");
         }
 
-        /*
-        * chia nhỏ Item
-        */
-
-        public static IEnumerable<List<T>> PartitionList<T>(List<T> source, int batchSize)
-        {
-            for (int i = 0; i < source.Count; i += batchSize)
-            {
-                yield return source.GetRange(i, Math.Min(batchSize, source.Count - i));
-            }
-        }
 
         /*
          * 
@@ -608,7 +638,6 @@ namespace AutoLike.Controller
 
         public async void ProcessRegPage(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, ComboBox selectProxy, List<account> listAcccounts, List<string> apiKeyList)
         {
-            int maxThreads = 5; // Số lượng luồng tối đa
             int itemIndex = 0;
             ProxyUtils proxyUtils = new ProxyUtils();
 
@@ -621,33 +650,74 @@ namespace AutoLike.Controller
 
             }
 
-            var cancellationTokenSource = new CancellationTokenSource();
-            var cancellationToken = cancellationTokenSource.Token;
-
-            // Sử dụng Semaphore để giới hạn số lượng luồng được tạo ra đồng thời
-            SemaphoreSlim semaphore = new SemaphoreSlim(maxThreads, maxThreads);
-
-            List<Task> tasks = new List<Task>();
-
-            foreach (var item in listAcccounts)
+            int batchSize = 10; // Số lượng item mỗi lần xử lý
+            int maxConcurrency = 10; // Số lượng luồng tối đa
+            int screenHeight = SystemInformation.VirtualScreen.Height;
+            int screenWidth = SystemInformation.VirtualScreen.Width;
+            if (screenHeight > 1920)
             {
-                itemIndex++;
-                Random random = new Random();
-
-                // Lấy một phần tử ngẫu nhiên từ danh sách
-                int index = random.Next(apiKeyList.Count);
-                string randomKey = apiKeyList[index];
-                string proxy = await proxyUtils.getCurrentProxy(Constants.Constants.GetCurrentProxyShopLike(randomKey, "hd"));
-                item.PROXY = proxy;
-                await semaphore.WaitAsync(); // Chờ cho đến khi có sẵn slot trong Semaphore
-                Task task = Task.Run(() => processItemRegPageAcc(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, dataGridView), cancellationToken)
-                    .ContinueWith((t) => semaphore.Release()); // Giải phóng slot khi hoàn thành
-
-                tasks.Add(task);
+                screenWidth = 1920;
             }
+            SemaphoreSlim semaphore = new SemaphoreSlim(maxConcurrency);
+            int x = 0; int y = 0;
+            for (int i = 0; i < listAcccounts.Count; i += batchSize)
+            {
+                List<account> batch = listAcccounts.GetRange(i, Math.Min(batchSize, listAcccounts.Count - i));
 
-            // Đợi tất cả các công việc hoàn thành (tất cả item đã xử lý)
-            await Task.WhenAll(tasks);
+
+                try
+                {
+                    await Task.WhenAll(batch.Select(async item =>
+                    {
+                        await semaphore.WaitAsync();
+                        try
+                        {
+                            Random random = new Random();
+                            int index = random.Next(apiKeyList.Count);
+                            string randomKey = apiKeyList[index];
+                            string proxy = await proxyUtils.getCurrentProxy(Constants.Constants.GetCurrentProxyShopLike(randomKey, "hd"));
+                            item.PROXY = proxy;
+
+                            if (itemIndex == 0 || itemIndex == 10 || itemIndex == 20 || itemIndex == 30)
+                            {
+                                y = 0;
+                                x = 0;
+                            }
+                            else if ((itemIndex > 0 && itemIndex < 5) || (itemIndex > 10 && itemIndex < 15) || (itemIndex > 20 && itemIndex < 25) || (itemIndex > 30 && itemIndex < 35))
+                            {
+                                y = 0;
+                                x += screenWidth / 5;
+                            }
+                            else if (itemIndex == 5 || itemIndex == 15 || itemIndex == 25 || itemIndex == 35)
+                            {
+                                y = screenHeight / 2;
+                                x = 0;
+                            }
+                            else if ((itemIndex > 5 && itemIndex < 10) || (itemIndex > 15 && itemIndex <= 20) || (itemIndex > 25 && itemIndex < 30) || (itemIndex > 35 && itemIndex < 40))
+                            {
+                                y = screenHeight / 2;
+                                x += screenWidth / 5;
+                            }
+                            else { }
+                            itemIndex++;
+                            await processItemRegPageAcc(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, dataGridView, x, y);
+
+                        }
+                        finally
+                        {
+                            semaphore.Release();
+                        }
+                    }));
+                }
+                finally
+                {
+                    // Sau khi hoàn thành một batch, đóng tất cả các ChromeDriver
+                    foreach (var driver in _listDriver)
+                    {
+                        driver.Quit();
+                    }
+                }
+            }
 
             Console.WriteLine("DONE ALL TASK!!!");
 
@@ -656,10 +726,9 @@ namespace AutoLike.Controller
         /*
          * Process Reg Page for Item Acc
          */
-        public void processItemRegPageAcc(string ProfileFolderPath, account item, int itemIndex, NumericUpDown flowNum, ComboBox selectProxy,DataGridView dataGridView)
+        public async Task processItemRegPageAcc(string ProfileFolderPath, account item, int itemIndex, NumericUpDown flowNum, ComboBox selectProxy,DataGridView dataGridView, int x, int y)
         {
-
-            ChromeDriver chromeDriver = _chromeDriverUtils.initChrome(ProfileFolderPath, item, itemIndex, flowNum, selectProxy);
+            ChromeDriver chromeDriver = _chromeDriverUtils.initChrome(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, x, y);
             _listDriver.Add(chromeDriver);
             Thread.Sleep(1000);
             RegPage regPage = new RegPage();
