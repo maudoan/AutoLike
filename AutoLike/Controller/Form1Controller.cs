@@ -220,22 +220,28 @@ namespace AutoLike.Controller
                 }
               
             }
+
+            List<page> listPage = new List<page>();
      
             foreach(account item in danhSach)
             {
-                if(item.TOKEN != "")
+                List<string> listIdGroup = FacebookUtils.getListPage(item.COOKIE, "","");
+                if(listIdGroup != null)
                 {
-                    List<string> listIdGroup = FacebookUtils.getListPage(item.TOKEN, item.UID, "","");
-                    if(listIdGroup.Count > 0)
+                    item.SOPAGE = listIdGroup.Count.ToString();
+                    Console.WriteLine("====" + item.SOPAGE);
+                    SQLiteUtils.updateByUID(item);
+                    for(int i = 0; i < listIdGroup.Count; i++ )
                     {
-                        item.SOPAGE = listIdGroup.Count.ToString();
-                        Console.WriteLine("====" + item.SOPAGE);
-                        SQLiteUtils.updateByUID(item);
+                        page page = new page();
+                        page.UID = item.UID;
+                        page.PAGEID = listIdGroup[i];
+                        listPage.Add(page);
                     }
-                }
-                
+                }    
             }
 
+            SQLiteUtils.insertPage(listPage);
 
         }
 

@@ -108,31 +108,24 @@ namespace AutoLike.Utils
             { return null; }
             return listGroup;
         }
-        public static List<string> getListPage(string token, string uid, string userAgent = "", string proxy = "")
+        public static List<string> getListPage(string cookie, string userAgent = "", string proxy = "")
         {
-            List<string> lis = new List<string>();
-            HttpUtils request = new HttpUtils("", "", "");
-            int c = 0;
-            while (true)
+            List<string> listGroup = new List<string>();
+            try
             {
-                string GetDataToken = request.getRequest(@"https://graph.facebook.com/" + uid + "/accounts?access_token=" + token);
-                if (GetDataToken.Contains("id"))
+                HttpUtils request = new HttpUtils(cookie, userAgent, proxy);
+                string html = request.getRequest(@"https://www.facebook.com/", @"https://www.facebook.com/");
+                string pattern = @"""delegate_page_id""\s*:\s*""(\d+)""";
+                MatchCollection linkGr = Regex.Matches(html, pattern);
+                for (int i = 0; i < linkGr.Count; i++)
                 {
-                    JObject json = JObject.Parse(GetDataToken);
-                    foreach (JToken item in ((IEnumerable<JToken>)json["data"]))
-                    { lis.Add(item["id"].ToString()); }
-                    break;
-                }
-                else
-                {
-                    if (c == 2)
-                    {
-                        break;
-                    }
-                    c++;
+                    listGroup.Add(linkGr[i].Groups[1].Value.ToString());
                 }
             }
-            return lis;
+            catch
+            { return null; }
+           
+            return listGroup;
 
         }
     }

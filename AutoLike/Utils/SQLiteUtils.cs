@@ -259,6 +259,63 @@ namespace AutoLike.Utils
             }
         }
 
+        public static void insertPage(List<page> listPage)
+        {
+            deletePageExisted(listPage);
+            try
+            {
+                SQLiteConnection sqliteConnection = new SQLiteConnection();
+                sqliteConnection.ConnectionString = "Data Source=Data.sqlite3;Version=3;";
+                sqliteConnection.Open();
+                SQLiteCommand sqliteCommand = new SQLiteCommand(sqliteConnection);
+                SQLiteTransaction trans = sqliteConnection.BeginTransaction();
+                sqliteCommand.Transaction = trans;
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
+
+                foreach (page item in listPage)
+                {
+                    string text = string.Format("INSERT INTO page ('PAGEID','UID') VALUES ('{0}', '{1}')", item.PAGEID, item.UID);
+                    sqliteCommand.CommandText = text;
+                    sqliteCommand.ExecuteNonQuery();
+                }
+                trans.Commit();
+                sw.Stop();
+                min = sw.Elapsed.Minutes + " Phút " + sw.Elapsed.Seconds + " giây";
+                Console.WriteLine("Đã Insert");
+                //sqliteConnection.Dispose();
+                sqliteConnection.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Lỗi " + e.Message);
+            }
+
+        }
+
+        public static void deletePageExisted(List<page> listPage)
+        {
+            SQLiteConnection sqliteConnection = new SQLiteConnection();
+            sqliteConnection.ConnectionString = "Data Source=Data.sqlite3;Version=3;";
+            sqliteConnection.Open();
+            SQLiteCommand sqliteCommand = new SQLiteCommand(sqliteConnection);
+            SQLiteTransaction trans = sqliteConnection.BeginTransaction();
+            sqliteCommand.Transaction = trans;
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            for (int i = 0; i < listPage.Count; i++)
+            {
+                string text = string.Format("DELETE FROM page where [PAGEID]='{0}'", listPage[0].PAGEID);
+                sqliteCommand.CommandText = text;
+                sqliteCommand.ExecuteNonQuery();
+
+            }
+            trans.Commit();
+            sw.Stop();
+            min = sw.Elapsed.Minutes + " Phút " + sw.Elapsed.Seconds + " giây";
+            sqliteConnection.Dispose();
+        }
+
 
     }
 }

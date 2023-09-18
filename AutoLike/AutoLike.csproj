@@ -79,6 +79,8 @@
     </Compile>
     <Compile Include="Model\account.cs" />
     <Compile Include="Model\file.cs" />
+    <Compile Include="Model\page.cs" />
+    <Compile Include="Model\post.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\ChromeDriverUtils.cs" />
