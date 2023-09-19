@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
@@ -20,6 +21,8 @@ namespace AutoLike
         private void Form1_Load(object sender, EventArgs e)
         {
             _form1Controller.LoadFileAccount(listFileDataGridView);
+
+            _form1Controller.loadGeneralSetting(selectPathProfileChromeTextBox, generalSetingUserProxyComboBox, apiKeyTextBox);
 
 
         }
@@ -237,6 +240,10 @@ namespace AutoLike
             {
                 MessageBox.Show("Vui chọn đủ cài đặt cơ bản!", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+            else if (keyApiList.Count <= 0)
+            {
+                MessageBox.Show("Vui lòng lưu lại cấu hình mới nhất!", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
             else
             {
                 _form1Controller.LoginChromeWithCookieToken(selectPathProfileChromeTextBox.Text, detailListAccountsDataGridView, generalSettingflowNumberNumericUpDown, generalSetingUserProxyComboBox, keyApiList);
@@ -260,9 +267,12 @@ namespace AutoLike
 
         private void startRegPageButton_Click(object sender, EventArgs e)
         {
-            if(selectPathProfileChromeTextBox.Text == string.Empty || generalSetingUserProxyComboBox.SelectedItem == null)
+            if (selectPathProfileChromeTextBox.Text == string.Empty || generalSetingUserProxyComboBox.SelectedItem == null)
             {
                 MessageBox.Show("Vui chọn đủ cài đặt cơ bản!", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            } else if (keyApiList.Count <= 0)  
+            {
+                MessageBox.Show("Vui lòng lưu lại cấu hình mới nhất!", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
             } else
             {
                 _form1Controller.regPage(selectPathProfileChromeTextBox.Text, detailListAccountsDataGridView, generalSettingflowNumberNumericUpDown, generalSetingUserProxyComboBox, keyApiList);
@@ -305,7 +315,26 @@ namespace AutoLike
                     keyApiList.Add(line);
                 }
             }
-            
+
+            string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"AutoLike\GeneralSetting.txt");
+
+            if (File.Exists(filePath))
+            {
+                // Xóa nội dung bên trong tệp
+                File.WriteAllText(filePath, string.Empty);
+                Console.WriteLine("Đã xóa nội dung tệp GeneralSetting.txt.");
+            }
+            else
+            {
+                // Tạo tệp nếu nó không tồn tại
+                Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+                File.Create(filePath).Close();
+                Console.WriteLine("Tạo tệp GeneralSetting.txt.");
+            }
+            string dt = generalSetingUserProxyComboBox.SelectedItem.ToString() + "|" + selectPathProfileChromeTextBox.Text + "|" + apiKeyTextBox.Text;
+            File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\AutoLike\GeneralSetting.txt", dt.ToString());
+            MessageBox.Show("Lưu cấu hình thành công !", "Done", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
         }
 
         private void generalSetingUserProxyComboBox_SelectedIndexChanged(object sender, EventArgs e)

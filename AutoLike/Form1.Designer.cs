@@ -99,6 +99,31 @@ namespace AutoLike
             this.totalAccountDieValueLabel = new System.Windows.Forms.Label();
             this.totalAccountSelectedValueLabel = new System.Windows.Forms.Label();
             this.regAndSeedingTabPage = new System.Windows.Forms.TabPage();
+            this.seedingPageGroupBox = new System.Windows.Forms.GroupBox();
+            this.startWithSeedingWithUidButton = new System.Windows.Forms.Button();
+            this.saveSeetingSeedingPageButton = new System.Windows.Forms.Button();
+            this.contentShareSeedingPageTextBox = new System.Windows.Forms.TextBox();
+            this.saveContentShareSeedingPageButton = new System.Windows.Forms.Button();
+            this.attentionShareSeedingPageLabel = new System.Windows.Forms.Label();
+            this.contentShareSeedingPageLabel = new System.Windows.Forms.Label();
+            this.contentCommentSeedingPageLabel = new System.Windows.Forms.Label();
+            this.saveContentSeedingPageButton = new System.Windows.Forms.Button();
+            this.contentCommentSeedingPageTextBox = new System.Windows.Forms.TextBox();
+            this.attentionContentSeedingPageLabel = new System.Windows.Forms.Label();
+            this.timeGetNumBerNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.timeGetUidSeedingPageLabel = new System.Windows.Forms.Label();
+            this.keyGetUidSeedingPageTextBox = new System.Windows.Forms.TextBox();
+            this.keyGetUidSeedingPageLabel = new System.Windows.Forms.Label();
+            this.getUidSeedingPageCheckBox = new System.Windows.Forms.CheckBox();
+            this.shareWallSeedingPageCheckBox = new System.Windows.Forms.CheckBox();
+            this.shareGroupSeedingPageCheckBox = new System.Windows.Forms.CheckBox();
+            this.attentionSeedingPageLabel = new System.Windows.Forms.Label();
+            this.uidSeedingPageTextBox = new System.Windows.Forms.TextBox();
+            this.uidSeedingPageLabel = new System.Windows.Forms.Label();
+            this.followSeedingPageCheckBox = new System.Windows.Forms.CheckBox();
+            this.commentSeedingPageCheckBox = new System.Windows.Forms.CheckBox();
+            this.likePageSeedingPageCheckBox = new System.Windows.Forms.CheckBox();
+            this.likePostSeedingPageCheckBox = new System.Windows.Forms.CheckBox();
             this.regPageGroupBox = new System.Windows.Forms.GroupBox();
             this.startRegPageButton = new System.Windows.Forms.Button();
             this.setRuleAdminRegPageCheckBox = new System.Windows.Forms.CheckBox();
@@ -146,6 +171,7 @@ namespace AutoLike
             this.passCheckPointGroupBox = new System.Windows.Forms.GroupBox();
             this.backupGroupBox = new System.Windows.Forms.GroupBox();
             this.checkViaGroupBox = new System.Windows.Forms.GroupBox();
+            this.checkStatusCookieButton = new System.Windows.Forms.Button();
             this.getInfoAccountToken = new System.Windows.Forms.Button();
             this.getAccessTokenEAAGButton = new System.Windows.Forms.Button();
             this.settingChormeGroupBox = new System.Windows.Forms.GroupBox();
@@ -178,13 +204,15 @@ namespace AutoLike
             this.trangthaiAccount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pageNumberAccount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControl = new System.Windows.Forms.TabControl();
-            this.checkStatusCookieButton = new System.Windows.Forms.Button();
+            this.startWithSeedingWithPageButton = new System.Windows.Forms.Button();
             this.toolBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogoShop)).BeginInit();
             this.listFileContextMenuStrip.SuspendLayout();
             this.featuresContextMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.loadingPictureBox)).BeginInit();
             this.regAndSeedingTabPage.SuspendLayout();
+            this.seedingPageGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.timeGetNumBerNumericUpDown)).BeginInit();
             this.regPageGroupBox.SuspendLayout();
             this.generalSettingTabPage.SuspendLayout();
             this.generalSettingGroupBox.SuspendLayout();
@@ -572,6 +600,7 @@ namespace AutoLike
             // regAndSeedingTabPage
             // 
             this.regAndSeedingTabPage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(151)))), ((int)(((byte)(153)))));
+            this.regAndSeedingTabPage.Controls.Add(this.seedingPageGroupBox);
             this.regAndSeedingTabPage.Controls.Add(this.regPageGroupBox);
             this.regAndSeedingTabPage.ForeColor = System.Drawing.Color.White;
             this.regAndSeedingTabPage.Location = new System.Drawing.Point(4, 34);
@@ -580,6 +609,329 @@ namespace AutoLike
             this.regAndSeedingTabPage.TabIndex = 15;
             this.regAndSeedingTabPage.Text = "Reg & Seeding Page";
             this.regAndSeedingTabPage.UseVisualStyleBackColor = true;
+            // 
+            // seedingPageGroupBox
+            // 
+            this.seedingPageGroupBox.BackColor = System.Drawing.Color.White;
+            this.seedingPageGroupBox.Controls.Add(this.startWithSeedingWithPageButton);
+            this.seedingPageGroupBox.Controls.Add(this.startWithSeedingWithUidButton);
+            this.seedingPageGroupBox.Controls.Add(this.saveSeetingSeedingPageButton);
+            this.seedingPageGroupBox.Controls.Add(this.contentShareSeedingPageTextBox);
+            this.seedingPageGroupBox.Controls.Add(this.saveContentShareSeedingPageButton);
+            this.seedingPageGroupBox.Controls.Add(this.attentionShareSeedingPageLabel);
+            this.seedingPageGroupBox.Controls.Add(this.contentShareSeedingPageLabel);
+            this.seedingPageGroupBox.Controls.Add(this.contentCommentSeedingPageLabel);
+            this.seedingPageGroupBox.Controls.Add(this.saveContentSeedingPageButton);
+            this.seedingPageGroupBox.Controls.Add(this.contentCommentSeedingPageTextBox);
+            this.seedingPageGroupBox.Controls.Add(this.attentionContentSeedingPageLabel);
+            this.seedingPageGroupBox.Controls.Add(this.timeGetNumBerNumericUpDown);
+            this.seedingPageGroupBox.Controls.Add(this.timeGetUidSeedingPageLabel);
+            this.seedingPageGroupBox.Controls.Add(this.keyGetUidSeedingPageTextBox);
+            this.seedingPageGroupBox.Controls.Add(this.keyGetUidSeedingPageLabel);
+            this.seedingPageGroupBox.Controls.Add(this.getUidSeedingPageCheckBox);
+            this.seedingPageGroupBox.Controls.Add(this.shareWallSeedingPageCheckBox);
+            this.seedingPageGroupBox.Controls.Add(this.shareGroupSeedingPageCheckBox);
+            this.seedingPageGroupBox.Controls.Add(this.attentionSeedingPageLabel);
+            this.seedingPageGroupBox.Controls.Add(this.uidSeedingPageTextBox);
+            this.seedingPageGroupBox.Controls.Add(this.uidSeedingPageLabel);
+            this.seedingPageGroupBox.Controls.Add(this.followSeedingPageCheckBox);
+            this.seedingPageGroupBox.Controls.Add(this.commentSeedingPageCheckBox);
+            this.seedingPageGroupBox.Controls.Add(this.likePageSeedingPageCheckBox);
+            this.seedingPageGroupBox.Controls.Add(this.likePostSeedingPageCheckBox);
+            this.seedingPageGroupBox.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.seedingPageGroupBox.Location = new System.Drawing.Point(596, 23);
+            this.seedingPageGroupBox.Name = "seedingPageGroupBox";
+            this.seedingPageGroupBox.Size = new System.Drawing.Size(935, 651);
+            this.seedingPageGroupBox.TabIndex = 2;
+            this.seedingPageGroupBox.TabStop = false;
+            this.seedingPageGroupBox.Text = "Seeding";
+            // 
+            // startWithSeedingWithUidButton
+            // 
+            this.startWithSeedingWithUidButton.BackColor = System.Drawing.Color.ForestGreen;
+            this.startWithSeedingWithUidButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.startWithSeedingWithUidButton.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Bold);
+            this.startWithSeedingWithUidButton.ForeColor = System.Drawing.Color.White;
+            this.startWithSeedingWithUidButton.Location = new System.Drawing.Point(501, 581);
+            this.startWithSeedingWithUidButton.Name = "startWithSeedingWithUidButton";
+            this.startWithSeedingWithUidButton.Size = new System.Drawing.Size(179, 32);
+            this.startWithSeedingWithUidButton.TabIndex = 99;
+            this.startWithSeedingWithUidButton.Text = "START SEEDING WITH UID";
+            this.startWithSeedingWithUidButton.UseVisualStyleBackColor = false;
+            this.startWithSeedingWithUidButton.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // saveSeetingSeedingPageButton
+            // 
+            this.saveSeetingSeedingPageButton.BackColor = System.Drawing.Color.DarkCyan;
+            this.saveSeetingSeedingPageButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.saveSeetingSeedingPageButton.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.saveSeetingSeedingPageButton.ForeColor = System.Drawing.Color.White;
+            this.saveSeetingSeedingPageButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.saveSeetingSeedingPageButton.Location = new System.Drawing.Point(22, 582);
+            this.saveSeetingSeedingPageButton.Name = "saveSeetingSeedingPageButton";
+            this.saveSeetingSeedingPageButton.Size = new System.Drawing.Size(120, 31);
+            this.saveSeetingSeedingPageButton.TabIndex = 98;
+            this.saveSeetingSeedingPageButton.Text = " Lưu Cài đặt";
+            this.saveSeetingSeedingPageButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.saveSeetingSeedingPageButton.UseVisualStyleBackColor = false;
+            // 
+            // contentShareSeedingPageTextBox
+            // 
+            this.contentShareSeedingPageTextBox.ForeColor = System.Drawing.Color.Gray;
+            this.contentShareSeedingPageTextBox.Location = new System.Drawing.Point(492, 336);
+            this.contentShareSeedingPageTextBox.Multiline = true;
+            this.contentShareSeedingPageTextBox.Name = "contentShareSeedingPageTextBox";
+            this.contentShareSeedingPageTextBox.Size = new System.Drawing.Size(407, 187);
+            this.contentShareSeedingPageTextBox.TabIndex = 97;
+            // 
+            // saveContentShareSeedingPageButton
+            // 
+            this.saveContentShareSeedingPageButton.BackColor = System.Drawing.Color.DarkCyan;
+            this.saveContentShareSeedingPageButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.saveContentShareSeedingPageButton.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.saveContentShareSeedingPageButton.ForeColor = System.Drawing.Color.White;
+            this.saveContentShareSeedingPageButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.saveContentShareSeedingPageButton.Location = new System.Drawing.Point(779, 299);
+            this.saveContentShareSeedingPageButton.Name = "saveContentShareSeedingPageButton";
+            this.saveContentShareSeedingPageButton.Size = new System.Drawing.Size(120, 31);
+            this.saveContentShareSeedingPageButton.TabIndex = 96;
+            this.saveContentShareSeedingPageButton.Text = " Lưu Nội dung";
+            this.saveContentShareSeedingPageButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.saveContentShareSeedingPageButton.UseVisualStyleBackColor = false;
+            // 
+            // attentionShareSeedingPageLabel
+            // 
+            this.attentionShareSeedingPageLabel.AutoSize = true;
+            this.attentionShareSeedingPageLabel.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.attentionShareSeedingPageLabel.ForeColor = System.Drawing.Color.Teal;
+            this.attentionShareSeedingPageLabel.Location = new System.Drawing.Point(603, 308);
+            this.attentionShareSeedingPageLabel.Name = "attentionShareSeedingPageLabel";
+            this.attentionShareSeedingPageLabel.Size = new System.Drawing.Size(142, 14);
+            this.attentionShareSeedingPageLabel.TabIndex = 95;
+            this.attentionShareSeedingPageLabel.Text = "*Mỗi nội dung một dòng";
+            // 
+            // contentShareSeedingPageLabel
+            // 
+            this.contentShareSeedingPageLabel.AutoSize = true;
+            this.contentShareSeedingPageLabel.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.contentShareSeedingPageLabel.ForeColor = System.Drawing.Color.Teal;
+            this.contentShareSeedingPageLabel.Location = new System.Drawing.Point(489, 308);
+            this.contentShareSeedingPageLabel.Name = "contentShareSeedingPageLabel";
+            this.contentShareSeedingPageLabel.Size = new System.Drawing.Size(91, 13);
+            this.contentShareSeedingPageLabel.TabIndex = 94;
+            this.contentShareSeedingPageLabel.Text = "Nội dung Share";
+            // 
+            // contentCommentSeedingPageLabel
+            // 
+            this.contentCommentSeedingPageLabel.AutoSize = true;
+            this.contentCommentSeedingPageLabel.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.contentCommentSeedingPageLabel.ForeColor = System.Drawing.Color.Teal;
+            this.contentCommentSeedingPageLabel.Location = new System.Drawing.Point(19, 304);
+            this.contentCommentSeedingPageLabel.Name = "contentCommentSeedingPageLabel";
+            this.contentCommentSeedingPageLabel.Size = new System.Drawing.Size(113, 13);
+            this.contentCommentSeedingPageLabel.TabIndex = 90;
+            this.contentCommentSeedingPageLabel.Text = "Nội dung Comment";
+            // 
+            // saveContentSeedingPageButton
+            // 
+            this.saveContentSeedingPageButton.BackColor = System.Drawing.Color.DarkCyan;
+            this.saveContentSeedingPageButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.saveContentSeedingPageButton.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.saveContentSeedingPageButton.ForeColor = System.Drawing.Color.White;
+            this.saveContentSeedingPageButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.saveContentSeedingPageButton.Location = new System.Drawing.Point(313, 299);
+            this.saveContentSeedingPageButton.Name = "saveContentSeedingPageButton";
+            this.saveContentSeedingPageButton.Size = new System.Drawing.Size(120, 31);
+            this.saveContentSeedingPageButton.TabIndex = 92;
+            this.saveContentSeedingPageButton.Text = " Lưu Nội dung";
+            this.saveContentSeedingPageButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.saveContentSeedingPageButton.UseVisualStyleBackColor = false;
+            // 
+            // contentCommentSeedingPageTextBox
+            // 
+            this.contentCommentSeedingPageTextBox.ForeColor = System.Drawing.Color.Gray;
+            this.contentCommentSeedingPageTextBox.Location = new System.Drawing.Point(22, 336);
+            this.contentCommentSeedingPageTextBox.Multiline = true;
+            this.contentCommentSeedingPageTextBox.Name = "contentCommentSeedingPageTextBox";
+            this.contentCommentSeedingPageTextBox.Size = new System.Drawing.Size(411, 187);
+            this.contentCommentSeedingPageTextBox.TabIndex = 93;
+            // 
+            // attentionContentSeedingPageLabel
+            // 
+            this.attentionContentSeedingPageLabel.AutoSize = true;
+            this.attentionContentSeedingPageLabel.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.attentionContentSeedingPageLabel.ForeColor = System.Drawing.Color.Teal;
+            this.attentionContentSeedingPageLabel.Location = new System.Drawing.Point(146, 304);
+            this.attentionContentSeedingPageLabel.Name = "attentionContentSeedingPageLabel";
+            this.attentionContentSeedingPageLabel.Size = new System.Drawing.Size(142, 14);
+            this.attentionContentSeedingPageLabel.TabIndex = 91;
+            this.attentionContentSeedingPageLabel.Text = "*Mỗi nội dung một dòng";
+            // 
+            // timeGetNumBerNumericUpDown
+            // 
+            this.timeGetNumBerNumericUpDown.Location = new System.Drawing.Point(629, 135);
+            this.timeGetNumBerNumericUpDown.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.timeGetNumBerNumericUpDown.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.timeGetNumBerNumericUpDown.Name = "timeGetNumBerNumericUpDown";
+            this.timeGetNumBerNumericUpDown.Size = new System.Drawing.Size(42, 20);
+            this.timeGetNumBerNumericUpDown.TabIndex = 89;
+            this.timeGetNumBerNumericUpDown.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            // 
+            // timeGetUidSeedingPageLabel
+            // 
+            this.timeGetUidSeedingPageLabel.AutoSize = true;
+            this.timeGetUidSeedingPageLabel.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.timeGetUidSeedingPageLabel.ForeColor = System.Drawing.Color.Teal;
+            this.timeGetUidSeedingPageLabel.Location = new System.Drawing.Point(538, 137);
+            this.timeGetUidSeedingPageLabel.Name = "timeGetUidSeedingPageLabel";
+            this.timeGetUidSeedingPageLabel.Size = new System.Drawing.Size(58, 13);
+            this.timeGetUidSeedingPageLabel.TabIndex = 88;
+            this.timeGetUidSeedingPageLabel.Text = "Time Get";
+            // 
+            // keyGetUidSeedingPageTextBox
+            // 
+            this.keyGetUidSeedingPageTextBox.Location = new System.Drawing.Point(606, 87);
+            this.keyGetUidSeedingPageTextBox.Name = "keyGetUidSeedingPageTextBox";
+            this.keyGetUidSeedingPageTextBox.Size = new System.Drawing.Size(157, 20);
+            this.keyGetUidSeedingPageTextBox.TabIndex = 87;
+            // 
+            // keyGetUidSeedingPageLabel
+            // 
+            this.keyGetUidSeedingPageLabel.AutoSize = true;
+            this.keyGetUidSeedingPageLabel.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.keyGetUidSeedingPageLabel.ForeColor = System.Drawing.Color.Teal;
+            this.keyGetUidSeedingPageLabel.Location = new System.Drawing.Point(538, 87);
+            this.keyGetUidSeedingPageLabel.Name = "keyGetUidSeedingPageLabel";
+            this.keyGetUidSeedingPageLabel.Size = new System.Drawing.Size(28, 13);
+            this.keyGetUidSeedingPageLabel.TabIndex = 86;
+            this.keyGetUidSeedingPageLabel.Text = "Key";
+            // 
+            // getUidSeedingPageCheckBox
+            // 
+            this.getUidSeedingPageCheckBox.AutoSize = true;
+            this.getUidSeedingPageCheckBox.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.getUidSeedingPageCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.getUidSeedingPageCheckBox.Location = new System.Drawing.Point(541, 41);
+            this.getUidSeedingPageCheckBox.Name = "getUidSeedingPageCheckBox";
+            this.getUidSeedingPageCheckBox.Size = new System.Drawing.Size(115, 17);
+            this.getUidSeedingPageCheckBox.TabIndex = 85;
+            this.getUidSeedingPageCheckBox.Text = "GET UID từ SITE";
+            this.getUidSeedingPageCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // shareWallSeedingPageCheckBox
+            // 
+            this.shareWallSeedingPageCheckBox.AutoSize = true;
+            this.shareWallSeedingPageCheckBox.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.shareWallSeedingPageCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.shareWallSeedingPageCheckBox.Location = new System.Drawing.Point(337, 150);
+            this.shareWallSeedingPageCheckBox.Name = "shareWallSeedingPageCheckBox";
+            this.shareWallSeedingPageCheckBox.Size = new System.Drawing.Size(113, 17);
+            this.shareWallSeedingPageCheckBox.TabIndex = 84;
+            this.shareWallSeedingPageCheckBox.Text = "Share về tường";
+            this.shareWallSeedingPageCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // shareGroupSeedingPageCheckBox
+            // 
+            this.shareGroupSeedingPageCheckBox.AutoSize = true;
+            this.shareGroupSeedingPageCheckBox.BackColor = System.Drawing.Color.Transparent;
+            this.shareGroupSeedingPageCheckBox.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.shareGroupSeedingPageCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.shareGroupSeedingPageCheckBox.Location = new System.Drawing.Point(337, 96);
+            this.shareGroupSeedingPageCheckBox.Name = "shareGroupSeedingPageCheckBox";
+            this.shareGroupSeedingPageCheckBox.Size = new System.Drawing.Size(96, 17);
+            this.shareGroupSeedingPageCheckBox.TabIndex = 83;
+            this.shareGroupSeedingPageCheckBox.Text = "Share Group";
+            this.shareGroupSeedingPageCheckBox.UseVisualStyleBackColor = false;
+            // 
+            // attentionSeedingPageLabel
+            // 
+            this.attentionSeedingPageLabel.AutoSize = true;
+            this.attentionSeedingPageLabel.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.attentionSeedingPageLabel.ForeColor = System.Drawing.Color.Teal;
+            this.attentionSeedingPageLabel.Location = new System.Drawing.Point(89, 95);
+            this.attentionSeedingPageLabel.Name = "attentionSeedingPageLabel";
+            this.attentionSeedingPageLabel.Size = new System.Drawing.Size(206, 14);
+            this.attentionSeedingPageLabel.TabIndex = 81;
+            this.attentionSeedingPageLabel.Text = "*Mỗi hàng 1 UID nếu Like nhiều UID";
+            // 
+            // uidSeedingPageTextBox
+            // 
+            this.uidSeedingPageTextBox.Location = new System.Drawing.Point(92, 123);
+            this.uidSeedingPageTextBox.Multiline = true;
+            this.uidSeedingPageTextBox.Name = "uidSeedingPageTextBox";
+            this.uidSeedingPageTextBox.Size = new System.Drawing.Size(196, 82);
+            this.uidSeedingPageTextBox.TabIndex = 80;
+            // 
+            // uidSeedingPageLabel
+            // 
+            this.uidSeedingPageLabel.AutoSize = true;
+            this.uidSeedingPageLabel.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.uidSeedingPageLabel.ForeColor = System.Drawing.Color.Teal;
+            this.uidSeedingPageLabel.Location = new System.Drawing.Point(19, 96);
+            this.uidSeedingPageLabel.Name = "uidSeedingPageLabel";
+            this.uidSeedingPageLabel.Size = new System.Drawing.Size(28, 13);
+            this.uidSeedingPageLabel.TabIndex = 79;
+            this.uidSeedingPageLabel.Text = "UID";
+            // 
+            // followSeedingPageCheckBox
+            // 
+            this.followSeedingPageCheckBox.AutoSize = true;
+            this.followSeedingPageCheckBox.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.followSeedingPageCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.followSeedingPageCheckBox.Location = new System.Drawing.Point(357, 41);
+            this.followSeedingPageCheckBox.Name = "followSeedingPageCheckBox";
+            this.followSeedingPageCheckBox.Size = new System.Drawing.Size(61, 17);
+            this.followSeedingPageCheckBox.TabIndex = 78;
+            this.followSeedingPageCheckBox.Text = "Follow";
+            this.followSeedingPageCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // commentSeedingPageCheckBox
+            // 
+            this.commentSeedingPageCheckBox.AutoSize = true;
+            this.commentSeedingPageCheckBox.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.commentSeedingPageCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.commentSeedingPageCheckBox.Location = new System.Drawing.Point(239, 40);
+            this.commentSeedingPageCheckBox.Name = "commentSeedingPageCheckBox";
+            this.commentSeedingPageCheckBox.Size = new System.Drawing.Size(81, 17);
+            this.commentSeedingPageCheckBox.TabIndex = 77;
+            this.commentSeedingPageCheckBox.Text = "Comment";
+            this.commentSeedingPageCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // likePageSeedingPageCheckBox
+            // 
+            this.likePageSeedingPageCheckBox.AutoSize = true;
+            this.likePageSeedingPageCheckBox.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.likePageSeedingPageCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.likePageSeedingPageCheckBox.Location = new System.Drawing.Point(133, 37);
+            this.likePageSeedingPageCheckBox.Name = "likePageSeedingPageCheckBox";
+            this.likePageSeedingPageCheckBox.Size = new System.Drawing.Size(80, 17);
+            this.likePageSeedingPageCheckBox.TabIndex = 76;
+            this.likePageSeedingPageCheckBox.Text = "Like Page";
+            this.likePageSeedingPageCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // likePostSeedingPageCheckBox
+            // 
+            this.likePostSeedingPageCheckBox.AutoSize = true;
+            this.likePostSeedingPageCheckBox.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.likePostSeedingPageCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.likePostSeedingPageCheckBox.Location = new System.Drawing.Point(22, 37);
+            this.likePostSeedingPageCheckBox.Name = "likePostSeedingPageCheckBox";
+            this.likePostSeedingPageCheckBox.Size = new System.Drawing.Size(77, 17);
+            this.likePostSeedingPageCheckBox.TabIndex = 1;
+            this.likePostSeedingPageCheckBox.Text = "Like Post";
+            this.likePostSeedingPageCheckBox.UseVisualStyleBackColor = true;
             // 
             // regPageGroupBox
             // 
@@ -906,7 +1258,7 @@ namespace AutoLike
             this.generalSettingflowNumberNumericUpDown.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.generalSettingflowNumberNumericUpDown.Location = new System.Drawing.Point(109, 33);
             this.generalSettingflowNumberNumericUpDown.Maximum = new decimal(new int[] {
-            20,
+            10,
             0,
             0,
             0});
@@ -1155,6 +1507,21 @@ namespace AutoLike
             this.checkViaGroupBox.Size = new System.Drawing.Size(465, 151);
             this.checkViaGroupBox.TabIndex = 20;
             this.checkViaGroupBox.TabStop = false;
+            // 
+            // checkStatusCookieButton
+            // 
+            this.checkStatusCookieButton.BackColor = System.Drawing.Color.White;
+            this.checkStatusCookieButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.checkStatusCookieButton.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Bold);
+            this.checkStatusCookieButton.ForeColor = System.Drawing.Color.Teal;
+            this.checkStatusCookieButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.checkStatusCookieButton.Location = new System.Drawing.Point(15, 74);
+            this.checkStatusCookieButton.Name = "checkStatusCookieButton";
+            this.checkStatusCookieButton.Size = new System.Drawing.Size(110, 29);
+            this.checkStatusCookieButton.TabIndex = 53;
+            this.checkStatusCookieButton.Text = "Check Cookie";
+            this.checkStatusCookieButton.UseVisualStyleBackColor = false;
+            this.checkStatusCookieButton.Click += new System.EventHandler(this.checkStatusCookieButton_Click);
             // 
             // getInfoAccountToken
             // 
@@ -1551,20 +1918,18 @@ namespace AutoLike
             this.tabControl.Size = new System.Drawing.Size(1672, 787);
             this.tabControl.TabIndex = 40;
             // 
-            // checkStatusCookieButton
+            // startWithSeedingWithPageButton
             // 
-            this.checkStatusCookieButton.BackColor = System.Drawing.Color.White;
-            this.checkStatusCookieButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.checkStatusCookieButton.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Bold);
-            this.checkStatusCookieButton.ForeColor = System.Drawing.Color.Teal;
-            this.checkStatusCookieButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.checkStatusCookieButton.Location = new System.Drawing.Point(15, 74);
-            this.checkStatusCookieButton.Name = "checkStatusCookieButton";
-            this.checkStatusCookieButton.Size = new System.Drawing.Size(110, 29);
-            this.checkStatusCookieButton.TabIndex = 53;
-            this.checkStatusCookieButton.Text = "Check Cookie";
-            this.checkStatusCookieButton.UseVisualStyleBackColor = false;
-            this.checkStatusCookieButton.Click += new System.EventHandler(this.checkStatusCookieButton_Click);
+            this.startWithSeedingWithPageButton.BackColor = System.Drawing.Color.ForestGreen;
+            this.startWithSeedingWithPageButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.startWithSeedingWithPageButton.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Bold);
+            this.startWithSeedingWithPageButton.ForeColor = System.Drawing.Color.White;
+            this.startWithSeedingWithPageButton.Location = new System.Drawing.Point(720, 581);
+            this.startWithSeedingWithPageButton.Name = "startWithSeedingWithPageButton";
+            this.startWithSeedingWithPageButton.Size = new System.Drawing.Size(179, 32);
+            this.startWithSeedingWithPageButton.TabIndex = 100;
+            this.startWithSeedingWithPageButton.Text = "START SEEDING WITH PAGE";
+            this.startWithSeedingWithPageButton.UseVisualStyleBackColor = false;
             // 
             // Form1
             // 
@@ -1601,6 +1966,9 @@ namespace AutoLike
             this.featuresContextMenuStrip.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.loadingPictureBox)).EndInit();
             this.regAndSeedingTabPage.ResumeLayout(false);
+            this.seedingPageGroupBox.ResumeLayout(false);
+            this.seedingPageGroupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.timeGetNumBerNumericUpDown)).EndInit();
             this.regPageGroupBox.ResumeLayout(false);
             this.regPageGroupBox.PerformLayout();
             this.generalSettingTabPage.ResumeLayout(false);
@@ -1752,6 +2120,32 @@ namespace AutoLike
         private System.Windows.Forms.Button getAccessTokenEAAGButton;
         private System.Windows.Forms.Button getInfoAccountToken;
         private System.Windows.Forms.Button checkStatusCookieButton;
+        private System.Windows.Forms.GroupBox seedingPageGroupBox;
+        private System.Windows.Forms.CheckBox followSeedingPageCheckBox;
+        private System.Windows.Forms.CheckBox commentSeedingPageCheckBox;
+        private System.Windows.Forms.CheckBox likePageSeedingPageCheckBox;
+        private System.Windows.Forms.CheckBox likePostSeedingPageCheckBox;
+        private System.Windows.Forms.Label uidSeedingPageLabel;
+        private System.Windows.Forms.TextBox uidSeedingPageTextBox;
+        private System.Windows.Forms.Label attentionSeedingPageLabel;
+        private System.Windows.Forms.CheckBox shareWallSeedingPageCheckBox;
+        private System.Windows.Forms.CheckBox shareGroupSeedingPageCheckBox;
+        private System.Windows.Forms.Label timeGetUidSeedingPageLabel;
+        private System.Windows.Forms.TextBox keyGetUidSeedingPageTextBox;
+        private System.Windows.Forms.Label keyGetUidSeedingPageLabel;
+        private System.Windows.Forms.CheckBox getUidSeedingPageCheckBox;
+        private System.Windows.Forms.NumericUpDown timeGetNumBerNumericUpDown;
+        private System.Windows.Forms.TextBox contentCommentSeedingPageTextBox;
+        private System.Windows.Forms.Button saveContentSeedingPageButton;
+        private System.Windows.Forms.Label attentionContentSeedingPageLabel;
+        private System.Windows.Forms.Label contentCommentSeedingPageLabel;
+        private System.Windows.Forms.TextBox contentShareSeedingPageTextBox;
+        private System.Windows.Forms.Button saveContentShareSeedingPageButton;
+        private System.Windows.Forms.Label attentionShareSeedingPageLabel;
+        private System.Windows.Forms.Label contentShareSeedingPageLabel;
+        private System.Windows.Forms.Button saveSeetingSeedingPageButton;
+        private System.Windows.Forms.Button startWithSeedingWithUidButton;
+        private System.Windows.Forms.Button startWithSeedingWithPageButton;
     }
 }
 

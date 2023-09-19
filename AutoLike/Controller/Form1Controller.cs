@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -190,6 +191,21 @@ namespace AutoLike.Controller
 
             return list;
 
+        }
+
+        public void loadGeneralSetting(TextBox profileFolderPath, ComboBox selectProxy,TextBox apiKeyTextBox)
+        {
+            if (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\AutoLike\GeneralSetting.txt"))
+            {
+                string[] dt = File.ReadAllText(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\AutoLike\GeneralSetting.txt").Split('|');
+                try
+                {
+                    selectProxy.SelectedItem = dt[0];
+                    profileFolderPath.Text = dt[1];
+                    apiKeyTextBox.Text = dt[2];
+                }
+                catch { }
+            }
         }
 
         /*
@@ -389,8 +405,8 @@ namespace AutoLike.Controller
                 
             }
 
-            int batchSize = 10; // Số lượng item mỗi lần xử lý
-            int maxConcurrency = 10; // Số lượng luồng tối đa
+            int batchSize = Convert.ToInt32(flowNum.Value); // Số lượng item mỗi lần xử lý
+            int maxConcurrency = Convert.ToInt32(flowNum.Value); // Số lượng luồng tối đa
             int screenHeight = SystemInformation.VirtualScreen.Height;
             int screenWidth = SystemInformation.VirtualScreen.Width;
             if (screenHeight > 1920)
@@ -656,8 +672,8 @@ namespace AutoLike.Controller
 
             }
 
-            int batchSize = 10; // Số lượng item mỗi lần xử lý
-            int maxConcurrency = 10; // Số lượng luồng tối đa
+            int batchSize = Convert.ToInt32(flowNum.Value); // Số lượng item mỗi lần xử lý
+            int maxConcurrency = Convert.ToInt32(flowNum.Value); // Số lượng luồng tối đa
             int screenHeight = SystemInformation.VirtualScreen.Height;
             int screenWidth = SystemInformation.VirtualScreen.Width;
             if (screenHeight > 1920)
