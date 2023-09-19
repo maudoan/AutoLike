@@ -658,7 +658,6 @@ namespace AutoLike
             this.startWithSeedingWithUidButton.TabIndex = 99;
             this.startWithSeedingWithUidButton.Text = "START SEEDING WITH UID";
             this.startWithSeedingWithUidButton.UseVisualStyleBackColor = false;
-            this.startWithSeedingWithUidButton.Click += new System.EventHandler(this.button1_Click);
             // 
             // saveSeetingSeedingPageButton
             // 

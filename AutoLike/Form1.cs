@@ -364,5 +364,6 @@ namespace AutoLike
         {
             _form1Controller.checkStatusCookie(detailListAccountsDataGridView);
         }
+
     }
 }
