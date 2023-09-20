@@ -82,19 +82,15 @@ namespace AutoLike.Features
                 for (int k1 = 0; k1 < uidPost.Length; k1++)
                 {
                 a:
-                    //driver.Navigate().GoToUrl("https://www.facebook.com/");
-                    //Thread.Sleep(4000);
-                    //if (FindTextinChrome(i, driver, "gần đây", "Recent logins"))
-                    //{
-                    //    driver.FindElement(By.XPath("/html/body/div[1]/div[2]/div[1]/div/div/div/div[1]/div[4]/div[1]/div/div/a[1]/img")).Click();
-                    //    Thread.Sleep(3000);
-                    //}
-
                     int dem = 0;
                     ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Vào Post: " + uidPost[k1]);
                 lai:
-                    driver.Navigate().GoToUrl("https://m.facebook.com/");
-
+                    driver.Navigate().GoToUrl("https://www.facebook.com/");
+                    Thread.Sleep(1000);
+                    if (ChromeDriverUtils.FindTextInChrome(driver, "Chào mừng bạn đến với Trang mới!", "Chào mừng bạn đến với Trang mới!"))
+                    {
+                        driver.FindElement(By.XPath("//*[@id=\"facebook\"]/body/div[4]/div[1]/div/div[2]/div/div/div/div[1]/div")).Click();
+                    }
                     Thread.Sleep(5000);
                     driver.FindElement(By.XPath("/html/body/div[1]/div/div[1]/div/div[2]/div[5]/div[1]/span/div/div[1]/div")).Click();
                    
@@ -108,15 +104,21 @@ namespace AutoLike.Features
                     }
                     if (ChromeDriverUtils.FindTextInChrome(driver, "Trang & trang cá nhân của bạn", "Trang & trang cá nhân của bạn"))
                     {
-                        Thread.Sleep(5000);
-                        if (ChromeDriverUtils.FindTextInChrome(driver, page.NAME, page.NAME))
+                        try
                         {
-                            Console.WriteLine(page.NAME);
-                            IWebElement divContainingText = driver.FindElement(By.XPath("//*[text()='" + page.NAME + "']"));
-                            IWebElement siblingElement = divContainingText.FindElement(By.XPath("../div"));
-                            siblingElement.Click();
+                            Thread.Sleep(1000);
+                            Console.WriteLine("++++++++++++++");
+                            driver.FindElement(By.XPath("/html/body/div[4]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[2]/div/div[1]/div[2]/div[2]/div/div")).Click();
                             Thread.Sleep(5000);
                         }
+                        catch
+                        {
+                            Thread.Sleep(1000);
+                            Console.WriteLine("++++++++++++++");
+                            driver.FindElement(By.XPath("/html/body/div[5]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[3]/div/div[1]/div[2]/div[2]/div/div")).Click();
+                            Thread.Sleep(5000);
+                        }
+                     
                     }
                     driver.Navigate().GoToUrl("https://m.facebook.com/" + uidPost[k1]);
                     Thread.Sleep(3000);

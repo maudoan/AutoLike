@@ -926,7 +926,7 @@ namespace AutoLike.Controller
             //    uidPost = ui.Replace("----", "|").Split('|');
             //}
             string[] uidPost = new string[1];
-            uidPost[0] = "697866975718518";
+            uidPost[0] = "1657023011415205";
 
             likePost.LikePost(chromeDriver, dataGridView, item, uidPost, randomPage);
 
