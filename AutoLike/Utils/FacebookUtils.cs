@@ -110,22 +110,6 @@ namespace AutoLike.Utils
         }
         public static Dictionary<string,string> getListPage(string cookie, string userAgent = "", string proxy = "")
         {
-            //List<string> listGroup = new List<string>();
-            //try
-            //{
-            //    HttpUtils request = new HttpUtils(cookie, userAgent, proxy);
-            //    string html = request.getRequest(@"https://www.facebook.com/", @"https://www.facebook.com/");
-            //    string pattern = @"""delegate_page_id""\s*:\s*""(\d+)""";
-            //    MatchCollection linkGr = Regex.Matches(html, pattern);
-            //    for (int i = 0; i < linkGr.Count; i++)
-            //    {
-            //        listGroup.Add(linkGr[i].Groups[1].Value.ToString());
-            //    }
-            //}
-            //catch
-            //{ return null; }
-
-            //return listGroup;
 
             Dictionary<string, string> listPage =   new Dictionary<string, string>();
 

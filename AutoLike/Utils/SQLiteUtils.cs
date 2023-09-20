@@ -308,7 +308,7 @@ namespace AutoLike.Utils
                 string text = string.Format("DELETE FROM page where [PAGEID]='{0}'", listPage[i].PAGEID);
                 sqliteCommand.CommandText = text;
                 sqliteCommand.ExecuteNonQuery();
-                Console.WriteLine("đã xóa trùng ====");
+                
             }
             trans.Commit();
             sw.Stop();

@@ -246,7 +246,7 @@ namespace AutoLike.Controller
                 if(listIdGroup != null && listIdGroup.Count > 0)
                 {
                     item.SOPAGE = listIdGroup.Count.ToString();
-                    Console.WriteLine("====" + item.SOPAGE);
+                    
                     SQLiteUtils.updateByUID(item);
                     foreach (var kvp in listIdGroup)
                     {
