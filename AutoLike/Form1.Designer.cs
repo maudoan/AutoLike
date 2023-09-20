@@ -100,6 +100,8 @@ namespace AutoLike
             this.totalAccountSelectedValueLabel = new System.Windows.Forms.Label();
             this.regAndSeedingTabPage = new System.Windows.Forms.TabPage();
             this.seedingPageGroupBox = new System.Windows.Forms.GroupBox();
+            this.sType2SeedingPageCheckbox = new System.Windows.Forms.CheckBox();
+            this.startWithSeedingWithPageButton = new System.Windows.Forms.Button();
             this.startWithSeedingWithUidButton = new System.Windows.Forms.Button();
             this.saveSeetingSeedingPageButton = new System.Windows.Forms.Button();
             this.contentShareSeedingPageTextBox = new System.Windows.Forms.TextBox();
@@ -204,7 +206,6 @@ namespace AutoLike
             this.trangthaiAccount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pageNumberAccount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControl = new System.Windows.Forms.TabControl();
-            this.startWithSeedingWithPageButton = new System.Windows.Forms.Button();
             this.toolBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogoShop)).BeginInit();
             this.listFileContextMenuStrip.SuspendLayout();
@@ -613,6 +614,7 @@ namespace AutoLike
             // seedingPageGroupBox
             // 
             this.seedingPageGroupBox.BackColor = System.Drawing.Color.White;
+            this.seedingPageGroupBox.Controls.Add(this.sType2SeedingPageCheckbox);
             this.seedingPageGroupBox.Controls.Add(this.startWithSeedingWithPageButton);
             this.seedingPageGroupBox.Controls.Add(this.startWithSeedingWithUidButton);
             this.seedingPageGroupBox.Controls.Add(this.saveSeetingSeedingPageButton);
@@ -645,6 +647,32 @@ namespace AutoLike
             this.seedingPageGroupBox.TabIndex = 2;
             this.seedingPageGroupBox.TabStop = false;
             this.seedingPageGroupBox.Text = "Seeding";
+            // 
+            // sType2SeedingPageCheckbox
+            // 
+            this.sType2SeedingPageCheckbox.AutoSize = true;
+            this.sType2SeedingPageCheckbox.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.sType2SeedingPageCheckbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.sType2SeedingPageCheckbox.Location = new System.Drawing.Point(444, 41);
+            this.sType2SeedingPageCheckbox.Name = "sType2SeedingPageCheckbox";
+            this.sType2SeedingPageCheckbox.Size = new System.Drawing.Size(66, 17);
+            this.sType2SeedingPageCheckbox.TabIndex = 101;
+            this.sType2SeedingPageCheckbox.Text = "Stype2";
+            this.sType2SeedingPageCheckbox.UseVisualStyleBackColor = true;
+            // 
+            // startWithSeedingWithPageButton
+            // 
+            this.startWithSeedingWithPageButton.BackColor = System.Drawing.Color.ForestGreen;
+            this.startWithSeedingWithPageButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.startWithSeedingWithPageButton.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Bold);
+            this.startWithSeedingWithPageButton.ForeColor = System.Drawing.Color.White;
+            this.startWithSeedingWithPageButton.Location = new System.Drawing.Point(720, 581);
+            this.startWithSeedingWithPageButton.Name = "startWithSeedingWithPageButton";
+            this.startWithSeedingWithPageButton.Size = new System.Drawing.Size(179, 32);
+            this.startWithSeedingWithPageButton.TabIndex = 100;
+            this.startWithSeedingWithPageButton.Text = "START SEEDING WITH PAGE";
+            this.startWithSeedingWithPageButton.UseVisualStyleBackColor = false;
+            this.startWithSeedingWithPageButton.Click += new System.EventHandler(this.startWithSeedingWithPageButton_Click);
             // 
             // startWithSeedingWithUidButton
             // 
@@ -1917,19 +1945,6 @@ namespace AutoLike
             this.tabControl.Size = new System.Drawing.Size(1672, 787);
             this.tabControl.TabIndex = 40;
             // 
-            // startWithSeedingWithPageButton
-            // 
-            this.startWithSeedingWithPageButton.BackColor = System.Drawing.Color.ForestGreen;
-            this.startWithSeedingWithPageButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.startWithSeedingWithPageButton.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Bold);
-            this.startWithSeedingWithPageButton.ForeColor = System.Drawing.Color.White;
-            this.startWithSeedingWithPageButton.Location = new System.Drawing.Point(720, 581);
-            this.startWithSeedingWithPageButton.Name = "startWithSeedingWithPageButton";
-            this.startWithSeedingWithPageButton.Size = new System.Drawing.Size(179, 32);
-            this.startWithSeedingWithPageButton.TabIndex = 100;
-            this.startWithSeedingWithPageButton.Text = "START SEEDING WITH PAGE";
-            this.startWithSeedingWithPageButton.UseVisualStyleBackColor = false;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2145,6 +2160,7 @@ namespace AutoLike
         private System.Windows.Forms.Button saveSeetingSeedingPageButton;
         private System.Windows.Forms.Button startWithSeedingWithUidButton;
         private System.Windows.Forms.Button startWithSeedingWithPageButton;
+        private System.Windows.Forms.CheckBox sType2SeedingPageCheckbox;
     }
 }
 

@@ -316,7 +316,7 @@ namespace AutoLike.Utils
             sqliteConnection.Dispose();
         }
 
-        public List<string> GetPageListByUid(account acc)
+        public static List<string> getPageListByUid(account acc)
         {
 
             List<string> listPage = new List<string>();
@@ -335,7 +335,8 @@ namespace AutoLike.Utils
                 if (sqliteDataReader["UID"].ToString() == acc.UID)
                 {
                     listPage.Add(sqliteDataReader["PAGEID"].ToString() + "|" +
-                    sqliteDataReader["UID"].ToString()
+                    sqliteDataReader["UID"].ToString() + "|" +
+                    sqliteDataReader["NAME"].ToString()
 
                    );
                 }
