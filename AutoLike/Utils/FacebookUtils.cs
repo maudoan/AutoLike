@@ -108,25 +108,65 @@ namespace AutoLike.Utils
             { return null; }
             return listGroup;
         }
-        public static List<string> getListPage(string cookie, string userAgent = "", string proxy = "")
+        public static Dictionary<string,string> getListPage(string cookie, string userAgent = "", string proxy = "")
         {
-            List<string> listGroup = new List<string>();
-            try
+            //List<string> listGroup = new List<string>();
+            //try
+            //{
+            //    HttpUtils request = new HttpUtils(cookie, userAgent, proxy);
+            //    string html = request.getRequest(@"https://www.facebook.com/", @"https://www.facebook.com/");
+            //    string pattern = @"""delegate_page_id""\s*:\s*""(\d+)""";
+            //    MatchCollection linkGr = Regex.Matches(html, pattern);
+            //    for (int i = 0; i < linkGr.Count; i++)
+            //    {
+            //        listGroup.Add(linkGr[i].Groups[1].Value.ToString());
+            //    }
+            //}
+            //catch
+            //{ return null; }
+
+            //return listGroup;
+
+            Dictionary<string, string> listPage =   new Dictionary<string, string>();
+
+            HttpUtils request = new HttpUtils(cookie, userAgent, proxy);
+            string html = request.getRequest(@"https://www.facebook.com/", @"https://www.facebook.com/");
+
+            string pattern = @"{""node"":{""profile"":{""id"":""([^""]+)"",""name"":""([^""]+)""";
+
+
+            MatchCollection matches = Regex.Matches(html, pattern);
+
+            foreach (Match match in matches)
             {
-                HttpUtils request = new HttpUtils(cookie, userAgent, proxy);
-                string html = request.getRequest(@"https://www.facebook.com/", @"https://www.facebook.com/");
-                string pattern = @"""delegate_page_id""\s*:\s*""(\d+)""";
-                MatchCollection linkGr = Regex.Matches(html, pattern);
-                for (int i = 0; i < linkGr.Count; i++)
+                if (match.Success)
                 {
-                    listGroup.Add(linkGr[i].Groups[1].Value.ToString());
+                    string id = match.Groups[1].Value;
+                    string name = match.Groups[2].Value;
+
+                    // Chuyển đổi tên có ký tự đặc biệt Unicode thành tiếng Việt
+                    name = DecodeUnicodeString(name);
+
+                    listPage[id] = name;
+
+                    Console.WriteLine($"ID: {id}, Name: {name}");
                 }
             }
-            catch
-            { return null; }
-           
-            return listGroup;
+
+            return listPage;
 
         }
+
+        public static string DecodeUnicodeString(string unicodeString)
+        {
+            return Regex.Replace(unicodeString, @"\\u(?<Value>[a-zA-Z0-9]{4})", match =>
+            {
+                string hex = match.Groups["Value"].Value;
+                int value = int.Parse(hex, System.Globalization.NumberStyles.HexNumber);
+                return char.ConvertFromUtf32(value);
+            });
+        }
+
+
     }
 }

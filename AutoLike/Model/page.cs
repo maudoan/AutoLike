@@ -10,5 +10,6 @@ namespace AutoLike.Model
     {
         public string PAGEID { get; set; }
         public string UID { get; set; }
+        public string NAME { get; set; }
     }
 }

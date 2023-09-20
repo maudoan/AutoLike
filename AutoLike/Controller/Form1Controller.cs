@@ -5,6 +5,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.DevTools;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -236,22 +237,25 @@ namespace AutoLike.Controller
                 }
               
             }
-
+                
             List<page> listPage = new List<page>();
      
             foreach(account item in danhSach)
             {
-                List<string> listIdGroup = FacebookUtils.getListPage(item.COOKIE, "","");
-                if(listIdGroup != null)
+                Dictionary<string,string> listIdGroup = FacebookUtils.getListPage(item.COOKIE, "","");
+                if(listIdGroup != null && listIdGroup.Count > 0)
                 {
                     item.SOPAGE = listIdGroup.Count.ToString();
                     Console.WriteLine("====" + item.SOPAGE);
                     SQLiteUtils.updateByUID(item);
-                    for(int i = 0; i < listIdGroup.Count; i++ )
+                    foreach (var kvp in listIdGroup)
                     {
+                        string key = kvp.Key;
+                        string value = kvp.Value;
                         page page = new page();
                         page.UID = item.UID;
-                        page.PAGEID = listIdGroup[i];
+                        page.PAGEID = key;
+                        page.NAME = value;
                         listPage.Add(page);
                     }
                 }    

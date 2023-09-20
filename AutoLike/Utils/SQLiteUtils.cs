@@ -275,7 +275,7 @@ namespace AutoLike.Utils
 
                 foreach (page item in listPage)
                 {
-                    string text = string.Format("INSERT INTO page ('PAGEID','UID') VALUES ('{0}', '{1}')", item.PAGEID, item.UID);
+                    string text = string.Format("INSERT INTO page ('PAGEID','UID','NAME') VALUES ('{0}', '{1}', '{2}')", item.PAGEID, item.UID, item.NAME);
                     sqliteCommand.CommandText = text;
                     sqliteCommand.ExecuteNonQuery();
                 }
@@ -305,10 +305,10 @@ namespace AutoLike.Utils
             sw.Start();
             for (int i = 0; i < listPage.Count; i++)
             {
-                string text = string.Format("DELETE FROM page where [PAGEID]='{0}'", listPage[0].PAGEID);
+                string text = string.Format("DELETE FROM page where [PAGEID]='{0}'", listPage[i].PAGEID);
                 sqliteCommand.CommandText = text;
                 sqliteCommand.ExecuteNonQuery();
-
+                Console.WriteLine("đã xóa trùng ====");
             }
             trans.Commit();
             sw.Stop();
@@ -316,6 +316,36 @@ namespace AutoLike.Utils
             sqliteConnection.Dispose();
         }
 
+        public List<string> GetPageListByUid(account acc)
+        {
+
+            List<string> listPage = new List<string>();
+
+            SQLiteConnection sqliteConnection = new SQLiteConnection();
+            sqliteConnection.ConnectionString = "Data Source=Data.sqlite3;Version=3;";
+            sqliteConnection.Open();
+            SQLiteCommand sqliteCommand = sqliteConnection.CreateCommand();
+            string text = string.Format("SELECT * From [page] where [UID] = '{0}'", acc.UID);
+            sqliteCommand.CommandText = text;
+            sqliteCommand.CommandType = CommandType.Text;
+            SQLiteDataReader sqliteDataReader = sqliteCommand.ExecuteReader();
+            while (sqliteDataReader.Read())
+            {
+
+                if (sqliteDataReader["UID"].ToString() == acc.UID)
+                {
+                    listPage.Add(sqliteDataReader["PAGEID"].ToString() + "|" +
+                    sqliteDataReader["UID"].ToString()
+
+                   );
+                }
+
+
+            }
+
+
+            return listPage;
+        }
 
     }
 }
