@@ -770,8 +770,6 @@ namespace AutoLike.Controller
          * Feature Seeding Page
          * 
          */
-
-
         public void likePost(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, ComboBox selectProxy, List<string> apiKeyList)
         {
 
@@ -866,7 +864,13 @@ namespace AutoLike.Controller
                             }
                             else { }
                             itemIndex++;
-                            await processItemLikePost(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, dataGridView, x, y);
+                            List<string> listPageString = SQLiteUtils.getPageListByUid(item);
+
+                            if(listPageString.Count > 0)
+                            {
+                                await processItemLikePost(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, dataGridView, x, y, listPageString);
+                            }
+                            
 
                         }
                         finally
@@ -892,12 +896,11 @@ namespace AutoLike.Controller
         /*
          * Process Reg Page for Item Acc
          */
-        public async Task processItemLikePost(string ProfileFolderPath, account item, int itemIndex, NumericUpDown flowNum, ComboBox selectProxy, DataGridView dataGridView, int x, int y)
+        public async Task processItemLikePost(string ProfileFolderPath, account item, int itemIndex, NumericUpDown flowNum, ComboBox selectProxy, DataGridView dataGridView, int x, int y, List<string> listPageString)
         {
             ChromeDriver chromeDriver = _chromeDriverUtils.initChrome(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, x, y);
             _listDriver.Add(chromeDriver);
-
-            List<string> listPageString = SQLiteUtils.getPageListByUid(item);
+          
             List<page> listPage = new List<page>();
             foreach(var list in listPageString)
             {
@@ -933,5 +936,159 @@ namespace AutoLike.Controller
             SQLiteUtils.updateByUID(item);
             Console.WriteLine($"Processing item: =======");
         }
+
+
+        /*
+         * 
+         * Move Page To UID
+         * 
+         */
+
+        public void movePageToUid(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, ComboBox selectProxy, List<string> apiKeyList)
+        {
+
+            List<account> danhSach = new List<account>();
+
+            for (int i = 0; i < dataGridView.Rows.Count; i++)
+            {
+                if (dataGridView.Rows[i].Cells["checkboxItemAccount"].Value.ToString() == "True")
+                {
+                    account acc = new account();
+                    acc.UID = dataGridView.Rows[i].Cells["uidAccount"].Value.ToString();
+                    acc.COOKIE = dataGridView.Rows[i].Cells["cookieAccount"].Value.ToString();
+                    acc.TOKEN = dataGridView.Rows[i].Cells["tokenAccount"].Value.ToString();
+                    acc.PASS = dataGridView.Rows[i].Cells["passAccount"].Value.ToString();
+                    acc.M2FA = dataGridView.Rows[i].Cells["code2faAccount"].Value.ToString();
+                    acc.LIVE = dataGridView.Rows[i].Cells["tinhtrangAccount"].Value.ToString();
+                    acc.PROXY = dataGridView.Rows[i].Cells["proxyAccount"].Value.ToString();
+                    acc.TRANGTHAI = dataGridView.Rows[i].Cells["trangthaiAccount"].Value.ToString();
+                    acc.SOPAGE = dataGridView.Rows[i].Cells["pageNumberAccount"].Value.ToString();
+                    danhSach.Add(acc);
+                }
+            }
+
+            ProcessMovePageToUid(ProfileFolderPath, dataGridView, flowNum, selectProxy, danhSach, apiKeyList);
+        }
+
+        /*
+         * Process Move Page To Uid
+         */
+
+        public async void ProcessMovePageToUid(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, ComboBox selectProxy, List<account> listAcccounts, List<string> apiKeyList)
+        {
+            int itemIndex = 0;
+            ProxyUtils proxyUtils = new ProxyUtils();
+
+            if (apiKeyList.Count > 0)
+            {
+                for (int i = 0; i < apiKeyList.Count; i++)
+                {
+                    await proxyUtils.getNewProxy(Constants.Constants.GetNewProxyShopLike(apiKeyList[i]));
+                }
+
+            }
+
+            int batchSize = Convert.ToInt32(flowNum.Value); // Số lượng item mỗi lần xử lý
+            int maxConcurrency = Convert.ToInt32(flowNum.Value); // Số lượng luồng tối đa
+            int screenHeight = SystemInformation.VirtualScreen.Height;
+            int screenWidth = SystemInformation.VirtualScreen.Width;
+            if (screenHeight > 1920)
+            {
+                screenWidth = 1920;
+            }
+            SemaphoreSlim semaphore = new SemaphoreSlim(maxConcurrency);
+            int x = 0; int y = 0;
+            for (int i = 0; i < listAcccounts.Count; i += batchSize)
+            {
+                List<account> batch = listAcccounts.GetRange(i, Math.Min(batchSize, listAcccounts.Count - i));
+
+
+                try
+                {
+                    await Task.WhenAll(batch.Select(async item =>
+                    {
+                        await semaphore.WaitAsync();
+                        try
+                        {
+                            Random random = new Random();
+                            int index = random.Next(apiKeyList.Count);
+                            string randomKey = apiKeyList[index];
+                            string proxy = await proxyUtils.getCurrentProxy(Constants.Constants.GetCurrentProxyShopLike(randomKey, "hd"));
+                            item.PROXY = proxy;
+
+                            if (itemIndex == 0 || itemIndex == 10 || itemIndex == 20 || itemIndex == 30)
+                            {
+                                y = 0;
+                                x = 0;
+                            }
+                            else if ((itemIndex > 0 && itemIndex < 5) || (itemIndex > 10 && itemIndex < 15) || (itemIndex > 20 && itemIndex < 25) || (itemIndex > 30 && itemIndex < 35))
+                            {
+                                y = 0;
+                                x += screenWidth / 5;
+                            }
+                            else if (itemIndex == 5 || itemIndex == 15 || itemIndex == 25 || itemIndex == 35)
+                            {
+                                y = screenHeight / 2;
+                                x = 0;
+                            }
+                            else if ((itemIndex > 5 && itemIndex < 10) || (itemIndex > 15 && itemIndex <= 20) || (itemIndex > 25 && itemIndex < 30) || (itemIndex > 35 && itemIndex < 40))
+                            {
+                                y = screenHeight / 2;
+                                x += screenWidth / 5;
+                            }
+                            else { }
+                            itemIndex++;
+                            List<string> listPageString = SQLiteUtils.getPageListByUid(item);
+
+                            if (listPageString.Count > 0)
+                            {
+                                await processItemMovePageToUid(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, dataGridView, x, y, listPageString);
+                            }
+
+
+                        }
+                        finally
+                        {
+                            semaphore.Release();
+                        }
+                    }));
+                }
+                finally
+                {
+                    // Sau khi hoàn thành một batch, đóng tất cả các ChromeDriver
+                    foreach (var driver in _listDriver)
+                    {
+                        driver.Quit();
+                    }
+                }
+            }
+
+            Console.WriteLine("DONE Move Page To Uid!!!");
+
+        }
+
+        /*
+         * Process Move Page To Uid Item
+         */
+        public async Task processItemMovePageToUid(string ProfileFolderPath, account item, int itemIndex, NumericUpDown flowNum, ComboBox selectProxy, DataGridView dataGridView, int x, int y, List<string> listPageString)
+        {
+            ChromeDriver chromeDriver = _chromeDriverUtils.initChrome(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, x, y);
+            _listDriver.Add(chromeDriver);
+
+            chromeDriver.Navigate().GoToUrl("https://www.facebook.com/");
+            Thread.Sleep(2000);
+            try
+            {
+                chromeDriver.Manage().Cookies.DeleteCookieNamed("i_user");
+            }
+            catch
+            {
+
+            }
+          
+            SQLiteUtils.updateByUID(item);
+            Console.WriteLine($"Processing item: =======");
+        }
     }
+
 }

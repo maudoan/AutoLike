@@ -365,7 +365,31 @@ namespace AutoLike
             _form1Controller.checkStatusCookie(detailListAccountsDataGridView);
         }
 
+
+        bool checkPageUid = false;
         private void startWithSeedingWithPageButton_Click(object sender, EventArgs e)
+        {
+            if (selectPathProfileChromeTextBox.Text == string.Empty || generalSetingUserProxyComboBox.SelectedItem == null)
+            {
+                MessageBox.Show("Vui chọn đủ cài đặt cơ bản!", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else if (keyApiList.Count <= 0)
+            {
+                MessageBox.Show("Vui lòng lưu lại cấu hình mới nhất!", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else if(checkPageUid == false)
+            {
+                MessageBox.Show("Vui chuyển Page về Uid!", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                _form1Controller.likePost(selectPathProfileChromeTextBox.Text, detailListAccountsDataGridView, generalSettingflowNumberNumericUpDown, generalSetingUserProxyComboBox, keyApiList);
+                checkPageUid = false;
+                tabControl.SelectTab(doashBoardTabPage);
+            }   
+        }
+
+        private void changePageToUidButton_Click(object sender, EventArgs e)
         {
             if (selectPathProfileChromeTextBox.Text == string.Empty || generalSetingUserProxyComboBox.SelectedItem == null)
             {
@@ -377,10 +401,9 @@ namespace AutoLike
             }
             else
             {
-                _form1Controller.likePost(selectPathProfileChromeTextBox.Text, detailListAccountsDataGridView, generalSettingflowNumberNumericUpDown, generalSetingUserProxyComboBox, keyApiList);
+                _form1Controller.movePageToUid(selectPathProfileChromeTextBox.Text, detailListAccountsDataGridView, generalSettingflowNumberNumericUpDown, generalSetingUserProxyComboBox, keyApiList);
+                checkPageUid = true;
             }
-
-            tabControl.SelectTab(doashBoardTabPage);
         }
     }
 }
