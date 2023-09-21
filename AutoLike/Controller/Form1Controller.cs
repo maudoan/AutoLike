@@ -804,7 +804,7 @@ namespace AutoLike.Controller
 
         public async void ProcessLikePost(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, ComboBox selectProxy, List<account> listAcccounts, List<string> apiKeyList)
         {
-            int itemIndex = 0;
+           
             ProxyUtils proxyUtils = new ProxyUtils();
 
             if (apiKeyList.Count > 0)
@@ -820,12 +820,14 @@ namespace AutoLike.Controller
             int maxConcurrency = Convert.ToInt32(flowNum.Value); // Số lượng luồng tối đa
             int screenHeight = SystemInformation.VirtualScreen.Height;
             int screenWidth = SystemInformation.VirtualScreen.Width;
+            int itemIndex = 0;
+            int x = 0; int y = 0;
             if (screenHeight > 1920)
             {
                 screenWidth = 1920;
             }
             SemaphoreSlim semaphore = new SemaphoreSlim(maxConcurrency);
-            int x = 0; int y = 0;
+           
             for (int i = 0; i < listAcccounts.Count; i += batchSize)
             {
                 List<account> batch = listAcccounts.GetRange(i, Math.Min(batchSize, listAcccounts.Count - i));
@@ -833,11 +835,11 @@ namespace AutoLike.Controller
 
                 try
                 {
-                    await Task.WhenAll(batch.Select(async item =>
+                    var tasks = (batch.Select(async item =>
                     {
                         await semaphore.WaitAsync();
                         try
-                        {
+                        {                   
                             Random random = new Random();
                             int index = random.Next(apiKeyList.Count);
                             string randomKey = apiKeyList[index];
@@ -866,13 +868,17 @@ namespace AutoLike.Controller
                             }
                             else { }
                             itemIndex++;
-                            List<string> listPageString = SQLiteUtils.getPageListByUid(item);
-
-                            if(listPageString.Count > 0)
+                            await Task.Run(async () =>
                             {
-                                await processItemLikePost(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, dataGridView, x, y, listPageString);
-                            }
-                            
+
+                                List<string> listPageString = SQLiteUtils.getPageListByUid(item);
+
+                                if (listPageString.Count > 0)
+                                {
+                                    await processItemLikePost(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, dataGridView, x, y, listPageString);
+                                }
+                            });
+
 
                         }
                         finally
@@ -880,6 +886,14 @@ namespace AutoLike.Controller
                             semaphore.Release();
                         }
                     }));
+
+                    await Task.WhenAll(tasks);
+                    foreach (var driver in _listDriver)
+                    {
+                        Console.WriteLine("Out Chrome");
+                        driver.Quit();
+                    }
+
                 }
                 finally
                 {
@@ -934,7 +948,7 @@ namespace AutoLike.Controller
             string[] uidPost = new string[1];
             uidPost[0] = "1657023011415205";
 
-            likePost.LikePost(chromeDriver, dataGridView, item, uidPost, randomPage);
+            likePost.LikePost(chromeDriver, dataGridView, item, uidPost, listPage);
 
             SQLiteUtils.updateByUID(item);
             Console.WriteLine($"Processing item: =======");
