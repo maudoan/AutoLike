@@ -473,6 +473,7 @@ namespace AutoLike.Controller
                     // Sau khi hoàn thành một batch, đóng tất cả các ChromeDriver
                     foreach (var driver in _listDriver)
                     {
+                        Console.WriteLine("Out Chrome");
                         driver.Quit();
                     }
                 }
@@ -740,6 +741,7 @@ namespace AutoLike.Controller
                     // Sau khi hoàn thành một batch, đóng tất cả các ChromeDriver
                     foreach (var driver in _listDriver)
                     {
+                        Console.WriteLine("Out Chrome");
                         driver.Quit();
                     }
                 }
@@ -884,6 +886,7 @@ namespace AutoLike.Controller
                     // Sau khi hoàn thành một batch, đóng tất cả các ChromeDriver
                     foreach (var driver in _listDriver)
                     {
+                        Console.WriteLine("Out Chrome");
                         driver.Quit();
                     }
                 }
@@ -1058,6 +1061,7 @@ namespace AutoLike.Controller
                     // Sau khi hoàn thành một batch, đóng tất cả các ChromeDriver
                     foreach (var driver in _listDriver)
                     {
+                        Console.WriteLine("Out Chrome");
                         driver.Quit();
                     }
                 }

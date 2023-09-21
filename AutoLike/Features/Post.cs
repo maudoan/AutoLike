@@ -97,7 +97,6 @@ namespace AutoLike.Features
                     Thread.Sleep(5000);
                     if (ChromeDriverUtils.FindTextInChrome(driver, "Xem tất cả trang cá nhân", "Xem tất cả trang cá nhân"))
                     {
-                        Console.WriteLine("================");
                         IWebElement element = driver.FindElement(By.XPath($"//*[contains(text(), 'Xem tất cả trang cá nhân')]"));
                         element.Click();
                         Thread.Sleep(5000);
@@ -107,14 +106,12 @@ namespace AutoLike.Features
                         try
                         {
                             Thread.Sleep(1000);
-                            Console.WriteLine("++++++++++++++");
                             driver.FindElement(By.XPath("/html/body/div[4]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[2]/div/div[1]/div[2]/div[2]/div/div")).Click();
                             Thread.Sleep(5000);
                         }
                         catch
                         {
                             Thread.Sleep(1000);
-                            Console.WriteLine("++++++++++++++");
                             driver.FindElement(By.XPath("/html/body/div[5]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[3]/div/div[1]/div[2]/div[2]/div/div")).Click();
                             Thread.Sleep(5000);
                         }
