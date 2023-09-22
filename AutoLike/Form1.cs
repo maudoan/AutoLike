@@ -257,7 +257,7 @@ namespace AutoLike
 
         private void selectPathNamePageButton_Click(object sender, EventArgs e)
         {
-            string path = _form1Controller.selectFileNamePage();
+            string path = _form1Controller.selectFile();
 
             if(path != "")
             {
@@ -404,6 +404,21 @@ namespace AutoLike
                 _form1Controller.movePageToUid(selectPathProfileChromeTextBox.Text, detailListAccountsDataGridView, generalSettingflowNumberNumericUpDown, generalSetingUserProxyComboBox, keyApiList);
                 checkPageUid = true;
             }
+        }
+
+        private void selectPathProfileChromeButton_Click(object sender, EventArgs e)
+        {
+            string path = _form1Controller.selectFolder();
+
+            if (path != "")
+            {
+                selectPathProfileChromeTextBox.Text = path;
+            }
+        }
+
+        private void readAllFileButton_Click(object sender, EventArgs e)
+        {
+            _form1Controller.getListAccount("ALL", detailListAccountsDataGridView);
         }
     }
 }

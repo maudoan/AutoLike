@@ -72,7 +72,7 @@ namespace AutoLike.Controller
                     while ((line = sr.ReadLine()) != null)
                     {
                         account account = new account();
-                        string[] elements = line.Split(new string[] { "//" }, StringSplitOptions.None);
+                        string[] elements = line.Split(new string[] { "||" }, StringSplitOptions.None);
                         account.CATELOGE = elements.Length >= 0 ? elements[0] : "";
                         account.UID = elements.Length > 1 ? elements[1] : "";
                         account.PASS = elements.Length > 2 ? elements[2] : "";
@@ -134,14 +134,13 @@ namespace AutoLike.Controller
             List<string> list = new List<string>();
             if (fileName == "ALL")
             {
-                //for (int i1 = 0; i1 < listFileDataGridView.Rows.Count; i1++)
-                //{
-                //    List<string> list1 = FBAutoKitDo.SQLite.getlistac(dataGridView6.Rows[i1].Cells[0].Value.ToString());
-                //    for (int i2 = 0; i2 < list1.Count; i2++)
-                //    {
-                //        list.Add(list1[i2]);
-                //    }
-                //}
+
+                List<string> list1 = _sqliteUtils.getAllAccount("DM");
+                for (int i2 = 0; i2 < list1.Count; i2++)
+                {
+                    list.Add(list1[i2]);
+                }
+
             }
             else
             {
@@ -588,13 +587,13 @@ namespace AutoLike.Controller
         string fullPathNamePage = string.Empty;
 
         /*
-         * Select path File Name Page
+         * Select path File Name
          */
-        public string selectFileNamePage()
+        public string selectFile()
         {
             var fullFilePath = string.Empty;
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Text Files|*.txt";
+            openFileDialog.Filter = "Text Files|*";
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 fullFilePath = openFileDialog.FileName;
@@ -602,6 +601,24 @@ namespace AutoLike.Controller
                 return fullFilePath;
             }
             return fullFilePath;
+        }
+
+        /*
+         *  Select Folder
+         */
+        public string selectFolder()
+        {
+            var selectedFolder = string.Empty;
+            FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
+
+            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+            {
+                selectedFolder = folderBrowserDialog.SelectedPath;
+                fullPathNamePage = selectedFolder;
+                return selectedFolder;
+            }
+
+            return selectedFolder;
         }
 
         /*

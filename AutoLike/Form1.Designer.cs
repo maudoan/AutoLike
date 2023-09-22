@@ -1238,6 +1238,7 @@ namespace AutoLike
             this.selectPathProfileChromeButton.Text = "Mở";
             this.selectPathProfileChromeButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.selectPathProfileChromeButton.UseVisualStyleBackColor = false;
+            this.selectPathProfileChromeButton.Click += new System.EventHandler(this.selectPathProfileChromeButton_Click);
             // 
             // generalSetingUserProxyComboBox
             // 
@@ -1479,6 +1480,7 @@ namespace AutoLike
             this.readAllFileButton.TabIndex = 89;
             this.readAllFileButton.Text = "Read All";
             this.readAllFileButton.UseVisualStyleBackColor = false;
+            this.readAllFileButton.Click += new System.EventHandler(this.readAllFileButton_Click);
             // 
             // listFileDataGridView
             // 
