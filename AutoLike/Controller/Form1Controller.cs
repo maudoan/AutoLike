@@ -425,7 +425,7 @@ namespace AutoLike.Controller
 
                 try
                 {
-                    await Task.WhenAll(batch.Select(async item =>
+                    var tasks = batch.Select(async item =>
                     {
                         await semaphore.WaitAsync();
                         try
@@ -458,27 +458,39 @@ namespace AutoLike.Controller
                                 }
                                 else { }
                                 itemIndex++;
+                               
+                            await Task.Run(async () =>
+                            {
                                 await ProcessItemLoginAcc(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, x, y);
-                            
+                            });
+
                         }
                         finally
                         {
                             semaphore.Release();
                         }
-                    }));
-                }
-                finally
-                {
-                    // Sau khi hoàn thành một batch, đóng tất cả các ChromeDriver
+                    });
+
+                    await Task.WhenAll(tasks);
                     foreach (var driver in _listDriver)
                     {
                         Console.WriteLine("Out Chrome");
                         driver.Quit();
                     }
                 }
+                finally
+                {
+                    // Sau khi hoàn thành một batch, đóng tất cả các ChromeDriver
+                    //foreach (var driver in _listDriver)
+                    //{
+                    //    Console.WriteLine("Out Chrome");
+                    //    driver.Quit();
+                    //}
+                    Console.WriteLine("DONE ALL TASK LOGIN!!!");
+                }
             }
 
-            Console.WriteLine("DONE ALL TASK!!!");
+            //Console.WriteLine("DONE ALL TASK!!!");
         }
 
         /*
@@ -518,26 +530,26 @@ namespace AutoLike.Controller
                 ChromeDriverUtils.FindTextInChrome(chromeDriver, "mật khẩu cũ", "old"))
                 {
                     item.TRANGTHAI = "Sai password....";
-                    //ChromeDriverUtils.ChromeDetroy(chromeDriver, _listDriver);
+                    
                 }
                 else if (ChromeDriverUtils.FindTextInChrome(chromeDriver, "tạm thời bị khóa", "lock"))
                 {
                     item.LIVE = "Checkpoint";
                     item.TRANGTHAI = "Tạm thời bị khóa !...";
-                    //ChromeDriverUtils.ChromeDetroy(chromeDriver, _listDriver);
+                   
 
                 }
                 else if (ChromeDriverUtils.FindTextInChrome(chromeDriver, "chúng tôi đã đình chỉ tài khoản của bạn", "We suspend"))
                 {
                     item.LIVE = "Checkpoint";
                     item.TRANGTHAI = "Đình chỉ tài khoản !...";
-                    //ChromeDriverUtils.ChromeDetroy(chromeDriver, _listDriver);
+                    
                 }
                 else if(ChromeDriverUtils.FindTextInChrome(chromeDriver, "chúng tôi cần xác nhận rằng tài khoản này thuộc về bạn", "We need to confirm"))
                 {
                     item.LIVE = "Checkpoint";
                     item.TRANGTHAI = "Xác nhận tài khoản !...";
-                    //ChromeDriverUtils.ChromeDetroy(chromeDriver, _listDriver);
+                   
                 }
                 else if (ChromeDriverUtils.FindTextInChrome(chromeDriver, "Trang chủ", "Home"))
                 {
@@ -554,12 +566,12 @@ namespace AutoLike.Controller
 
                     item.LIVE = "Live";
                     item.TRANGTHAI = "Login Facebook thành công !...";
-                    //ChromeDriverUtils.ChromeDetroy(chromeDriver, _listDriver);
+                  
                 }
                 else
                 {
                     item.TRANGTHAI = "Có lỗi xảy ra !...";
-                    //ChromeDriverUtils.ChromeDetroy(chromeDriver, _listDriver);
+                    
                 }
             }
             catch
@@ -568,12 +580,12 @@ namespace AutoLike.Controller
                 {
 
                     item.TRANGTHAI = "Sai Password!...";
-                    //ChromeDriverUtils.ChromeDetroy(chromeDriver, _listDriver);
+                   
                 }
             }
 
             SQLiteUtils.updateByUID(item);
-            Console.WriteLine($"Processing item: ========");
+            Console.WriteLine($"Processing item: =========>");
         }
 
 
@@ -711,7 +723,7 @@ namespace AutoLike.Controller
 
                 try
                 {
-                    await Task.WhenAll(batch.Select(async item =>
+                    var tasks = batch.Select(async item =>
                     {
                         await semaphore.WaitAsync();
                         try
@@ -744,27 +756,38 @@ namespace AutoLike.Controller
                             }
                             else { }
                             itemIndex++;
-                            await processItemRegPageAcc(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, dataGridView, x, y);
+                            await Task.Run(async () =>
+                            {
+                                await processItemRegPageAcc(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, dataGridView, x, y);
+                            });
+                           
 
                         }
                         finally
                         {
                             semaphore.Release();
                         }
-                    }));
-                }
-                finally
-                {
-                    // Sau khi hoàn thành một batch, đóng tất cả các ChromeDriver
+                    });
+                    await Task.WhenAll(tasks);
                     foreach (var driver in _listDriver)
                     {
                         Console.WriteLine("Out Chrome");
                         driver.Quit();
                     }
                 }
+                finally
+                {
+                    // Sau khi hoàn thành một batch, đóng tất cả các ChromeDriver
+                    //foreach (var driver in _listDriver)
+                    //{
+                    //    Console.WriteLine("Out Chrome");
+                    //    driver.Quit();
+                    //}
+                    Console.WriteLine("DONE ALL TASK REGPAGE!!!");
+                }
             }
 
-            Console.WriteLine("DONE ALL TASK!!!");
+            //Console.WriteLine("DONE ALL TASK!!!");
 
         }
 
@@ -780,7 +803,7 @@ namespace AutoLike.Controller
             regPage.RegPageWithUID(chromeDriver, fullPathNamePage,dataGridView,item, _listDriver);
 
             SQLiteUtils.updateByUID(item);
-            Console.WriteLine($"Processing item: =======");
+            Console.WriteLine($"Processing item: =========>");
         }
 
 
@@ -852,7 +875,7 @@ namespace AutoLike.Controller
 
                 try
                 {
-                    var tasks = (batch.Select(async item =>
+                    var tasks = batch.Select(async item =>
                     {
                         await semaphore.WaitAsync();
                         try
@@ -902,7 +925,7 @@ namespace AutoLike.Controller
                         {
                             semaphore.Release();
                         }
-                    }));
+                    });
 
                     await Task.WhenAll(tasks);
                     foreach (var driver in _listDriver)
@@ -915,15 +938,16 @@ namespace AutoLike.Controller
                 finally
                 {
                     // Sau khi hoàn thành một batch, đóng tất cả các ChromeDriver
-                    foreach (var driver in _listDriver)
-                    {
-                        Console.WriteLine("Out Chrome");
-                        driver.Quit();
-                    }
+                    //foreach (var driver in _listDriver)
+                    //{
+                    //    Console.WriteLine("Out Chrome");
+                    //    driver.Quit();
+                    //}
+                    Console.WriteLine("DONE TASK Like POST!!!");
                 }
             }
 
-            Console.WriteLine("DONE TASK Like Post!!!");
+            //Console.WriteLine("DONE TASK Like Post!!!");
 
         }
 
@@ -963,18 +987,18 @@ namespace AutoLike.Controller
             //    uidPost = ui.Replace("----", "|").Split('|');
             //}
             string[] uidPost = new string[1];
-            uidPost[0] = "1657023011415205";
+            uidPost[0] = "2332681936872124";
 
             likePost.LikePost(chromeDriver, dataGridView, item, uidPost, listPage);
 
             SQLiteUtils.updateByUID(item);
-            Console.WriteLine($"Processing item: =======");
+            Console.WriteLine($"Processing item: =========>");
         }
 
 
         /*
          * 
-         * Move Page To UID
+         * Feature Move Page To UID
          * 
          */
 
@@ -1039,7 +1063,7 @@ namespace AutoLike.Controller
 
                 try
                 {
-                    await Task.WhenAll(batch.Select(async item =>
+                    var tasks = batch.Select(async item =>
                     {
                         await semaphore.WaitAsync();
                         try
@@ -1085,20 +1109,27 @@ namespace AutoLike.Controller
                         {
                             semaphore.Release();
                         }
-                    }));
-                }
-                finally
-                {
-                    // Sau khi hoàn thành một batch, đóng tất cả các ChromeDriver
+                    });
+                    await Task.WhenAll(tasks);
                     foreach (var driver in _listDriver)
                     {
                         Console.WriteLine("Out Chrome");
                         driver.Quit();
                     }
                 }
+                finally
+                {
+                    // Sau khi hoàn thành một batch, đóng tất cả các ChromeDriver
+                    //foreach (var driver in _listDriver)
+                    //{
+                    //    Console.WriteLine("Out Chrome");
+                    //    driver.Quit();
+                    //}
+                    Console.WriteLine("DONE Move Page To Uid!!!");
+                }
             }
 
-            Console.WriteLine("DONE Move Page To Uid!!!");
+            //Console.WriteLine("DONE Move Page To Uid!!!");
 
         }
 
@@ -1122,7 +1153,7 @@ namespace AutoLike.Controller
             }
           
             SQLiteUtils.updateByUID(item);
-            Console.WriteLine($"Processing item: =======");
+            Console.WriteLine($"Processing item: =========>");
         }
     }
 

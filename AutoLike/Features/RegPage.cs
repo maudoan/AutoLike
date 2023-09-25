@@ -74,7 +74,7 @@ namespace AutoLike.Features
                         {
                             ChromeDriverUtils.updateStatusChrome(dataGridView, item, "Chặn Reg");
 
-                            ChromeDriverUtils.updateStatusAcc(dataGridView, item, "Checkpoint");
+                            //ChromeDriverUtils.updateStatusAcc(dataGridView, item, "Checkpoint");
                            
                             goto end2;
                         }

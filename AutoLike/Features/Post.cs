@@ -90,20 +90,20 @@ namespace AutoLike.Features
                         ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Vào Post: " + uidPost[k1]);
                     lai:
                         driver.Navigate().GoToUrl("https://www.facebook.com/");
-                        Thread.Sleep(1000);
+                        //Thread.Sleep(1000);
                         if (ChromeDriverUtils.FindTextInChrome(driver, "Chào mừng bạn đến với Trang mới!", "Chào mừng bạn đến với Trang mới!"))
                         {
                             driver.FindElement(By.XPath("//*[@id=\"facebook\"]/body/div[4]/div[1]/div/div[2]/div/div/div/div[1]/div")).Click();
                         }
-                        Thread.Sleep(3000);
+                        //Thread.Sleep(3000);
                         driver.FindElement(By.XPath("/html/body/div[1]/div/div[1]/div/div[2]/div[5]/div[1]/span/div/div[1]/div")).Click();
 
-                        Thread.Sleep(3000);
+                        //Thread.Sleep(3000);
                         if (ChromeDriverUtils.FindTextInChrome(driver, "Xem tất cả trang cá nhân", "Xem tất cả trang cá nhân"))
                         {
                             IWebElement element = driver.FindElement(By.XPath($"//*[contains(text(), 'Xem tất cả trang cá nhân')]"));
                             element.Click();
-                            Thread.Sleep(3000);
+                            //Thread.Sleep(3000);
                         }
                         if (ChromeDriverUtils.FindTextInChrome(driver, "Trang & trang cá nhân của bạn", "Trang & trang cá nhân của bạn"))
                         {
@@ -217,7 +217,7 @@ namespace AutoLike.Features
                             
                         }
                         driver.Navigate().GoToUrl("https://m.facebook.com/" + uidPost[k1]);
-                        Thread.Sleep(3000);
+                        //Thread.Sleep(3000);
                         //driver.Navigate().Refresh();
                         //Thread.Sleep(1000);
 
@@ -244,7 +244,7 @@ namespace AutoLike.Features
                                         ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Like Post Lỗi - Acc Logout " + uidPost[k1]);
                                         //LoadLog(DateTime.Now + ":  " + dataGridView1.Rows[i].Cells["Ten1"].Value.ToString() + " :Like Post Thành công! " + uidlike[k1], "gr");
                                         //count.Add(uidPost[k1] + "|" + page.UID);
-                                        Thread.Sleep(2000);
+                                        //Thread.Sleep(2000);
                                         break;
                                     }
                                     catch
@@ -268,7 +268,7 @@ namespace AutoLike.Features
                                                 //{
                                                 //    lbprocess.Text = "Process :  " + processdone + "/" + tongluong;
                                                 //}));
-                                                Thread.Sleep(2000);
+                                                //Thread.Sleep(2000);
 
                                             }
                                             else if (ChromeDriverUtils.FindTextInChrome(driver, "Chúc bạn sinh nhật vui vẻ", "Chúc bạn sinh nhật vui vẻ"))
@@ -292,7 +292,7 @@ namespace AutoLike.Features
                                                     ChromeDriverUtils.FindClickElementInChrome(driver, "OK", "OK", true);
 
                                                 }
-                                                Thread.Sleep(4000);
+                                                //Thread.Sleep(4000);
                                                 goto a;
                                             }
                                             else if (driver.Url.Contains("/actor_experience"))
@@ -386,7 +386,7 @@ namespace AutoLike.Features
                                     catch
                                     {
                                         ChromeDriverUtils.FindClickElementInChrome(driver, "OK", "OK", true);
-                                        Thread.Sleep(4000);
+                                        //Thread.Sleep(4000);
                                     }
                                     if (dem < 1)
                                     {
