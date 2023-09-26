@@ -362,6 +362,9 @@ namespace AutoLike.Controller
          * 
          */
 
+        private DateTime lastApiCallTime = DateTime.MinValue;
+        private TimeSpan callInterval = TimeSpan.FromMinutes(1);
+
         /*
          * init Login
          */
@@ -397,15 +400,29 @@ namespace AutoLike.Controller
         public async void ProcessLoginChromeCookieToken(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, ComboBox selectProxy, List<account> listAcccounts, List<string> apiKeyList)
         {
             int itemIndex = 0;
+
             ProxyUtils proxyUtils = new ProxyUtils();
-         
-            if (apiKeyList.Count > 0)
+
+            DateTime currentTime = DateTime.Now;
+
+            if (currentTime - lastApiCallTime >= callInterval)
             {
-                for(int i = 0; i < apiKeyList.Count; i++)
+                // Nếu đã đủ thời gian, thực hiện gọi API
+                if (apiKeyList.Count > 0)
                 {
-                    await proxyUtils.getNewProxy(Constants.Constants.GetNewProxyShopLike(apiKeyList[i]));
+                    for (int i = 0; i < apiKeyList.Count; i++)
+                    {
+                        await proxyUtils.getNewProxy(Constants.Constants.GetNewProxyShopLike(apiKeyList[i]));
+                    }
                 }
-                
+
+                // Cập nhật thời gian gọi cuối cùng
+                lastApiCallTime = currentTime;
+            }
+            else
+            {
+                // Nếu chưa đủ thời gian, không thực hiện gọi lại API
+                Console.WriteLine("Waitng For 1 minute " + (callInterval - (currentTime - lastApiCallTime)));
             }
 
             int batchSize = Convert.ToInt32(flowNum.Value); // Số lượng item mỗi lần xử lý
@@ -430,38 +447,48 @@ namespace AutoLike.Controller
                         await semaphore.WaitAsync();
                         try
                         {
-                                Random random = new Random();
-                                int index = random.Next(apiKeyList.Count);
-                                string randomKey = apiKeyList[index];
-                                string proxy = await proxyUtils.getCurrentProxy(Constants.Constants.GetCurrentProxyShopLike(randomKey, "hd"));
-                                item.PROXY = proxy;
+                            Random random = new Random();
+                            int index = random.Next(apiKeyList.Count);
+                            string randomKey = apiKeyList[index];
+                            string proxy = await proxyUtils.getCurrentProxy(Constants.Constants.GetCurrentProxyShopLike(randomKey, "hd"));
+                            item.PROXY = proxy;
 
-                                if (itemIndex == 0 || itemIndex == 10 || itemIndex == 20 || itemIndex == 30)
-                                {
-                                    y = 0;
-                                    x = 0;
-                                }
-                                else if ((itemIndex > 0 && itemIndex < 5) || (itemIndex > 10 && itemIndex < 15) || (itemIndex > 20 && itemIndex < 25) || (itemIndex > 30 && itemIndex < 35))
-                                {
-                                    y = 0;
-                                    x += screenWidth / 5;
-                                }
-                                else if (itemIndex == 5 || itemIndex == 15 || itemIndex == 25 || itemIndex == 35)
-                                {
-                                    y = screenHeight / 2;
-                                    x = 0;
-                                }
-                                else if ((itemIndex > 5 && itemIndex < 10) || (itemIndex > 15 && itemIndex <= 20) || (itemIndex > 25 && itemIndex < 30) || (itemIndex > 35 && itemIndex < 40))
-                                {
-                                    y = screenHeight / 2;
-                                    x += screenWidth / 5;
-                                }
-                                else { }
-                                itemIndex++;
-                               
+                            if (itemIndex == 0 || itemIndex == 10 || itemIndex == 20 || itemIndex == 30)
+                            {
+                                y = 0;
+                                x = 0;
+                            }
+                            else if ((itemIndex > 0 && itemIndex < 5) || (itemIndex > 10 && itemIndex < 15) || (itemIndex > 20 && itemIndex < 25) || (itemIndex > 30 && itemIndex < 35))
+                            {
+                                y = 0;
+                                x += screenWidth / 5;
+                            }
+                            else if (itemIndex == 5 || itemIndex == 15 || itemIndex == 25 || itemIndex == 35)
+                            {
+                                y = screenHeight / 2;
+                                x = 0;
+                            }
+                            else if ((itemIndex > 5 && itemIndex < 10) || (itemIndex > 15 && itemIndex <= 20) || (itemIndex > 25 && itemIndex < 30) || (itemIndex > 35 && itemIndex < 40))
+                            {
+                                y = screenHeight / 2;
+                                x += screenWidth / 5;
+                            }
+                            else { }
+
+
+                            itemIndex++;
+
+                            if(itemIndex == (flowNum.Value + 1))
+                            {
+                                x = 0;
+                                y = 0;
+                                itemIndex = 0;
+                            }
+
                             await Task.Run(async () =>
                             {
                                 await ProcessItemLoginAcc(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, x, y);
+                                await Task.Delay(1000);
                             });
 
                         }
@@ -477,6 +504,12 @@ namespace AutoLike.Controller
                         Console.WriteLine("Out Chrome");
                         driver.Quit();
                     }
+                    foreach (var process in Process.GetProcessesByName("chromedriver"))
+                    {
+                        process.Kill();
+                    }
+
+                    _listDriver.Clear();
                 }
                 finally
                 {
@@ -697,13 +730,26 @@ namespace AutoLike.Controller
             int itemIndex = 0;
             ProxyUtils proxyUtils = new ProxyUtils();
 
-            if (apiKeyList.Count > 0)
+            DateTime currentTime = DateTime.Now;
+
+            if (currentTime - lastApiCallTime >= callInterval)
             {
-                for (int i = 0; i < apiKeyList.Count; i++)
+                // Nếu đã đủ thời gian, thực hiện gọi API
+                if (apiKeyList.Count > 0)
                 {
-                    await proxyUtils.getNewProxy(Constants.Constants.GetNewProxyShopLike(apiKeyList[i]));
+                    for (int i = 0; i < apiKeyList.Count; i++)
+                    {
+                        await proxyUtils.getNewProxy(Constants.Constants.GetNewProxyShopLike(apiKeyList[i]));
+                    }
                 }
 
+                // Cập nhật thời gian gọi cuối cùng
+                lastApiCallTime = currentTime;
+            }
+            else
+            {
+                // Nếu chưa đủ thời gian, không thực hiện gọi lại API
+                Console.WriteLine("Waitng For 1 minute " + (callInterval - (currentTime - lastApiCallTime)));
             }
 
             int batchSize = Convert.ToInt32(flowNum.Value); // Số lượng item mỗi lần xử lý
@@ -756,6 +802,12 @@ namespace AutoLike.Controller
                             }
                             else { }
                             itemIndex++;
+                            if (itemIndex == (flowNum.Value + 1))
+                            {
+                                x = 0;
+                                y = 0;
+                                itemIndex = 0;
+                            }
                             await Task.Run(async () =>
                             {
                                 await processItemRegPageAcc(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, dataGridView, x, y);
@@ -774,6 +826,12 @@ namespace AutoLike.Controller
                         Console.WriteLine("Out Chrome");
                         driver.Quit();
                     }
+                    foreach (var process in Process.GetProcessesByName("chromedriver"))
+                    {
+                        process.Kill();
+                    }
+
+                    _listDriver.Clear();
                 }
                 finally
                 {
@@ -847,13 +905,26 @@ namespace AutoLike.Controller
            
             ProxyUtils proxyUtils = new ProxyUtils();
 
-            if (apiKeyList.Count > 0)
+            DateTime currentTime = DateTime.Now;
+
+            if (currentTime - lastApiCallTime >= callInterval)
             {
-                for (int i = 0; i < apiKeyList.Count; i++)
+                // Nếu đã đủ thời gian, thực hiện gọi API
+                if (apiKeyList.Count > 0)
                 {
-                    await proxyUtils.getNewProxy(Constants.Constants.GetNewProxyShopLike(apiKeyList[i]));
+                    for (int i = 0; i < apiKeyList.Count; i++)
+                    {
+                        await proxyUtils.getNewProxy(Constants.Constants.GetNewProxyShopLike(apiKeyList[i]));
+                    }
                 }
 
+                // Cập nhật thời gian gọi cuối cùng
+                lastApiCallTime = currentTime;
+            }
+            else
+            {
+                // Nếu chưa đủ thời gian, không thực hiện gọi lại API
+                Console.WriteLine("Waitng For 1 minute " + (callInterval - (currentTime - lastApiCallTime)));
             }
 
             int batchSize = Convert.ToInt32(flowNum.Value); // Số lượng item mỗi lần xử lý
@@ -908,6 +979,12 @@ namespace AutoLike.Controller
                             }
                             else { }
                             itemIndex++;
+                            if (itemIndex == (flowNum.Value + 1))
+                            {
+                                x = 0;
+                                y = 0;
+                                itemIndex = 0;
+                            }
                             await Task.Run(async () =>
                             {
 
@@ -933,6 +1010,12 @@ namespace AutoLike.Controller
                         Console.WriteLine("Out Chrome");
                         driver.Quit();
                     }
+                    foreach (var process in Process.GetProcessesByName("chromedriver"))
+                    {
+                        process.Kill();
+                    }
+
+                    _listDriver.Clear();
 
                 }
                 finally
@@ -1037,13 +1120,26 @@ namespace AutoLike.Controller
             int itemIndex = 0;
             ProxyUtils proxyUtils = new ProxyUtils();
 
-            if (apiKeyList.Count > 0)
+            DateTime currentTime = DateTime.Now;
+
+            if (currentTime - lastApiCallTime >= callInterval)
             {
-                for (int i = 0; i < apiKeyList.Count; i++)
+                // Nếu đã đủ thời gian, thực hiện gọi API
+                if (apiKeyList.Count > 0)
                 {
-                    await proxyUtils.getNewProxy(Constants.Constants.GetNewProxyShopLike(apiKeyList[i]));
+                    for (int i = 0; i < apiKeyList.Count; i++)
+                    {
+                        await proxyUtils.getNewProxy(Constants.Constants.GetNewProxyShopLike(apiKeyList[i]));
+                    }
                 }
 
+                // Cập nhật thời gian gọi cuối cùng
+                lastApiCallTime = currentTime;
+            }
+            else
+            {
+                // Nếu chưa đủ thời gian, không thực hiện gọi lại API
+                Console.WriteLine("Waitng For 1 minute " + (callInterval - (currentTime - lastApiCallTime)));
             }
 
             int batchSize = Convert.ToInt32(flowNum.Value); // Số lượng item mỗi lần xử lý
@@ -1096,6 +1192,12 @@ namespace AutoLike.Controller
                             }
                             else { }
                             itemIndex++;
+                            if (itemIndex == (flowNum.Value + 1))
+                            {
+                                x = 0;
+                                y = 0;
+                                itemIndex = 0;
+                            }
                             List<string> listPageString = SQLiteUtils.getPageListByUid(item);
 
                             if (listPageString.Count > 0)
@@ -1116,6 +1218,12 @@ namespace AutoLike.Controller
                         Console.WriteLine("Out Chrome");
                         driver.Quit();
                     }
+                    foreach (var process in Process.GetProcessesByName("chromedriver"))
+                    {
+                        process.Kill();
+                    }
+
+                    _listDriver.Clear();
                 }
                 finally
                 {
