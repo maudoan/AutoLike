@@ -93,7 +93,15 @@ namespace AutoLike.Features
                         //Thread.Sleep(1000);
                         if (ChromeDriverUtils.FindTextInChrome(driver, "Chào mừng bạn đến với Trang mới!", "Chào mừng bạn đến với Trang mới!"))
                         {
-                            driver.FindElement(By.XPath("//*[@id=\"facebook\"]/body/div[4]/div[1]/div/div[2]/div/div/div/div[1]/div")).Click();
+                            try
+                            {
+                                driver.FindElement(By.XPath("//*[@id=\"facebook\"]/body/div[4]/div[1]/div/div[2]/div/div/div/div[1]/div")).Click();
+                            }
+                            catch
+                            {
+                                driver.FindElement(By.XPath("//*[@id=\"facebook\"]/body/div[5]/div[1]/div/div[2]/div/div/div/div[1]/div")).Click();
+
+                            }
                         }
                         //Thread.Sleep(3000);
                         driver.FindElement(By.XPath("/html/body/div[1]/div/div[1]/div/div[2]/div[5]/div[1]/span/div/div[1]/div")).Click();
@@ -163,35 +171,35 @@ namespace AutoLike.Features
                                         Thread.Sleep(3000);
                                         break;
                                     case 1:
-                                        driver.FindElement(By.XPath("/html/body/div[4]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[3]/div/div[1]/div[2]/div[2]/div/div")).Click();
+                                        driver.FindElement(By.XPath("/html/body/div[5]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[3]/div/div[1]/div[2]/div[2]/div/div")).Click();
                                         Thread.Sleep(3000);
                                         break;
                                     case 2:
-                                        driver.FindElement(By.XPath("/html/body/div[4]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[4]/div/div[1]/div[2]/div[2]/div/div")).Click();
+                                        driver.FindElement(By.XPath("/html/body/div[5]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[4]/div/div[1]/div[2]/div[2]/div/div")).Click();
                                         Thread.Sleep(3000);
                                         break;
                                     case 3:
-                                        driver.FindElement(By.XPath("/html/body/div[4]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[5]/div/div[1]/div[2]/div[2]/div/div")).Click();
+                                        driver.FindElement(By.XPath("/html/body/div[5]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[5]/div/div[1]/div[2]/div[2]/div/div")).Click();
                                         Thread.Sleep(3000);
                                         break;
                                     case 4:
-                                        driver.FindElement(By.XPath("/html/body/div[4]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[6]/div/div[1]/div[2]/div[2]/div/div")).Click();
+                                        driver.FindElement(By.XPath("/html/body/div[5]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[6]/div/div[1]/div[2]/div[2]/div/div")).Click();
                                         Thread.Sleep(3000);
                                         break;
                                     case 5:
-                                        driver.FindElement(By.XPath("/html/body/div[4]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[7]/div/div[1]/div[2]/div[2]/div/div")).Click();
+                                        driver.FindElement(By.XPath("/html/body/div[5]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[7]/div/div[1]/div[2]/div[2]/div/div")).Click();
                                         Thread.Sleep(3000);
                                         break;
                                     case 6:
-                                        driver.FindElement(By.XPath("/html/body/div[4]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[8]/div/div[1]/div[2]/div[2]/div/div")).Click();
+                                        driver.FindElement(By.XPath("/html/body/div[5]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[8]/div/div[1]/div[2]/div[2]/div/div")).Click();
                                         Thread.Sleep(3000);
                                         break;
                                     case 7:
-                                        driver.FindElement(By.XPath("/html/body/div[4]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[9]/div/div[1]/div[2]/div[2]/div/div")).Click();
+                                        driver.FindElement(By.XPath("/html/body/div[5]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[9]/div/div[1]/div[2]/div[2]/div/div")).Click();
                                         Thread.Sleep(3000);
                                         break;
                                     case 8:
-                                        driver.FindElement(By.XPath("/html/body/div[4]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[10]/div/div[1]/div[2]/div[2]/div/div")).Click();
+                                        driver.FindElement(By.XPath("/html/body/div[5]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[10]/div/div[1]/div[2]/div[2]/div/div")).Click();
                                         Thread.Sleep(3000);
                                         break;
                                     default:

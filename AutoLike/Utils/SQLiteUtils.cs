@@ -400,5 +400,38 @@ namespace AutoLike.Utils
             return listPage;
         }
 
+        public static void insertPost(List<post> listPost)
+        {
+            try
+            {
+                SQLiteConnection sqliteConnection = new SQLiteConnection();
+                sqliteConnection.ConnectionString = "Data Source=Data.sqlite3;Version=3;";
+                sqliteConnection.Open();
+                SQLiteCommand sqliteCommand = new SQLiteCommand(sqliteConnection);
+                SQLiteTransaction trans = sqliteConnection.BeginTransaction();
+                sqliteCommand.Transaction = trans;
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
+
+                foreach (post item in listPost)
+                {
+                    string text = string.Format("INSERT INTO post ('POSTID','PAGEID') VALUES ('{0}', '{1}')", item.POSTID, item.PAGEID);
+                    sqliteCommand.CommandText = text;
+                    sqliteCommand.ExecuteNonQuery();
+                }
+                trans.Commit();
+                sw.Stop();
+                min = sw.Elapsed.Minutes + " Phút " + sw.Elapsed.Seconds + " giây";
+                Console.WriteLine("Đã Insert");
+                //sqliteConnection.Dispose();
+                sqliteConnection.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Lỗi " + e.Message);
+            }
+
+        }
+
     }
 }

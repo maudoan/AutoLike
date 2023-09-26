@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AutoLike.Model
 {
-    internal class post
+    public class post
     {
         public string POSTID { get; set; }
         public string PAGEID { get; set; }
