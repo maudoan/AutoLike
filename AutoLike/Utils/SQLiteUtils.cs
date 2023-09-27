@@ -66,7 +66,7 @@ namespace AutoLike.Utils
             sw.Start();
             for (int i = 0; i < listAccounts.Count; i++)
             {
-                string text = string.Format("DELETE FROM data where [UID]='{0}'", listAccounts[0].UID);
+                string text = string.Format("DELETE FROM data where [UID]='{0}'", listAccounts[i].UID);
                 sqliteCommand.CommandText = text;
                 sqliteCommand.ExecuteNonQuery();
 

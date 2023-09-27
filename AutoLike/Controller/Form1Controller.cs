@@ -514,10 +514,8 @@ namespace AutoLike.Controller
 
                             itemIndex++;
 
-                            if(itemIndex == (flowNum.Value + 1))
+                            if(itemIndex == flowNum.Value)
                             {
-                                x = 0;
-                                y = 0;
                                 itemIndex = 0;
                             }
 
@@ -838,10 +836,8 @@ namespace AutoLike.Controller
                             }
                             else { }
                             itemIndex++;
-                            if (itemIndex == (flowNum.Value + 1))
+                            if (itemIndex == flowNum.Value)
                             {
-                                x = 0;
-                                y = 0;
                                 itemIndex = 0;
                             }
                             await Task.Run(async () =>
@@ -1015,10 +1011,8 @@ namespace AutoLike.Controller
                             }
                             else { }
                             itemIndex++;
-                            if (itemIndex == (flowNum.Value + 1))
+                            if (itemIndex == flowNum.Value)
                             {
-                                x = 0;
-                                y = 0;
                                 itemIndex = 0;
                             }
                             await Task.Run(async () =>
@@ -1228,10 +1222,8 @@ namespace AutoLike.Controller
                             }
                             else { }
                             itemIndex++;
-                            if (itemIndex == (flowNum.Value + 1))
+                            if (itemIndex == flowNum.Value)
                             {
-                                x = 0;
-                                y = 0;
                                 itemIndex = 0;
                             }
                             List<string> listPageString = SQLiteUtils.getPageListByUid(item);
