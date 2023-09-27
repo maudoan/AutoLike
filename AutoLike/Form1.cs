@@ -1,8 +1,10 @@
 ﻿using AutoLike.Controller;
+using AutoLike.Utils;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Threading;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
@@ -55,23 +57,6 @@ namespace AutoLike
                 tabControl.Location = new Point((x - vl) * 2, tabControl.Location.Y);
             }
 
-        }
-
-        private void importFileTextBox_DoubleClick(object sender, EventArgs e)
-        {
-            Boolean checkImportFile;
-          
-            checkImportFile = _form1Controller.SelectFile();
-            
-            importFileTextBox.Text = _form1Controller.GetSelectedFileName();
-
-            if (checkImportFile)
-            {
-                listFileDataGridView.Rows.Clear();
-                _form1Controller.LoadFileAccount(listFileDataGridView);
-                
-            }
-          
         }
         private void listFileDataGridView_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -419,6 +404,30 @@ namespace AutoLike
         private void readAllFileButton_Click(object sender, EventArgs e)
         {
             _form1Controller.getListAccount("ALL", detailListAccountsDataGridView);
+        }
+
+        private void saveFileNameButton_Click(object sender, EventArgs e)
+        {
+            _form1Controller.saveCategory(listFileDataGridView, importFileTextBox);
+        }
+
+        private void deleteFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _form1Controller.deleteAllByCateloge(deleteFileToolStripMenuItem, listFileDataGridView);
+        }
+
+        private void importDataFileToolStripMenuItem_Click(Object sender, EventArgs e)
+        {
+            Boolean checkImportFile;
+
+            checkImportFile = _form1Controller.SelectFile(listFileDataGridView);
+
+            if (checkImportFile)
+            {
+                listFileDataGridView.Rows.Clear();
+                _form1Controller.LoadFileAccount(listFileDataGridView);
+
+            }
         }
     }
 }

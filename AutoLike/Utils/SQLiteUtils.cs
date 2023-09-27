@@ -433,5 +433,45 @@ namespace AutoLike.Utils
 
         }
 
+        public static void deleteAllItemByCateloge(string cateloge)
+        {
+
+            SQLiteConnection sqliteConnection = new SQLiteConnection();
+            sqliteConnection.ConnectionString = "Data Source=Data.sqlite3;Version=3;";
+            sqliteConnection.Open();
+            SQLiteCommand sqliteCommand = new SQLiteCommand(sqliteConnection);
+            SQLiteTransaction trans = sqliteConnection.BeginTransaction();
+            sqliteCommand.Transaction = trans;
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+
+            int count = 0;
+
+
+
+            while (true)
+            {
+                sqliteCommand.CommandText = "SELECT COUNT(*) From [data] where [DANHMUC] ='" + cateloge + "'";
+                sqliteCommand.CommandType = CommandType.Text;
+                count = Convert.ToInt32(sqliteCommand.ExecuteScalar());
+                if (count > 0)
+                {
+                    try
+                    {
+                        string text = string.Format("DELETE FROM data where [DANHMUC]='{0}'", cateloge);
+                        sqliteCommand.CommandText = text;
+                        sqliteCommand.ExecuteNonQuery();
+                    }
+                    catch { break; }
+                }
+                else { break; }
+
+            }
+            trans.Commit();
+            sw.Stop();
+            min = sw.Elapsed.Minutes + " Phút " + sw.Elapsed.Seconds + " giây";
+            sqliteConnection.Dispose();
+            Console.WriteLine("Đã Xóa DANHMUC");
+        }
     }
 }

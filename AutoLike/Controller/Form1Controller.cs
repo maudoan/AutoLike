@@ -23,7 +23,6 @@ namespace AutoLike.Controller
 {
     public class Form1Controller
     {
-        private file _file;
         private account _account;
         private List<account> _listAccounts;
         private SQLiteUtils _sqliteUtils;
@@ -34,34 +33,28 @@ namespace AutoLike.Controller
 
         public Form1Controller()
         {
-            _file = new file();
             _account = new account();
             _listAccounts = new List<account>();
             _sqliteUtils = new SQLiteUtils();
             _chromeDriverUtils = new ChromeDriverUtils();
         }
 
-        public Boolean SelectFile()
+        public Boolean SelectFile(DataGridView dataGridView)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Text Files|*.txt";
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 string fullFilePath = openFileDialog.FileName;
-                string fileName = Path.GetFileName(fullFilePath);
-                _file.Name = fileName;
-                SaveToDbFromImportFile(fullFilePath);
+                int index = dataGridView.CurrentCell.RowIndex;
+                string fileName = dataGridView.Rows[index].Cells[0].Value.ToString();
+                SaveToDbFromImportFile(fullFilePath, fileName);
                 return true;
             }
             return false;
         }
 
-        public string GetSelectedFileName()
-        {
-            return _file.Name;
-        }
-
-        public void SaveToDbFromImportFile(string fullPath)
+        public void SaveToDbFromImportFile(string fullPath, string cateloge)
         {
             try
             {
@@ -72,31 +65,31 @@ namespace AutoLike.Controller
                     while ((line = sr.ReadLine()) != null)
                     {
                         account account = new account();
-                        string[] elements = line.Split(new string[] { "||" }, StringSplitOptions.None);
-                        account.CATELOGE = elements.Length >= 0 ? elements[0] : "";
-                        account.UID = elements.Length > 1 ? elements[1] : "";
-                        account.PASS = elements.Length > 2 ? elements[2] : "";
-                        account.M2FA = elements.Length > 3 ? elements[3] : "";
-                        account.COOKIE = elements.Length > 4 ? elements[4] : "";
-                        account.TOKEN = elements.Length > 5 ? elements[5] : "";
-                        account.COOKIELD = elements.Length > 6 ? elements[6] : "";
-                        account.TOKENLD = elements.Length > 7 ? elements[7] : "";
-                        account.EMAIL = elements.Length > 8 ? elements[8] : "";
-                        account.PASSMAIL = elements.Length > 9 ? elements[9] : "";
-                        account.NAMTAO = elements.Length > 10 ? elements[10] : "";
-                        account.TEN = elements.Length > 11 ? elements[11] : "";
-                        account.SINHNHAT = elements.Length > 12 ? elements[12] : "";
-                        account.FRIEND = elements.Length > 13 ? elements[13] : "";
-                        account.GROUP = elements.Length > 14 ? elements[14] : "";
-                        account.GENDER = elements.Length > 15 ? elements[15] : "";
-                        account.LIVE = elements.Length > 16 ? elements[16] : "";
-                        account.PROXY = elements.Length > 17 ? elements[17] : "";
-                        account.LASTACTIVE = elements.Length > 18 ? elements[18] : "";
-                        account.DANHMUC = elements.Length > 19 ? elements[19] : "";
-                        account.GHICHU = elements.Length > 20 ? elements[20] : "";
-                        account.NGAYBU = elements.Length > 21 ? elements[21] : "";
-                        account.TRANGTHAI = elements.Length > 22 ? elements[22] : "";
-                        account.SOPAGE = elements.Length > 23 ? elements[23] : "";
+                        string[] elements = line.Split(new string[] { "|" }, StringSplitOptions.None);
+                        account.CATELOGE = cateloge;
+                        account.UID = elements.Length >= 0 ? elements[0] : "";
+                        account.PASS = elements.Length > 1 ? elements[1] : "";
+                        account.M2FA = elements.Length > 2 ? elements[2] : "";
+                        account.COOKIE = elements.Length > 3 ? elements[3] : "";
+                        account.TOKEN = elements.Length > 4 ? elements[4] : "";
+                        account.COOKIELD = elements.Length > 5 ? elements[5] : "";
+                        account.TOKENLD = elements.Length > 6 ? elements[6] : "";
+                        account.EMAIL = elements.Length > 7 ? elements[7] : "";
+                        account.PASSMAIL = elements.Length > 8 ? elements[8] : "";
+                        account.NAMTAO = elements.Length > 9 ? elements[9] : "";
+                        account.TEN = elements.Length > 10 ? elements[10] : "";
+                        account.SINHNHAT = elements.Length > 11 ? elements[11] : "";
+                        account.FRIEND = elements.Length > 12 ? elements[12] : "";
+                        account.GROUP = elements.Length > 13 ? elements[13] : "";
+                        account.GENDER = elements.Length > 14 ? elements[14] : "";
+                        account.LIVE = elements.Length > 15 ? elements[15] : "";
+                        account.PROXY = elements.Length > 16 ? elements[16] : "";
+                        account.LASTACTIVE = elements.Length > 17 ? elements[17] : "";
+                        account.DANHMUC = elements.Length > 18 ? elements[18] : "";
+                        account.GHICHU = elements.Length > 19 ? elements[19] : "";
+                        account.NGAYBU = elements.Length > 20 ? elements[20] : "";
+                        account.TRANGTHAI = elements.Length > 21 ? elements[21] : "";
+                        account.SOPAGE = elements.Length > 22 ? elements[22] : "";
 
                         _listAccounts.Add(account);
                     }
@@ -119,8 +112,51 @@ namespace AutoLike.Controller
 
         }
 
+        public void saveCategory(DataGridView listFileDataGridView,TextBox importFileTextBox)
+        {
+
+            if (importFileTextBox.Text != "")
+            {
+                for (int i = 0; i < listFileDataGridView.Rows.Count; i++)
+                {
+                    if (listFileDataGridView.Rows[i].Cells[0].Value.ToString() == importFileTextBox.Text)
+                    {
+                        MessageBox.Show("Đã tồn tại TÊN FILE " + importFileTextBox.Text, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        goto end;
+                    }
+                }
+                _sqliteUtils.addCategory(importFileTextBox.Text);
+
+                MessageBox.Show("SAVE FILE SUCCESS !", "DONE", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                LoadFileAccount(listFileDataGridView);
+            }
+            else
+            {
+                MessageBox.Show("Chưa nhập TÊN FILE cần LƯU !", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        end:
+            Thread.Sleep(100);
+
+        }
+
+        public void deleteAllByCateloge(ToolStripMenuItem deleteFileToolStripMenuItem, DataGridView dataGridView)
+        {
+
+            int index = dataGridView.CurrentCell.RowIndex;
+            string fileName = dataGridView.Rows[index].Cells[0].Value.ToString();
+            DialogResult rs = MessageBox.Show("Bạn chắc chắn muốn xóa File: " + fileName + " ?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (rs == DialogResult.Yes)
+            {
+                SQLiteUtils.deleteAllItemByCateloge(fileName);
+                LoadFileAccount(dataGridView);
+            }
+
+        }
+
         public void LoadFileAccount(DataGridView dataGridView)
         {
+            dataGridView.Rows.Clear();
             List<string> dm = _sqliteUtils.getListCategory("DM");
             for (int i = 0; i < dm.Count; i++)
             {
