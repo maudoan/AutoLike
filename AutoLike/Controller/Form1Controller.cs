@@ -1100,7 +1100,7 @@ namespace AutoLike.Controller
             //    uidPost = ui.Replace("----", "|").Split('|');
             //}
             string[] uidPost = new string[1];
-            uidPost[0] = "2332681936872124";
+            uidPost[0] = "782941852327951";
 
             likePost.LikePost(chromeDriver, dataGridView, item, uidPost, listPage);
 
@@ -1226,12 +1226,16 @@ namespace AutoLike.Controller
                             {
                                 itemIndex = 0;
                             }
-                            List<string> listPageString = SQLiteUtils.getPageListByUid(item);
-
-                            if (listPageString.Count > 0)
+                         
+                            await Task.Run(async () =>
                             {
-                                await processItemMovePageToUid(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, dataGridView, x, y, listPageString);
-                            }
+                                List<string> listPageString = SQLiteUtils.getPageListByUid(item);
+
+                                if (listPageString.Count > 0)
+                                {
+                                    await processItemMovePageToUid(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, dataGridView, x, y, listPageString);
+                                }
+                            });
 
 
                         }
