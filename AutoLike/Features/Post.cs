@@ -35,7 +35,7 @@ namespace AutoLike.Features
             }
             else 
             { 
-                type = "1"; 
+                type = "2"; 
             }
             while (true)
             {
@@ -219,8 +219,8 @@ namespace AutoLike.Features
                         try
                         {
                             driver.Manage().Cookies.DeleteCookieNamed("i_user");
-                            Cookie cok = new Cookie("i_user", listPage[i].PAGEID, "https://www.facebook.com", "/", new DateTime?(DateTime.Now.AddDays(10.0)));
-                            driver.Manage().Cookies.AddCookie(cok);
+                            Cookie cookie = new Cookie("i_user", listPage[i].PAGEID);
+                            driver.Manage().Cookies.AddCookie(cookie);
                         }
                         catch
                         {
@@ -243,7 +243,7 @@ namespace AutoLike.Features
                             
                         }
 
-                        driver.Navigate().GoToUrl("https://m.facebook.com/" + uidPost[k1]);
+                        driver.Navigate().GoToUrl("https://www.facebook.com/" + uidPost[k1]);
                         //Thread.Sleep(3000);
                         //driver.Navigate().Refresh();
                         //Thread.Sleep(1000);

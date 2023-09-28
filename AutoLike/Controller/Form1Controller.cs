@@ -1089,16 +1089,7 @@ namespace AutoLike.Controller
             }
             Thread.Sleep(1000);
             Post likePost = new Post();
-            Random random = new Random();
-            int randomIndex = random.Next(0, listPage.Count);
-            page randomPage = listPage[randomIndex];
 
-            //string ui = likePost.getPostUid();
-            //string[] uidPost = null;
-            //if (ui != "")
-            //{
-            //    uidPost = ui.Replace("----", "|").Split('|');
-            //}
             string uidPost = Post.getPostUid(type2CheckBox,keyText, timeGetValue);
             string[] listUidPost = uidPost.Replace("----", "|").Split('|');
 
