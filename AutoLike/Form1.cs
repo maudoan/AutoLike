@@ -368,7 +368,7 @@ namespace AutoLike
             }
             else
             {
-                _form1Controller.likePost(selectPathProfileChromeTextBox.Text, detailListAccountsDataGridView, generalSettingflowNumberNumericUpDown, generalSetingUserProxyComboBox, keyApiList);
+                _form1Controller.likePost(selectPathProfileChromeTextBox.Text, detailListAccountsDataGridView, generalSettingflowNumberNumericUpDown, generalSetingUserProxyComboBox, keyApiList, sType2SeedingPageCheckbox, keyGetUidSeedingPageTextBox,timeGetNumBerNumericUpDown);
                 checkPageUid = false;
                 tabControl.SelectTab(doashBoardTabPage);
             }   

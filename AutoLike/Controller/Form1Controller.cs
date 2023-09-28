@@ -902,7 +902,7 @@ namespace AutoLike.Controller
          * Feature Seeding Page
          * 
          */
-        public void likePost(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, ComboBox selectProxy, List<string> apiKeyList)
+        public void likePost(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, ComboBox selectProxy, List<string> apiKeyList, CheckBox type2CheckBox, TextBox keyText, NumericUpDown timeGetValue)
         {
 
             List<account> danhSach = new List<account>();
@@ -925,14 +925,14 @@ namespace AutoLike.Controller
                 }
             }
 
-            ProcessLikePost(ProfileFolderPath, dataGridView, flowNum, selectProxy, danhSach, apiKeyList);
+            ProcessLikePost(ProfileFolderPath, dataGridView, flowNum, selectProxy, danhSach, apiKeyList, type2CheckBox, keyText, timeGetValue);
         }
 
         /*
          * Process Reg Page
          */
 
-        public async void ProcessLikePost(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, ComboBox selectProxy, List<account> listAcccounts, List<string> apiKeyList)
+        public async void ProcessLikePost(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, ComboBox selectProxy, List<account> listAcccounts, List<string> apiKeyList, CheckBox type2CheckBox, TextBox keyText, NumericUpDown timeGetValue)
         {
            
             ProxyUtils proxyUtils = new ProxyUtils();
@@ -1022,7 +1022,7 @@ namespace AutoLike.Controller
 
                                 if (listPageString.Count > 0)
                                 {
-                                    await processItemLikePost(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, dataGridView, x, y, listPageString);
+                                    await processItemLikePost(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, dataGridView, x, y, listPageString, type2CheckBox, keyText, timeGetValue);
                                 }
                             });
 
@@ -1067,7 +1067,7 @@ namespace AutoLike.Controller
         /*
          * Process Reg Page for Item Acc
          */
-        public async Task processItemLikePost(string ProfileFolderPath, account item, int itemIndex, NumericUpDown flowNum, ComboBox selectProxy, DataGridView dataGridView, int x, int y, List<string> listPageString)
+        public async Task processItemLikePost(string ProfileFolderPath, account item, int itemIndex, NumericUpDown flowNum, ComboBox selectProxy, DataGridView dataGridView, int x, int y, List<string> listPageString, CheckBox type2CheckBox, TextBox keyText, NumericUpDown timeGetValue)
         {
             ChromeDriver chromeDriver = _chromeDriverUtils.initChrome(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, x, y);
             _listDriver.Add(chromeDriver);
@@ -1099,10 +1099,10 @@ namespace AutoLike.Controller
             //{
             //    uidPost = ui.Replace("----", "|").Split('|');
             //}
-            string[] uidPost = new string[1];
-            uidPost[0] = "782941852327951";
+            string uidPost = Post.getPostUid(type2CheckBox,keyText, timeGetValue);
+            string[] listUidPost = uidPost.Replace("----", "|").Split('|');
 
-            likePost.LikePost(chromeDriver, dataGridView, item, uidPost, listPage);
+            likePost.LikePost(chromeDriver, dataGridView, item, listUidPost, listPage,type2CheckBox, keyText, timeGetValue);
 
             SQLiteUtils.updateByUID(item);
             Console.WriteLine($"Processing item: =========>");

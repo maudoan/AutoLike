@@ -400,7 +400,7 @@ namespace AutoLike.Utils
             return listPage;
         }
 
-        public static void insertPost(List<post> listPost)
+        public static void insertPost(post post)
         {
             try
             {
@@ -413,12 +413,11 @@ namespace AutoLike.Utils
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
 
-                foreach (post item in listPost)
-                {
-                    string text = string.Format("INSERT INTO post ('POSTID','PAGEID') VALUES ('{0}', '{1}')", item.POSTID, item.PAGEID);
-                    sqliteCommand.CommandText = text;
-                    sqliteCommand.ExecuteNonQuery();
-                }
+
+                string text = string.Format("INSERT INTO post ('POSTID','PAGEID') VALUES ('{0}', '{1}')", post.POSTID, post.PAGEID);
+                sqliteCommand.CommandText = text;
+                sqliteCommand.ExecuteNonQuery();
+
                 trans.Commit();
                 sw.Stop();
                 min = sw.Elapsed.Minutes + " Phút " + sw.Elapsed.Seconds + " giây";
@@ -472,6 +471,40 @@ namespace AutoLike.Utils
             min = sw.Elapsed.Minutes + " Phút " + sw.Elapsed.Seconds + " giây";
             sqliteConnection.Dispose();
             Console.WriteLine("Đã Xóa DANHMUC");
+        }
+
+        public static bool checkPostLikedByPage(string pageId, string postId)
+        {
+
+            SQLiteConnection sqliteConnection = new SQLiteConnection();
+            sqliteConnection.ConnectionString = "Data Source=Data.sqlite3;Version=3;";
+            sqliteConnection.Open();
+            SQLiteCommand sqliteCommand = sqliteConnection.CreateCommand();
+            string text = string.Format("SELECT * From [post] where [PAGEID] = '{0}' AND [POSTID] = '{1}'", pageId, postId);
+            sqliteCommand.CommandText = text;
+            sqliteCommand.CommandType = CommandType.Text;
+            SQLiteDataReader sqliteDataReader = sqliteCommand.ExecuteReader();
+            int rowCount = 0; // Đếm số lượng dòng trong kết quả
+
+            while (sqliteDataReader.Read())
+            {
+                rowCount++;
+            }
+
+            sqliteDataReader.Close(); // Đóng DataReader sau khi sử dụng
+
+            sqliteConnection.Close(); // Đóng kết nối SQLite sau khi sử dụng
+
+            // Kiểm tra và trả về kết quả dựa trên số lượng dòng
+            if (rowCount > 0)
+            {
+                return true; // Có dữ liệu, trả về false
+            }
+            else
+            {
+                return false; // Không có dữ liệu, trả về true
+            }
+
         }
     }
 }

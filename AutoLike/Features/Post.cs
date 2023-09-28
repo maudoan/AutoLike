@@ -17,6 +17,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Net.Mime.MediaTypeNames;
+using Cookie = OpenQA.Selenium.Cookie;
 
 namespace AutoLike.Features
 {
@@ -72,7 +73,7 @@ namespace AutoLike.Features
             return uid;
         }
 
-        public void LikePost(ChromeDriver driver, DataGridView dataGridView, account acc, string[] uidPost,List<page> listPage)
+        public void LikePost(ChromeDriver driver, DataGridView dataGridView, account acc, string[] uidPost,List<page> listPage, CheckBox type2CheckBox, TextBox keyText, NumericUpDown timeGetValue)
         {
             try
             {
@@ -85,6 +86,10 @@ namespace AutoLike.Features
                 {
                     for (int k1 = 0; k1 < uidPost.Length; k1++)
                     {
+                        if (SQLiteUtils.checkPostLikedByPage(listPage[i].PAGEID, uidPost[k1])) 
+                        {
+                            break;
+                        }
                     a:
                         int dem = 0;
                         ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Vào Post: " + uidPost[k1]);
@@ -104,112 +109,125 @@ namespace AutoLike.Features
                             }
                         }
                         //Thread.Sleep(3000);
-                        driver.FindElement(By.XPath("/html/body/div[1]/div/div[1]/div/div[2]/div[5]/div[1]/span/div/div[1]/div")).Click();
+                        //driver.FindElement(By.XPath("/html/body/div[1]/div/div[1]/div/div[2]/div[5]/div[1]/span/div/div[1]/div")).Click();
 
-                        //Thread.Sleep(3000);
-                        if (ChromeDriverUtils.FindTextInChrome(driver, "Xem tất cả trang cá nhân", "Xem tất cả trang cá nhân"))
+                        ////Thread.Sleep(3000);
+                        //if (ChromeDriverUtils.FindTextInChrome(driver, "Xem tất cả trang cá nhân", "Xem tất cả trang cá nhân"))
+                        //{
+                        //    IWebElement element = driver.FindElement(By.XPath($"//*[contains(text(), 'Xem tất cả trang cá nhân')]"));
+                        //    element.Click();
+                        //    //Thread.Sleep(3000);
+                        //}
+                        //if (ChromeDriverUtils.FindTextInChrome(driver, "Trang & trang cá nhân của bạn", "Trang & trang cá nhân của bạn"))
+                        //{
+                        //    try
+                        //    {
+                        //        switch (i)
+                        //        {
+                        //            case 0:
+                        //                driver.FindElement(By.XPath("/html/body/div[4]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[2]/div/div[1]/div[2]/div[2]/div/div")).Click();
+                        //                Thread.Sleep(3000);
+                        //                break;
+                        //            case 1:
+                        //                driver.FindElement(By.XPath("/html/body/div[4]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[3]/div/div[1]/div[2]/div[2]/div/div")).Click();
+                        //                Thread.Sleep(3000);
+                        //                break;
+                        //            case 2:
+                        //                driver.FindElement(By.XPath("/html/body/div[4]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[4]/div/div[1]/div[2]/div[2]/div/div")).Click();
+                        //                Thread.Sleep(3000);
+                        //                break;
+                        //            case 3:
+                        //                driver.FindElement(By.XPath("/html/body/div[4]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[5]/div/div[1]/div[2]/div[2]/div/div")).Click();
+                        //                Thread.Sleep(3000);
+                        //                break;
+                        //            case 4:
+                        //                driver.FindElement(By.XPath("/html/body/div[4]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[6]/div/div[1]/div[2]/div[2]/div/div")).Click();
+                        //                Thread.Sleep(3000);
+                        //                break;
+                        //            case 5:
+                        //                driver.FindElement(By.XPath("/html/body/div[4]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[7]/div/div[1]/div[2]/div[2]/div/div")).Click();
+                        //                Thread.Sleep(3000);
+                        //                break;
+                        //            case 6:
+                        //                driver.FindElement(By.XPath("/html/body/div[4]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[8]/div/div[1]/div[2]/div[2]/div/div")).Click();
+                        //                Thread.Sleep(3000);
+                        //                break;
+                        //            case 7:
+                        //                driver.FindElement(By.XPath("/html/body/div[4]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[9]/div/div[1]/div[2]/div[2]/div/div")).Click();
+                        //                Thread.Sleep(3000);
+                        //                break;
+                        //            case 8:
+                        //                driver.FindElement(By.XPath("/html/body/div[4]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[10]/div/div[1]/div[2]/div[2]/div/div")).Click();
+                        //                Thread.Sleep(3000);
+                        //                break;
+                        //            default:
+                        //                // code block
+                        //                break;
+                        //        }
+
+
+                        //    }
+                        //    catch
+                        //    {
+                        //        switch (i)
+                        //        {
+                        //            case 0:
+                        //                driver.FindElement(By.XPath("/html/body/div[5]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[2]/div/div[1]/div[2]/div[2]/div/div")).Click();
+                        //                Thread.Sleep(3000);
+                        //                break;
+                        //            case 1:
+                        //                driver.FindElement(By.XPath("/html/body/div[5]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[3]/div/div[1]/div[2]/div[2]/div/div")).Click();
+                        //                Thread.Sleep(3000);
+                        //                break;
+                        //            case 2:
+                        //                driver.FindElement(By.XPath("/html/body/div[5]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[4]/div/div[1]/div[2]/div[2]/div/div")).Click();
+                        //                Thread.Sleep(3000);
+                        //                break;
+                        //            case 3:
+                        //                driver.FindElement(By.XPath("/html/body/div[5]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[5]/div/div[1]/div[2]/div[2]/div/div")).Click();
+                        //                Thread.Sleep(3000);
+                        //                break;
+                        //            case 4:
+                        //                driver.FindElement(By.XPath("/html/body/div[5]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[6]/div/div[1]/div[2]/div[2]/div/div")).Click();
+                        //                Thread.Sleep(3000);
+                        //                break;
+                        //            case 5:
+                        //                driver.FindElement(By.XPath("/html/body/div[5]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[7]/div/div[1]/div[2]/div[2]/div/div")).Click();
+                        //                Thread.Sleep(3000);
+                        //                break;
+                        //            case 6:
+                        //                driver.FindElement(By.XPath("/html/body/div[5]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[8]/div/div[1]/div[2]/div[2]/div/div")).Click();
+                        //                Thread.Sleep(3000);
+                        //                break;
+                        //            case 7:
+                        //                driver.FindElement(By.XPath("/html/body/div[5]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[9]/div/div[1]/div[2]/div[2]/div/div")).Click();
+                        //                Thread.Sleep(3000);
+                        //                break;
+                        //            case 8:
+                        //                driver.FindElement(By.XPath("/html/body/div[5]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[10]/div/div[1]/div[2]/div[2]/div/div")).Click();
+                        //                Thread.Sleep(3000);
+                        //                break;
+                        //            default:
+                        //                // code block
+                        //                break;
+                        //        }
+
+                        //    }
+
+                        //}
+
+                        try
                         {
-                            IWebElement element = driver.FindElement(By.XPath($"//*[contains(text(), 'Xem tất cả trang cá nhân')]"));
-                            element.Click();
-                            //Thread.Sleep(3000);
+                            driver.Manage().Cookies.DeleteCookieNamed("i_user");
+                            Cookie cok = new Cookie("i_user", listPage[i].PAGEID, "https://www.facebook.com", "/", new DateTime?(DateTime.Now.AddDays(10.0)));
+                            driver.Manage().Cookies.AddCookie(cok);
                         }
-                        if (ChromeDriverUtils.FindTextInChrome(driver, "Trang & trang cá nhân của bạn", "Trang & trang cá nhân của bạn"))
+                        catch
                         {
-                            try
-                            {
-                                switch (i)
-                                {
-                                    case 0:
-                                        driver.FindElement(By.XPath("/html/body/div[4]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[2]/div/div[1]/div[2]/div[2]/div/div")).Click();
-                                        Thread.Sleep(3000);
-                                        break;
-                                    case 1:
-                                        driver.FindElement(By.XPath("/html/body/div[4]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[3]/div/div[1]/div[2]/div[2]/div/div")).Click();
-                                        Thread.Sleep(3000);
-                                        break;
-                                    case 2:
-                                        driver.FindElement(By.XPath("/html/body/div[4]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[4]/div/div[1]/div[2]/div[2]/div/div")).Click();
-                                        Thread.Sleep(3000);
-                                        break;
-                                    case 3:
-                                        driver.FindElement(By.XPath("/html/body/div[4]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[5]/div/div[1]/div[2]/div[2]/div/div")).Click();
-                                        Thread.Sleep(3000);
-                                        break;
-                                    case 4:
-                                        driver.FindElement(By.XPath("/html/body/div[4]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[6]/div/div[1]/div[2]/div[2]/div/div")).Click();
-                                        Thread.Sleep(3000);
-                                        break;
-                                    case 5:
-                                        driver.FindElement(By.XPath("/html/body/div[4]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[7]/div/div[1]/div[2]/div[2]/div/div")).Click();
-                                        Thread.Sleep(3000);
-                                        break;
-                                    case 6:
-                                        driver.FindElement(By.XPath("/html/body/div[4]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[8]/div/div[1]/div[2]/div[2]/div/div")).Click();
-                                        Thread.Sleep(3000);
-                                        break;
-                                    case 7:
-                                        driver.FindElement(By.XPath("/html/body/div[4]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[9]/div/div[1]/div[2]/div[2]/div/div")).Click();
-                                        Thread.Sleep(3000);
-                                        break;
-                                    case 8:
-                                        driver.FindElement(By.XPath("/html/body/div[4]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[10]/div/div[1]/div[2]/div[2]/div/div")).Click();
-                                        Thread.Sleep(3000);
-                                        break;
-                                    default:
-                                        // code block
-                                        break;
-                                }
-
-                               
-                            }
-                            catch
-                            {
-                                switch (i)
-                                {
-                                    case 0:
-                                        driver.FindElement(By.XPath("/html/body/div[5]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[2]/div/div[1]/div[2]/div[2]/div/div")).Click();
-                                        Thread.Sleep(3000);
-                                        break;
-                                    case 1:
-                                        driver.FindElement(By.XPath("/html/body/div[5]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[3]/div/div[1]/div[2]/div[2]/div/div")).Click();
-                                        Thread.Sleep(3000);
-                                        break;
-                                    case 2:
-                                        driver.FindElement(By.XPath("/html/body/div[5]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[4]/div/div[1]/div[2]/div[2]/div/div")).Click();
-                                        Thread.Sleep(3000);
-                                        break;
-                                    case 3:
-                                        driver.FindElement(By.XPath("/html/body/div[5]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[5]/div/div[1]/div[2]/div[2]/div/div")).Click();
-                                        Thread.Sleep(3000);
-                                        break;
-                                    case 4:
-                                        driver.FindElement(By.XPath("/html/body/div[5]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[6]/div/div[1]/div[2]/div[2]/div/div")).Click();
-                                        Thread.Sleep(3000);
-                                        break;
-                                    case 5:
-                                        driver.FindElement(By.XPath("/html/body/div[5]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[7]/div/div[1]/div[2]/div[2]/div/div")).Click();
-                                        Thread.Sleep(3000);
-                                        break;
-                                    case 6:
-                                        driver.FindElement(By.XPath("/html/body/div[5]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[8]/div/div[1]/div[2]/div[2]/div/div")).Click();
-                                        Thread.Sleep(3000);
-                                        break;
-                                    case 7:
-                                        driver.FindElement(By.XPath("/html/body/div[5]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[9]/div/div[1]/div[2]/div[2]/div/div")).Click();
-                                        Thread.Sleep(3000);
-                                        break;
-                                    case 8:
-                                        driver.FindElement(By.XPath("/html/body/div[5]/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[2]/div[3]/div/div/div[2]/div/div[1]/div[1]/div/div/div[10]/div/div[1]/div[2]/div[2]/div/div")).Click();
-                                        Thread.Sleep(3000);
-                                        break;
-                                    default:
-                                        // code block
-                                        break;
-                                }
-                               
-                            }
 
                         }
+  
+                        driver.Navigate().GoToUrl("https://www.facebook.com/");
 
                         if (ChromeDriverUtils.FindTextInChrome(driver, "Chào mừng bạn đến với Trang mới!", "Chào mừng bạn đến với Trang mới!"))
                         {
@@ -224,6 +242,7 @@ namespace AutoLike.Features
                             }
                             
                         }
+
                         driver.Navigate().GoToUrl("https://m.facebook.com/" + uidPost[k1]);
                         //Thread.Sleep(3000);
                         //driver.Navigate().Refresh();
@@ -251,7 +270,7 @@ namespace AutoLike.Features
 
                                         ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Like Post Lỗi - Acc Logout " + uidPost[k1]);
                                         //LoadLog(DateTime.Now + ":  " + dataGridView1.Rows[i].Cells["Ten1"].Value.ToString() + " :Like Post Thành công! " + uidlike[k1], "gr");
-                                        //count.Add(uidPost[k1] + "|" + page.UID);
+                                        count.Add(uidPost[k1] + "|" + listPage[i].PAGEID);
                                         //Thread.Sleep(2000);
                                         break;
                                     }
@@ -263,14 +282,18 @@ namespace AutoLike.Features
                                             {
                                                 ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Lỗi : dạng wath livetream k like  đc " + uidPost[k1]);
                                                 //LoadLog(DateTime.Now + ":  " + dataGridView1.Rows[i].Cells["Ten1"].Value.ToString() + " :Lỗi : dạng wath livetream k like  đc !  " + uidlike[k1], "red");
-                                                //upapi(uidlike[k1], 9999);
+                                                upapi(uidPost[k1], 9999, keyText);
 
                                             }
                                             else if (ChromeDriverUtils.FindClickElementInChrome(driver, "Thích", "Like", true))
                                             {
                                                 ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Like Thành công Post " + uidPost[k1]);
+                                                post post = new post();
+                                                post.POSTID = uidPost[k1];
+                                                post.PAGEID = listPage[i].PAGEID;
+                                                SQLiteUtils.insertPost(post);
                                                 //LoadLog(DateTime.Now + ":  " + dataGridView1.Rows[i].Cells["Ten1"].Value.ToString() + " :Like Post Thành công! " + uidlike[k1], "gr");
-                                                //count.Add(uidPost[k1] + "|" + page.UID);
+                                                count.Add(uidPost[k1] + "|" + listPage[i].PAGEID);
                                                 //processdone++;
                                                 //this.Invoke(new Action(() =>
                                                 //{
@@ -307,14 +330,14 @@ namespace AutoLike.Features
                                             {
                                                 ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Lỗi : dạng nick bị check cmt spam hoặc cp lạ " + uidPost[k1]);
                                                 //LoadLog(DateTime.Now + ":  " + dataGridView1.Rows[i].Cells["Ten1"].Value.ToString() + " :Lỗi : dạng wath livetream k like  đc !  " + uidlike[k1], "red");
-                                                //upapi(uidlike[k1], 9999);
+                                                upapi(uidPost[k1], 9999, keyText);
 
                                             }
                                             else if (ChromeDriverUtils.FindTextInChrome(driver, "Không tìm thấy nội dung", "Liên kết bạn truy cập") || ChromeDriverUtils.FindTextInChrome(driver, "Không tìm thấy nội dung", "Liên kết bạn truy cập"))
                                             {
                                                 ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Không tìm thấy nội dung " + uidPost[k1]);
                                                 //LoadLog(DateTime.Now + ":  " + dataGridView1.Rows[i].Cells["Ten1"].Value.ToString() + " : Không tìm thấy nội dung! " + uidlike[k1], "red");
-                                                //upapi(uidlike[k1], 9999);
+                                                upapi(uidPost[k1], 9999, keyText);
                                                 //delete = true;
                                             }
                                             else if (driver.Url.Contains("/checkpoint") || ChromeDriverUtils.FindClickElementInChrome(driver, "Cần phê duyệt đăng nhập", "Login approval needed", false)
@@ -341,7 +364,7 @@ namespace AutoLike.Features
                                             {
                                                 ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Không có nút LIKE" + uidPost[k1]);
                                                 //LoadLog(DateTime.Now + ":  " + dataGridView1.Rows[i].Cells["Ten1"].Value.ToString() + " : Không có nút LIKE! " + uidlike[k1], "red");
-                                                //count.Add(uidlike[k1] + "|delete");
+                                                count.Add(uidPost[k1] + "|delete");
                                                 //delete = true;
                                             }
                                             else if (ChromeDriverUtils.FindTextInChrome(driver, "của bạn đã bị khóa", "been locked"))
@@ -416,13 +439,80 @@ namespace AutoLike.Features
                         }
                     }
                 }
-              
+
+                for (int k2 = 0; k2 < uidPost.Length; k2++)
+                {
+                    int dem = 0;
+                    foreach (string s in count)
+                    {
+                        if (s.Split('|')[0] == uidPost[k2])
+                        {
+                            dem++;
+                        }
+                        else if (s == uidPost[k2] + "|delete")
+                        {
+                            try
+                            {
+                                upapi(uidPost[k2], 9999, keyText);
+                            }
+                            catch
+                            {
+                                //LoadLog("Lỗi update api Like Delete", "red");
+                            }
+
+                            goto en;
+                        }
+                    }
+                    foreach (string s in count)
+                    {
+                        if (s.Split('|')[0] == uidPost[k2])
+                        {
+                            //LoadLog(s.Split('|')[1] + "|" + uidlike[k2] + "|" + dem, "gr");
+                            //File.AppendAllText(@"LOG\loglike.txt", s.Split('|')[1] + "|" + uidlike[k2] + "|" + dem + "\r\n");
+                        }
+                    }
+                    try
+                    {
+                        upapi(uidPost[k2], dem, keyText);
+                    }
+                    catch
+                    {
+                        //LoadLog("Lỗi update api Like OK", "red");
+                    }
+                en:
+                    Thread.Sleep(1);
+                }
+
             }
             catch 
             {
 
             }
+
+
         }
+
+        public void upapi(string uid, int count, TextBox keyTxt)
+        {
+            if (count > 0)
+            {
+                string key = keyTxt.Text;
+                while (true)
+                {
+
+                    HttpUtils rq = new HttpUtils();
+                    string kq = rq.postRequest("http://shoplike.vn/Cron1123z/like_api.php?key=" + key + "&method=" + uid + "&count=" + count, "key=" + key + "&method=update_count_success&id_stt=" + uid + "&count=" + count, "", "", "");
+                    if (kq.Contains("success"))
+                    {
+                        break;
+                    }
+                }
+
+            }
+
+        }
+
+
     }
     
 }

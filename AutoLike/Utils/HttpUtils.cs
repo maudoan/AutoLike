@@ -116,5 +116,29 @@ namespace AutoLike.Utils
             return rs;
 
         }
+
+        internal string postRequest(string Url, string data = null, string Referer = "", string ContentType = "", string cook = "")
+        {
+            //Request.AddHeader("authority", "mbasic.facebook.com");
+            //Request.AddParam("Content-type", "application/x-www-form-urlencoded");
+            //Request.AddHeader("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9");
+            //Request.AddHeader("accept-language", "vi-VN,vi;q=0.9,fr-FR;q=0.8,fr;q=0.7,en-US;q=0.6,en;q=0.5");
+            if (cook != "")
+            {
+                request.AddHeader("Cookie", cook);
+            }
+
+            request.AddHeader("origin", "https://mbasic.facebook.com");
+            //if(para !="")
+            //    Request.AddParam("next", para);
+            //    Request.AddParam("ref", "104");
+            if (Referer != "")
+                request.AddHeader("Referer", Referer);
+            if (ContentType == "")
+                ContentType = @"application/x-www-form-urlencoded";
+            request.AddHeader("ContentType", ContentType);
+            string post = request.Post(Url, data, ContentType).ToString();
+            return post;
+        }
     }
 }
