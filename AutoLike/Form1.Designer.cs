@@ -71,8 +71,8 @@ namespace AutoLike
             this.labelAppName = new System.Windows.Forms.Label();
             this.lablePhoneContact = new System.Windows.Forms.Label();
             this.listFileContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.deleteFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importDataFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editNameFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.featuresContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -101,6 +101,7 @@ namespace AutoLike
             this.totalAccountSelectedValueLabel = new System.Windows.Forms.Label();
             this.regAndSeedingTabPage = new System.Windows.Forms.TabPage();
             this.seedingPageGroupBox = new System.Windows.Forms.GroupBox();
+            this.stopLikePostButton = new System.Windows.Forms.Button();
             this.changePageToUidButton = new System.Windows.Forms.Button();
             this.sType2SeedingPageCheckbox = new System.Windows.Forms.CheckBox();
             this.startWithSeedingWithPageButton = new System.Windows.Forms.Button();
@@ -335,36 +336,36 @@ namespace AutoLike
             this.editNameFileToolStripMenuItem,
             this.viewToolStripMenuItem});
             this.listFileContextMenuStrip.Name = "listFileContextMenuStrip";
-            this.listFileContextMenuStrip.Size = new System.Drawing.Size(134, 70);
-            // 
-            // deleteFileToolStripMenuItem
-            // 
-            this.deleteFileToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.deleteFileToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.deleteFileToolStripMenuItem.Name = "deleteFileToolStripMenuItem";
-            this.deleteFileToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
-            this.deleteFileToolStripMenuItem.Text = "Xóa File";
-            this.deleteFileToolStripMenuItem.Click += new System.EventHandler(this.deleteFileToolStripMenuItem_Click);
+            this.listFileContextMenuStrip.Size = new System.Drawing.Size(143, 92);
             // 
             // importDataFileToolStripMenuItem
             // 
             this.importDataFileToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.importDataFileToolStripMenuItem.ForeColor = System.Drawing.Color.Green;
             this.importDataFileToolStripMenuItem.Name = "importDataFileToolStripMenuItem";
-            this.importDataFileToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.importDataFileToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.importDataFileToolStripMenuItem.Text = "Import Data";
             this.importDataFileToolStripMenuItem.Click += new System.EventHandler(this.importDataFileToolStripMenuItem_Click);
+            // 
+            // deleteFileToolStripMenuItem
+            // 
+            this.deleteFileToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.deleteFileToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.deleteFileToolStripMenuItem.Name = "deleteFileToolStripMenuItem";
+            this.deleteFileToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.deleteFileToolStripMenuItem.Text = "Xóa File";
+            this.deleteFileToolStripMenuItem.Click += new System.EventHandler(this.deleteFileToolStripMenuItem_Click);
             // 
             // editNameFileToolStripMenuItem
             // 
             this.editNameFileToolStripMenuItem.Name = "editNameFileToolStripMenuItem";
-            this.editNameFileToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.editNameFileToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.editNameFileToolStripMenuItem.Text = "Đổi tên File";
             // 
             // viewToolStripMenuItem
             // 
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
-            this.viewToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.viewToolStripMenuItem.Text = "View";
             // 
             // featuresContextMenuStrip
@@ -627,6 +628,7 @@ namespace AutoLike
             // seedingPageGroupBox
             // 
             this.seedingPageGroupBox.BackColor = System.Drawing.Color.White;
+            this.seedingPageGroupBox.Controls.Add(this.stopLikePostButton);
             this.seedingPageGroupBox.Controls.Add(this.changePageToUidButton);
             this.seedingPageGroupBox.Controls.Add(this.sType2SeedingPageCheckbox);
             this.seedingPageGroupBox.Controls.Add(this.startWithSeedingWithPageButton);
@@ -662,6 +664,21 @@ namespace AutoLike
             this.seedingPageGroupBox.TabStop = false;
             this.seedingPageGroupBox.Text = "Seeding";
             // 
+            // stopLikePostButton
+            // 
+            this.stopLikePostButton.BackColor = System.Drawing.Color.Brown;
+            this.stopLikePostButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.stopLikePostButton.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Bold);
+            this.stopLikePostButton.ForeColor = System.Drawing.Color.White;
+            this.stopLikePostButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.stopLikePostButton.Location = new System.Drawing.Point(399, 580);
+            this.stopLikePostButton.Name = "stopLikePostButton";
+            this.stopLikePostButton.Size = new System.Drawing.Size(64, 32);
+            this.stopLikePostButton.TabIndex = 103;
+            this.stopLikePostButton.Text = "STOP";
+            this.stopLikePostButton.UseVisualStyleBackColor = false;
+            this.stopLikePostButton.Click += new System.EventHandler(this.stopLikePostButton_Click);
+            // 
             // changePageToUidButton
             // 
             this.changePageToUidButton.BackColor = System.Drawing.Color.DarkCyan;
@@ -669,7 +686,7 @@ namespace AutoLike
             this.changePageToUidButton.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.changePageToUidButton.ForeColor = System.Drawing.Color.White;
             this.changePageToUidButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.changePageToUidButton.Location = new System.Drawing.Point(240, 582);
+            this.changePageToUidButton.Location = new System.Drawing.Point(183, 581);
             this.changePageToUidButton.Name = "changePageToUidButton";
             this.changePageToUidButton.Size = new System.Drawing.Size(153, 31);
             this.changePageToUidButton.TabIndex = 102;
@@ -1388,8 +1405,8 @@ namespace AutoLike
             // 
             // saveFileNameButton
             // 
-            this.saveFileNameButton.Location = new System.Drawing.Point(245, 58);
             this.saveFileNameButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.saveFileNameButton.Location = new System.Drawing.Point(245, 58);
             this.saveFileNameButton.Name = "saveFileNameButton";
             this.saveFileNameButton.Size = new System.Drawing.Size(43, 38);
             this.saveFileNameButton.TabIndex = 86;
@@ -1510,8 +1527,8 @@ namespace AutoLike
             this.listFileDataGridView.ContextMenuStrip = this.listFileContextMenuStrip;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Green;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Tahoma", 8F);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.White;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.Blue;
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
@@ -2196,6 +2213,7 @@ namespace AutoLike
         private System.Windows.Forms.CheckBox sType2SeedingPageCheckbox;
         private System.Windows.Forms.Button changePageToUidButton;
         private System.Windows.Forms.Button saveFileNameButton;
+        private System.Windows.Forms.Button stopLikePostButton;
     }
 }
 

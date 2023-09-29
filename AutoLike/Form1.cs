@@ -26,7 +26,7 @@ namespace AutoLike
 
             _form1Controller.loadGeneralSetting(selectPathProfileChromeTextBox, generalSetingUserProxyComboBox, apiKeyTextBox);
 
-
+            keyApiList = _form1Controller.listKeyShopLike(apiKeyTextBox);
         }
 
         private void buttonCloseApp_Click(object sender, EventArgs e)
@@ -227,7 +227,7 @@ namespace AutoLike
             }
             else if (keyApiList.Count <= 0)
             {
-                MessageBox.Show("Vui lòng lưu lại cấu hình mới nhất!", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Vui lòng nhập Key Proxy!", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
@@ -293,13 +293,15 @@ namespace AutoLike
             if (apiLine.Length == 0)
             {
                 MessageBox.Show("Vui lòng chọn nhập Key !", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            } else
-            {
-                foreach (string line in apiLine)
-                {
-                    keyApiList.Add(line);
-                }
-            }
+            } 
+            
+            //else
+            //{
+            //    foreach (string line in apiLine)
+            //    {
+            //        keyApiList.Add(line);
+            //    }
+            //}
 
             string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"AutoLike\GeneralSetting.txt");
 
@@ -351,7 +353,6 @@ namespace AutoLike
         }
 
 
-        bool checkPageUid = false;
         private void startWithSeedingWithPageButton_Click(object sender, EventArgs e)
         {
             if (selectPathProfileChromeTextBox.Text == string.Empty || generalSetingUserProxyComboBox.SelectedItem == null)
@@ -360,16 +361,12 @@ namespace AutoLike
             }
             else if (keyApiList.Count <= 0)
             {
-                MessageBox.Show("Vui lòng lưu lại cấu hình mới nhất!", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            else if(checkPageUid == false)
-            {
-                MessageBox.Show("Vui chuyển Page về Uid!", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Vui lòng nhập Key Proxy!", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
+                _form1Controller.setStopLikePageFalse();
                 _form1Controller.likePost(selectPathProfileChromeTextBox.Text, detailListAccountsDataGridView, generalSettingflowNumberNumericUpDown, generalSetingUserProxyComboBox, keyApiList, sType2SeedingPageCheckbox, keyGetUidSeedingPageTextBox,timeGetNumBerNumericUpDown);
-                checkPageUid = false;
                 tabControl.SelectTab(doashBoardTabPage);
             }   
         }
@@ -382,12 +379,11 @@ namespace AutoLike
             }
             else if (keyApiList.Count <= 0)
             {
-                MessageBox.Show("Vui lòng lưu lại cấu hình mới nhất!", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Vui lòng nhập Key Proxy!", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
                 _form1Controller.movePageToUid(selectPathProfileChromeTextBox.Text, detailListAccountsDataGridView, generalSettingflowNumberNumericUpDown, generalSetingUserProxyComboBox, keyApiList);
-                checkPageUid = true;
             }
         }
 
@@ -428,6 +424,11 @@ namespace AutoLike
                 _form1Controller.LoadFileAccount(listFileDataGridView);
 
             }
+        }
+
+        private void stopLikePostButton_Click(object sender, EventArgs e)
+        {
+            _form1Controller.setStopLikePageTrue();
         }
     }
 }
