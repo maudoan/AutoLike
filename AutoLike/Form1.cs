@@ -343,7 +343,7 @@ namespace AutoLike
 
         private void getAccessTokenEAAGButton_Click(object sender, EventArgs e)
         {
-            _form1Controller.getAccessTokenEAAG(detailListAccountsDataGridView);
+            //_form1Controller.getAccessTokenEAAG(detailListAccountsDataGridView);
         }
 
         private void getInfoAccountToken_Click(object sender, EventArgs e)

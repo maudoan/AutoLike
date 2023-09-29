@@ -330,7 +330,7 @@ namespace AutoLike.Controller
             }
 
             SQLiteUtils.insertPage(listPage);
-
+            MessageBox.Show("Đã lấy xong số lượng Page!", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         /*
@@ -417,7 +417,7 @@ namespace AutoLike.Controller
                 if (item.COOKIE != "")
                 {
                     string result = FacebookUtils.CheckLiveCookie(item.COOKIE, "", "");
-                    Console.WriteLine(result);
+                    Console.WriteLine("-----" +result+ "----->");
 
                 }
 
@@ -491,7 +491,7 @@ namespace AutoLike.Controller
             else
             {
                 // Nếu chưa đủ thời gian, không thực hiện gọi lại API
-                Console.WriteLine("Waitng For 1 minute " + (callInterval - (currentTime - lastApiCallTime)));
+                Console.WriteLine("-------->  Waitng For 1 minute " + (callInterval - (currentTime - lastApiCallTime)));
             }
 
             int batchSize = Convert.ToInt32(flowNum.Value); // Số lượng item mỗi lần xử lý
@@ -568,7 +568,7 @@ namespace AutoLike.Controller
                     await Task.WhenAll(tasks);
                     foreach (var driver in _listDriver)
                     {
-                        Console.WriteLine("Out Chrome");
+                        Console.WriteLine("--------Out Chrome------>");
                         driver.Quit();
                     }
                     foreach (var process in Process.GetProcessesByName("chromedriver"))
@@ -580,7 +580,7 @@ namespace AutoLike.Controller
                 }
                 finally
                 {
-                    Console.WriteLine("DONE ALL TASK LOGIN!!!");
+                    Console.WriteLine("-------DONE ALL TASK LOGIN!!!--------->");
                 }
             }
         }
@@ -677,7 +677,7 @@ namespace AutoLike.Controller
             }
 
             SQLiteUtils.updateByUID(item);
-            Console.WriteLine($"Processing item: =========>");
+            Console.WriteLine($"------------Processing item: =========>");
         }
 
 
@@ -738,7 +738,7 @@ namespace AutoLike.Controller
                 // Kiểm tra xem tệp tin có dòng nào không
                 if (lines.Count == 0)
                 {
-                    Console.WriteLine("Tệp tin trống.");
+                    Console.WriteLine("----------Tep tin trong--------->");
                 }
 
                 // Sử dụng một số ngẫu nhiên để chọn một dòng ngẫu nhiên
@@ -808,7 +808,7 @@ namespace AutoLike.Controller
             else
             {
                 // Nếu chưa đủ thời gian, không thực hiện gọi lại API
-                Console.WriteLine("Waitng For 1 minute " + (callInterval - (currentTime - lastApiCallTime)));
+                Console.WriteLine("------------>Waitng For 1 minute " + (callInterval - (currentTime - lastApiCallTime)));
             }
 
             int batchSize = Convert.ToInt32(flowNum.Value); // Số lượng item mỗi lần xử lý
@@ -880,7 +880,7 @@ namespace AutoLike.Controller
                     await Task.WhenAll(tasks);
                     foreach (var driver in _listDriver)
                     {
-                        Console.WriteLine("Out Chrome");
+                        Console.WriteLine("----------Out Chrome--------->");
                         driver.Quit();
                     }
                     foreach (var process in Process.GetProcessesByName("chromedriver"))
@@ -892,7 +892,7 @@ namespace AutoLike.Controller
                 }
                 finally
                 {
-                    Console.WriteLine("DONE ALL TASK REGPAGE!!!");
+                    Console.WriteLine("--------DONE ALL TASK REGPAGE!!!-------->");
                 }
             }
 
@@ -910,7 +910,7 @@ namespace AutoLike.Controller
             regPage.RegPageWithUID(chromeDriver, fullPathNamePage,dataGridView,item, _listDriver);
 
             SQLiteUtils.updateByUID(item);
-            Console.WriteLine($"Processing item: =========>");
+            Console.WriteLine($"--------------Processing item: =========>");
         }
 
 
@@ -986,7 +986,7 @@ namespace AutoLike.Controller
             else
             {
                 // Nếu chưa đủ thời gian, không thực hiện gọi lại API
-                Console.WriteLine("Waitng For 1 minute " + (callInterval - (currentTime - lastApiCallTime)));
+                Console.WriteLine("------------>Waitng For 1 minute " + (callInterval - (currentTime - lastApiCallTime)));
             }
 
             int batchSize = Convert.ToInt32(flowNum.Value); // Số lượng item mỗi lần xử lý
@@ -1068,7 +1068,7 @@ namespace AutoLike.Controller
                         await Task.WhenAll(tasks);
                         foreach (var driver in _listDriver)
                         {
-                            Console.WriteLine("Out Chrome");
+                            Console.WriteLine("---------Out Chrome-------->");
                             driver.Quit();
                         }
                         foreach (var process in Process.GetProcessesByName("chromedriver"))
@@ -1081,11 +1081,11 @@ namespace AutoLike.Controller
                     }
                     finally
                     {
-                        Console.WriteLine("DONE TASK Like POST!!!");
+                        Console.WriteLine("----------DONE TASK Like POST!!!------------>");
                     }
                     if (stopLikePage == true)
                     {
-                        Console.WriteLine("1 FLOW LIKE PAGE STOP!!!");
+                        Console.WriteLine("----------- 1 FLOW LIKE PAGE STOP!!!------------>");
                         break;
                     }
 
@@ -1095,7 +1095,7 @@ namespace AutoLike.Controller
                 {
                     foreach (var driver in _listDriver)
                     {
-                        Console.WriteLine("LIKE PAGE IS STOPED");
+                        Console.WriteLine("---------LIKE PAGE IS STOPED------------>");
                         driver.Quit();
                     }
                     _listDriver.Clear();
@@ -1137,7 +1137,7 @@ namespace AutoLike.Controller
             likePost.LikePost(chromeDriver, dataGridView, item, listUidPost, listPage,type2CheckBox, keyText, timeGetValue);
 
             SQLiteUtils.updateByUID(item);
-            Console.WriteLine($"Processing item: =========>");
+            Console.WriteLine($"----------Processing item: =========>");
         }
 
 
@@ -1201,7 +1201,7 @@ namespace AutoLike.Controller
             else
             {
                 // Nếu chưa đủ thời gian, không thực hiện gọi lại API
-                Console.WriteLine("Waitng For 1 minute " + (callInterval - (currentTime - lastApiCallTime)));
+                Console.WriteLine("------------>Waitng For 1 minute " + (callInterval - (currentTime - lastApiCallTime)));
             }
 
             int batchSize = Convert.ToInt32(flowNum.Value); // Số lượng item mỗi lần xử lý
@@ -1279,7 +1279,7 @@ namespace AutoLike.Controller
                     await Task.WhenAll(tasks);
                     foreach (var driver in _listDriver)
                     {
-                        Console.WriteLine("Out Chrome");
+                        Console.WriteLine("----------Out Chrome---------->");
                         driver.Quit();
                     }
                     foreach (var process in Process.GetProcessesByName("chromedriver"))
@@ -1291,7 +1291,7 @@ namespace AutoLike.Controller
                 }
                 finally
                 {
-                    Console.WriteLine("DONE Move Page To Uid!!!");
+                    Console.WriteLine("----------DONE Move Page To Uid!!!----------->");
                 }
             }
 
@@ -1317,7 +1317,7 @@ namespace AutoLike.Controller
             }
           
             SQLiteUtils.updateByUID(item);
-            Console.WriteLine($"Processing item: =========>");
+            Console.WriteLine($"-------------Processing item: =========>");
         }
     }
 
