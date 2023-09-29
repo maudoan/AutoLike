@@ -256,6 +256,27 @@ namespace AutoLike.Controller
             }
         }
 
+        public void loadLikePostSeeting(CheckBox likePost, TextBox apiKeyGetUidTextBox)
+        {
+            if (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\AutoLike\LikePostSetting.txt"))
+            {
+                string[] dt = File.ReadAllText(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\AutoLike\LikePostSetting.txt").Split('|');
+                try
+                {
+                    if (dt[0] == "True")
+                    {
+                        likePost.Checked = true;
+                    } else
+                    {
+                        likePost.Checked = false;
+                    }
+
+                    apiKeyGetUidTextBox.Text = dt[1];
+                }
+                catch { }
+            }
+        }
+
         /*
          * 
          * Feature Get INFO

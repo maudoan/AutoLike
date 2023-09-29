@@ -2,10 +2,12 @@
 using AutoLike.Utils;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
+using System.Xml.Linq;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace AutoLike
@@ -25,6 +27,8 @@ namespace AutoLike
             _form1Controller.LoadFileAccount(listFileDataGridView);
 
             _form1Controller.loadGeneralSetting(selectPathProfileChromeTextBox, generalSetingUserProxyComboBox, apiKeyTextBox);
+
+            _form1Controller.loadLikePostSeeting(likePostSeedingPageCheckBox, keyGetUidSeedingPageTextBox);
 
             keyApiList = _form1Controller.listKeyShopLike(apiKeyTextBox);
         }
@@ -429,6 +433,20 @@ namespace AutoLike
         private void stopLikePostButton_Click(object sender, EventArgs e)
         {
             _form1Controller.setStopLikePageTrue();
+        }
+
+        private void saveSeetingSeedingPageButton_Click(object sender, EventArgs e)
+        {
+            string save = likePostSeedingPageCheckBox.Checked + "|" + keyGetUidSeedingPageTextBox.Text;
+            if (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\AutoLike\LikePostSetting.txt"))
+            {
+                File.Delete(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\AutoLike\LikePostSetting.txt");
+            }
+            using (TextWriter wr = new StreamWriter(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\AutoLike\LikePostSetting.txt"))
+            {
+                wr.WriteLine(save);
+                wr.Close();
+            }
         }
     }
 }
