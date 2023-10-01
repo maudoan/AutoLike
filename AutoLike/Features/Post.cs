@@ -100,6 +100,7 @@ namespace AutoLike.Features
                         {
                             try
                             {
+                                //*[@id="facebook"]/body/div[2]/div[1]/div/div[2]/div/div/div/div[1]
                                 driver.FindElement(By.XPath("//*[@id=\"facebook\"]/body/div[4]/div[1]/div/div[2]/div/div/div/div[1]/div")).Click();
                             }
                             catch

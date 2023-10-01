@@ -1528,8 +1528,8 @@ namespace AutoLike
             this.listFileDataGridView.ContextMenuStrip = this.listFileContextMenuStrip;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Tahoma", 8F);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Green;
             dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.White;
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.Blue;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
@@ -1538,8 +1538,6 @@ namespace AutoLike
             this.listFileDataGridView.Location = new System.Drawing.Point(5, 300);
             this.listFileDataGridView.Name = "listFileDataGridView";
             this.listFileDataGridView.RowHeadersVisible = false;
-            this.listFileDataGridView.RowHeadersWidth = 51;
-            this.listFileDataGridView.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.listFileDataGridView.Size = new System.Drawing.Size(309, 285);
             this.listFileDataGridView.TabIndex = 9;
             this.listFileDataGridView.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.listFileDataGridView_CellContentDoubleClick);
