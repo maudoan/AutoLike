@@ -15,14 +15,14 @@ namespace AutoLike.Utils
 {
     public class ChromeDriverUtils
     {
-        int screenHeight = SystemInformation.VirtualScreen.Height;
-        int screenWidth = SystemInformation.VirtualScreen.Width;
+        int screenWidth = Screen.PrimaryScreen.Bounds.Width;
+        int screenHeight = Screen.PrimaryScreen.Bounds.Height;
 
         public ChromeDriver initChrome(string ProfileFolderPath,account account,int index, NumericUpDown flowNum, ComboBox selectProxy, int x, int y)
         {
 
           
-            if (screenHeight > 1920)
+            if (screenWidth > 1920)
             {
                 screenWidth = 1920;
             }

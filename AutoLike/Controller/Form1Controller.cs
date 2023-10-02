@@ -23,17 +23,14 @@ namespace AutoLike.Controller
 {
     public class Form1Controller
     {
-        private account _account;
         private List<account> _listAccounts;
         private SQLiteUtils _sqliteUtils;
         private Form1 form1;
         private ChromeDriverUtils _chromeDriverUtils;
         List<ChromeDriver> _listDriver = new List<ChromeDriver>();
-        Dictionary<string,ChromeDriver> _dictionaryDriver = new Dictionary<string,ChromeDriver>();
 
         public Form1Controller()
         {
-            _account = new account();
             _listAccounts = new List<account>();
             _sqliteUtils = new SQLiteUtils();
             _chromeDriverUtils = new ChromeDriverUtils();
@@ -377,6 +374,21 @@ namespace AutoLike.Controller
 
             MessageBox.Show("Đã lấy xong số lượng Page!", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
+
+        public void processCloseApp ()
+        {
+            if(_listDriver.Count > 0)
+            {
+                foreach (var driver in _listDriver)
+                {
+                    Console.WriteLine("--------Out Chrome------>");
+                    driver.Quit();
+                    driver.Close();
+                }
+            }
+
+        }
+
         /*
          * 
          * Feature get AccessTokenEAAG
@@ -637,7 +649,7 @@ namespace AutoLike.Controller
 
             ChromeDriver chromeDriver = _chromeDriverUtils.initChrome(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, x, y);
             _listDriver.Add(chromeDriver);
-            _dictionaryDriver.Add(item.UID, chromeDriver);
+
             chromeDriver.Navigate().GoToUrl("https://www.facebook.com");
             Thread.Sleep(1000);
 

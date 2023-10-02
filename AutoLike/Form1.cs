@@ -3,12 +3,15 @@ using AutoLike.Utils;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolBar;
 
 namespace AutoLike
 {
@@ -35,6 +38,7 @@ namespace AutoLike
 
         private void buttonCloseApp_Click(object sender, EventArgs e)
         {
+            _form1Controller.processCloseApp();
             Application.Exit();
         }
 
@@ -442,6 +446,27 @@ namespace AutoLike
             {
                 wr.WriteLine(save);
                 wr.Close();
+            }
+        }
+        int w;
+        int dtw;
+        private void showHideListDataButton_Click(object sender, EventArgs e)
+        {
+            if (showHideListDataButton.Text == "Hide")
+            {
+                w = fileManagementGroupBox.Width;
+                dtw = detailListAccountsPanel.Width;
+                fileManagementGroupBox.Width = 0;
+                detailListAccountsPanel.Width = dtw + w;
+                itemFileDetail.Width = dtw + w;
+                showHideListDataButton.Text = "Show";
+            }
+            else
+            {
+                fileManagementGroupBox.Width = w;
+                detailListAccountsPanel.Width = dtw;
+                itemFileDetail.Width = dtw;
+                showHideListDataButton.Text = "Hide";
             }
         }
     }
