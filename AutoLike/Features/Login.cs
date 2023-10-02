@@ -24,7 +24,7 @@ namespace AutoLike.Features
                 try
                 {
                     driver.FindElement(By.XPath("/html/body/div[1]/div[2]/div[1]/div/div/div/div[1]/div[4]/div[1]/div/div/a[1]/img")).Click();
-                    Thread.Sleep(3000);
+                    //Thread.Sleep(3000);
                     int ckk = 1;
                     while (ckk > 0)
                     {
@@ -74,7 +74,7 @@ namespace AutoLike.Features
                                     try
                                     {
                                         driver.FindElement(By.XPath("/html/body/div[1]/div[2]/div[1]/div/div[2]/div[2]/form/div/div[2]/button")).Click();
-                                        Thread.Sleep(1500);
+                                        //Thread.Sleep(1500);
                                         goto ok;
                                     }
                                     catch
@@ -82,7 +82,7 @@ namespace AutoLike.Features
                                         //Trangthaichrome(i, "Lỗi Element Pass " + k);
                                         //driver.Navigate().Refresh();
                                         driver.Navigate().GoToUrl("https://www.facebook.com/");
-                                        Thread.Sleep(3000);
+                                        //Thread.Sleep(3000);
                                         goto lai;
                                     }
 
@@ -93,9 +93,9 @@ namespace AutoLike.Features
 
                     }
                     //driver.FindElement(By.Id("pass")).SendKeys(pass);
-                    Thread.Sleep(3000);
+                    //Thread.Sleep(3000);
                     ChromeDriverUtils.FindClickElementInChrome(driver, "Nhớ mật khẩu", "Remember password", true);
-                    Thread.Sleep(3000);
+                    //Thread.Sleep(3000);
                     try
                     {
                         driver.FindElement(By.XPath("/html/body/div[3]/div[2]/div/div/div/div/form/div[4]/button")).Click();
@@ -111,7 +111,7 @@ namespace AutoLike.Features
                     }
 
                     //await ChromeDriverUtils.FindClickElementInChrome(driver, "Đăng nhập", "Log in", true);
-                    Thread.Sleep(3000);
+                    //Thread.Sleep(3000);
                 }
                 catch
                 {
@@ -123,7 +123,7 @@ namespace AutoLike.Features
                         {
                             break;
                         }
-                        Thread.Sleep(1000);
+                        //Thread.Sleep(1000);
                     }
                     try
                     {
@@ -132,7 +132,7 @@ namespace AutoLike.Features
                         driver.FindElement(By.Id("m_login_password")).SendKeys(pass);
                         Thread.Sleep(1000);
                         driver.FindElement(By.Name("login")).Click();
-                        Thread.Sleep(6000);
+                        //Thread.Sleep(6000);
                     }
                     catch
                     {
@@ -141,7 +141,7 @@ namespace AutoLike.Features
                         driver.FindElement(By.Id("pass")).SendKeys(pass);
                         Thread.Sleep(1000);
                         driver.FindElement(By.Name("login")).Click();
-                        Thread.Sleep(6000);
+                        //Thread.Sleep(6000);
                     }
 
                 }
@@ -155,7 +155,7 @@ namespace AutoLike.Features
                     driver.FindElement(By.Id("m_login_password")).SendKeys(pass);
                     Thread.Sleep(1000);
                     driver.FindElement(By.Name("login")).Click();
-                    Thread.Sleep(6000);
+                    //Thread.Sleep(6000);
                 }
                 catch
                 {
@@ -164,7 +164,7 @@ namespace AutoLike.Features
                     driver.FindElement(By.Id("pass")).SendKeys(pass);
                     Thread.Sleep(1000);
                     driver.FindElement(By.Name("login")).Click();
-                    Thread.Sleep(6000);
+                    //Thread.Sleep(6000);
                 }
 
             }
@@ -193,17 +193,17 @@ namespace AutoLike.Features
 
                         }
                         driver.FindElement(By.Name("approvals_code")).SendKeys(facode);
-                        Thread.Sleep(3000);
+                        //Thread.Sleep(3000);
 
                         try
                         {
                             driver.FindElement(By.Id("checkpointSubmitButton")).Click();
-                            Thread.Sleep(4000);
+                            //Thread.Sleep(4000);
                         }
                         catch
                         {
                             driver.FindElement(By.Name("submit[Submit Code]")).Click();
-                            Thread.Sleep(4000);
+                            //Thread.Sleep(4000);
                         }
                         try
                         {
@@ -211,7 +211,7 @@ namespace AutoLike.Features
 
                         }
                         catch { }
-                        Thread.Sleep(5000);
+                        //Thread.Sleep(5000);
                         try
                         {
                             if (driver.FindElement(By.Name("approvals_code")).Displayed)
@@ -235,7 +235,7 @@ namespace AutoLike.Features
                     {
                         ChromeDriverUtils.FindClickElementInChrome(driver, "Tiếp tục", "Continue", true);
                         ChromeDriverUtils.FindClickElementInChrome(driver, "Tiếp", "Next", true);
-                        Thread.Sleep(2000);
+                        //Thread.Sleep(2000);
                         while (true)
                         {
                             if (ChromeDriverUtils.FindTextInChrome(driver, "Đây là tôi", "ssssssss"))
@@ -305,7 +305,7 @@ namespace AutoLike.Features
                 if (ChromeDriverUtils.FindTextInChrome(driver, "phiên bản", "welcome"))
                 {
                     ChromeDriverUtils.FindClickElementInChrome(driver, "Tiếp", "Next", true);
-                    Thread.Sleep(2000);
+                    //Thread.Sleep(2000);
                     ChromeDriverUtils.FindClickElementInChrome(driver, "Bắt đầu", "Get Started", true);
                     goto end;
                 }
@@ -327,7 +327,7 @@ namespace AutoLike.Features
                     //updatehanhdong(i, "ĐÃ ĐÌNH CHỈ");
                     goto end;
                 }
-                Thread.Sleep(5000);
+                //Thread.Sleep(5000);
 
                 if (!driver.Url.Contains("/checkpoint"))
                 {

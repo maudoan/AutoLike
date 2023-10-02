@@ -1067,6 +1067,10 @@ namespace AutoLike.Controller
             SemaphoreSlim semaphore = new SemaphoreSlim(maxConcurrency);
            while (stopLikePage == false)
            {
+
+                string uidPost = Post.getPostUid(type2CheckBox, keyText, timeGetValue);
+                string[] listUidPost = uidPost.Replace("----", "|").Split('|');
+
                 for (int i = 0; i < listAcccounts.Count; i += batchSize)
                 {
                     List<account> batch = listAcccounts.GetRange(i, Math.Min(batchSize, listAcccounts.Count - i));
@@ -1118,7 +1122,7 @@ namespace AutoLike.Controller
 
                                     if (listPageString.Count > 0)
                                     {
-                                        await processItemLikePost(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, dataGridView, x, y, listPageString, type2CheckBox, keyText, timeGetValue);
+                                        await processItemLikePost(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, dataGridView, x, y, listPageString, type2CheckBox, keyText, timeGetValue, listUidPost);
                                     }
                                 });
 
@@ -1173,7 +1177,7 @@ namespace AutoLike.Controller
         /*
          * Process Reg Page for Item Acc
          */
-        public async Task processItemLikePost(string ProfileFolderPath, account item, int itemIndex, NumericUpDown flowNum, ComboBox selectProxy, DataGridView dataGridView, int x, int y, List<string> listPageString, CheckBox type2CheckBox, TextBox keyText, NumericUpDown timeGetValue)
+        public async Task processItemLikePost(string ProfileFolderPath, account item, int itemIndex, NumericUpDown flowNum, ComboBox selectProxy, DataGridView dataGridView, int x, int y, List<string> listPageString, CheckBox type2CheckBox, TextBox keyText, NumericUpDown timeGetValue, string[] listUidPost)
         {
             ChromeDriver chromeDriver = _chromeDriverUtils.initChrome(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, x, y);
             _listDriver.Add(chromeDriver);
@@ -1193,12 +1197,8 @@ namespace AutoLike.Controller
 
                 }
             }
-            Thread.Sleep(1000);
+
             Post likePost = new Post();
-
-            string uidPost = Post.getPostUid(type2CheckBox,keyText, timeGetValue);
-            string[] listUidPost = uidPost.Replace("----", "|").Split('|');
-
             likePost.LikePost(chromeDriver, dataGridView, item, listUidPost, listPage,type2CheckBox, keyText, timeGetValue);
 
             SQLiteUtils.updateByUID(item);

@@ -98,15 +98,30 @@ namespace AutoLike.Features
                         driver.Navigate().GoToUrl("https://www.facebook.com/");
                         if (ChromeDriverUtils.FindTextInChrome(driver, "Chào mừng bạn đến với Trang mới!", "Chào mừng bạn đến với Trang mới!"))
                         {
-                            try
+                            //try
+                            //{
+                            //    //*[@id="facebook"]/body/div[2]/div[1]/div/div[2]/div/div/div/div[1]
+                            //    driver.FindElement(By.XPath("//*[@id=\"facebook\"]/body/div[4]/div[1]/div/div[2]/div/div/div/div[1]/div")).Click();
+                            //}
+                            //catch
+                            //{
+                            //    driver.FindElement(By.XPath("//*[@id=\"facebook\"]/body/div[5]/div[1]/div/div[2]/div/div/div/div[1]/div")).Click();
+
+                            //}
+
+                            if(driver.FindElement(By.XPath("//*[@id=\"facebook\"]/body/div[4]/div[1]/div/div[2]/div/div/div/div[1]/div")) != null)
                             {
-                                //*[@id="facebook"]/body/div[2]/div[1]/div/div[2]/div/div/div/div[1]
                                 driver.FindElement(By.XPath("//*[@id=\"facebook\"]/body/div[4]/div[1]/div/div[2]/div/div/div/div[1]/div")).Click();
                             }
-                            catch
+
+                            if(driver.FindElement(By.XPath("//*[@id=\"facebook\"]/body/div[5]/div[1]/div/div[2]/div/div/div/div[1]/div")) != null)
                             {
                                 driver.FindElement(By.XPath("//*[@id=\"facebook\"]/body/div[5]/div[1]/div/div[2]/div/div/div/div[1]/div")).Click();
+                            }
 
+                            if (driver.FindElement(By.XPath("//*[@id=\"facebook\"]/body/div[2]/div[1]/div/div[2]/div/div/div/div[1]")) != null)
+                            {
+                                driver.FindElement(By.XPath("//*[@id=\"facebook\"]/body/div[2]/div[1]/div/div[2]/div/div/div/div[1]")).Click();                           
                             }
                         }
 
@@ -143,6 +158,7 @@ namespace AutoLike.Features
                         {
                             ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Like Post Lỗi - Acc Logout " + uidPost[k1]);
                             ChromeDriverUtils.updateStatusAcc(dataGridView, acc, "Die");
+                            acc.CHECKED = true;
                             //dataGridView1.Rows[i].Cells[1].Value = false;
                             //dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.FromArgb(248, 198, 198);
                             //LoadLog(DateTime.Now + ":  " + dataGridView1.Rows[i].Cells["Ten1"].Value.ToString() + " :Like Post Lỗi - Acc Logout! " + uidlike[k1], "red");
