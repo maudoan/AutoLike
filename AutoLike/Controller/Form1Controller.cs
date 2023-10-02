@@ -305,34 +305,78 @@ namespace AutoLike.Controller
                 }
               
             }
-                
-            List<page> listPage = new List<page>();
-     
-            foreach(account item in danhSach)
+            if(danhSach.Count > 0)
             {
-                Dictionary<string,string> listIdGroup = FacebookUtils.getListPage(item.COOKIE, "","");
-                if(listIdGroup != null && listIdGroup.Count > 0)
-                {
-                    item.SOPAGE = listIdGroup.Count.ToString();
-                    
-                    SQLiteUtils.updateByUID(item);
-                    foreach (var kvp in listIdGroup)
-                    {
-                        string key = kvp.Key;
-                        string value = kvp.Value;
-                        page page = new page();
-                        page.UID = item.UID;
-                        page.PAGEID = key;
-                        page.NAME = value;
-                        listPage.Add(page);
-                    }
-                }    
+                processInsertBatchPage(danhSach);
             }
-
-            SQLiteUtils.insertPage(listPage);
-            MessageBox.Show("Đã lấy xong số lượng Page!", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            else
+            {
+                MessageBox.Show("Vui lòng chọn acc để get Page", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            
         }
 
+        public async void processInsertBatchPage(List<account> listAccounts)
+        {
+            int batchSize = Convert.ToInt32(10); // Số lượng item mỗi lần xử lý
+            int maxConcurrency = Convert.ToInt32(10); // Số lượng luồng tối đa
+
+            List<page> listPage = new List<page>();
+            SemaphoreSlim semaphore = new SemaphoreSlim(maxConcurrency);
+            for (int i = 0; i < listAccounts.Count; i += batchSize)
+            {
+                List<account> batch = listAccounts.GetRange(i, Math.Min(batchSize, listAccounts.Count - i));
+
+
+                try
+                {
+                    var tasks = batch.Select(async item =>
+                    {
+                        await semaphore.WaitAsync();
+                        try
+                        {
+
+                            await Task.Run(async () =>
+                            {
+                                Dictionary<string, string> listIdGroup = FacebookUtils.getListPage(item.COOKIE, "", "");
+                                if (listIdGroup != null && listIdGroup.Count > 0)
+                                {
+                                    item.SOPAGE = listIdGroup.Count.ToString();
+
+                                    SQLiteUtils.updateByUID(item);
+                                    foreach (var kvp in listIdGroup)
+                                    {
+                                        string key = kvp.Key;
+                                        string value = kvp.Value;
+                                        page page = new page();
+                                        page.UID = item.UID;
+                                        page.PAGEID = key;
+                                        page.NAME = value;
+                                        listPage.Add(page);
+                                    }
+                                }
+                                SQLiteUtils.insertPage(listPage);
+                                await Task.Delay(1000);
+                            });
+
+                        }
+                        finally
+                        {
+                            semaphore.Release();
+                        }
+                    });
+
+                    await Task.WhenAll(tasks);
+                    listPage.Clear();
+                }
+                finally
+                {
+                    Console.WriteLine("-------DONE ALL TASK Get ListPage!!!--------->");
+                }
+            }
+
+            MessageBox.Show("Đã lấy xong số lượng Page!", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
         /*
          * 
          * Feature get AccessTokenEAAG
@@ -496,9 +540,9 @@ namespace AutoLike.Controller
 
             int batchSize = Convert.ToInt32(flowNum.Value); // Số lượng item mỗi lần xử lý
             int maxConcurrency = Convert.ToInt32(flowNum.Value); // Số lượng luồng tối đa
-            int screenHeight = SystemInformation.VirtualScreen.Height;
-            int screenWidth = SystemInformation.VirtualScreen.Width;
-            if (screenHeight > 1920)
+            int screenWidth = Screen.PrimaryScreen.Bounds.Width;
+            int screenHeight = Screen.PrimaryScreen.Bounds.Height;
+            if (screenWidth > 1920)
             {
                 screenWidth = 1920;
             }
@@ -554,7 +598,7 @@ namespace AutoLike.Controller
 
                             await Task.Run(async () =>
                             {
-                                await ProcessItemLoginAcc(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, x, y);
+                                await ProcessItemLoginAcc(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, x, y, dataGridView);
                                 await Task.Delay(1000);
                             });
 
@@ -588,7 +632,7 @@ namespace AutoLike.Controller
         /*
         * Process Login with item Account
         */
-        public async Task ProcessItemLoginAcc(string ProfileFolderPath, account item, int itemIndex, NumericUpDown flowNum, ComboBox selectProxy,int x, int y)
+        public async Task ProcessItemLoginAcc(string ProfileFolderPath, account item, int itemIndex, NumericUpDown flowNum, ComboBox selectProxy,int x, int y, DataGridView dataGridView)
         {
 
             ChromeDriver chromeDriver = _chromeDriverUtils.initChrome(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, x, y);
@@ -622,26 +666,31 @@ namespace AutoLike.Controller
                 ChromeDriverUtils.FindTextInChrome(chromeDriver, "mật khẩu cũ", "old"))
                 {
                     item.TRANGTHAI = "Sai password....";
-                    
+                    ChromeDriverUtils.updateStatusChrome(dataGridView, item, "Sai password....");
                 }
                 else if (ChromeDriverUtils.FindTextInChrome(chromeDriver, "tạm thời bị khóa", "lock"))
                 {
                     item.LIVE = "Checkpoint";
                     item.TRANGTHAI = "Tạm thời bị khóa !...";
-                   
+                    ChromeDriverUtils.updateStatusAcc(dataGridView, item, "Checkpoint");
+                    ChromeDriverUtils.updateStatusChrome(dataGridView, item, "Tạm thời bị khóa !...");
 
                 }
                 else if (ChromeDriverUtils.FindTextInChrome(chromeDriver, "chúng tôi đã đình chỉ tài khoản của bạn", "We suspend"))
                 {
                     item.LIVE = "Checkpoint";
                     item.TRANGTHAI = "Đình chỉ tài khoản !...";
-                    
+                    ChromeDriverUtils.updateStatusAcc(dataGridView, item, "Checkpoint");
+                    ChromeDriverUtils.updateStatusChrome(dataGridView, item, "Đình chỉ tài khoản !...");
+
                 }
                 else if(ChromeDriverUtils.FindTextInChrome(chromeDriver, "chúng tôi cần xác nhận rằng tài khoản này thuộc về bạn", "We need to confirm"))
                 {
                     item.LIVE = "Checkpoint";
                     item.TRANGTHAI = "Xác nhận tài khoản !...";
-                   
+                    ChromeDriverUtils.updateStatusAcc(dataGridView, item, "Checkpoint");
+                    ChromeDriverUtils.updateStatusChrome(dataGridView, item, "Xác nhận tài khoản !...");
+
                 }
                 else if (ChromeDriverUtils.FindTextInChrome(chromeDriver, "Trang chủ", "Home"))
                 {
@@ -658,12 +707,15 @@ namespace AutoLike.Controller
 
                     item.LIVE = "Live";
                     item.TRANGTHAI = "Login Facebook thành công !...";
-                  
+                    ChromeDriverUtils.updateStatusAcc(dataGridView, item, "Live");
+                    ChromeDriverUtils.updateStatusChrome(dataGridView, item, "Login Facebook thành công !...");
+
                 }
                 else
                 {
                     item.TRANGTHAI = "Có lỗi xảy ra !...";
-                    
+                    ChromeDriverUtils.updateStatusChrome(dataGridView, item, "Có lỗi xảy ra !...");
+
                 }
             }
             catch
@@ -672,7 +724,8 @@ namespace AutoLike.Controller
                 {
 
                     item.TRANGTHAI = "Sai Password!...";
-                   
+                    ChromeDriverUtils.updateStatusChrome(dataGridView, item, "Sai Password!...");
+
                 }
             }
 
@@ -813,9 +866,9 @@ namespace AutoLike.Controller
 
             int batchSize = Convert.ToInt32(flowNum.Value); // Số lượng item mỗi lần xử lý
             int maxConcurrency = Convert.ToInt32(flowNum.Value); // Số lượng luồng tối đa
-            int screenHeight = SystemInformation.VirtualScreen.Height;
-            int screenWidth = SystemInformation.VirtualScreen.Width;
-            if (screenHeight > 1920)
+            int screenWidth = Screen.PrimaryScreen.Bounds.Width;
+            int screenHeight = Screen.PrimaryScreen.Bounds.Height;
+            if (screenWidth > 1920)
             {
                 screenWidth = 1920;
             }
@@ -991,14 +1044,14 @@ namespace AutoLike.Controller
 
             int batchSize = Convert.ToInt32(flowNum.Value); // Số lượng item mỗi lần xử lý
             int maxConcurrency = Convert.ToInt32(flowNum.Value); // Số lượng luồng tối đa
-            int screenHeight = SystemInformation.VirtualScreen.Height;
-            int screenWidth = SystemInformation.VirtualScreen.Width;
-            int itemIndex = 0;
-            int x = 0; int y = 0;
-            if (screenHeight > 1920)
+            int screenWidth = Screen.PrimaryScreen.Bounds.Width;
+            int screenHeight = Screen.PrimaryScreen.Bounds.Height;
+            if (screenWidth > 1920)
             {
                 screenWidth = 1920;
             }
+            int itemIndex = 0;
+            int x = 0; int y = 0;
             SemaphoreSlim semaphore = new SemaphoreSlim(maxConcurrency);
            while (stopLikePage == false)
            {
@@ -1206,9 +1259,9 @@ namespace AutoLike.Controller
 
             int batchSize = Convert.ToInt32(flowNum.Value); // Số lượng item mỗi lần xử lý
             int maxConcurrency = Convert.ToInt32(flowNum.Value); // Số lượng luồng tối đa
-            int screenHeight = SystemInformation.VirtualScreen.Height;
-            int screenWidth = SystemInformation.VirtualScreen.Width;
-            if (screenHeight > 1920)
+            int screenWidth = Screen.PrimaryScreen.Bounds.Width;
+            int screenHeight = Screen.PrimaryScreen.Bounds.Height;
+            if (screenWidth > 1920)
             {
                 screenWidth = 1920;
             }

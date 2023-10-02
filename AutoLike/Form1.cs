@@ -297,15 +297,11 @@ namespace AutoLike
             if (apiLine.Length == 0)
             {
                 MessageBox.Show("Vui lòng chọn nhập Key !", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            } 
-            
-            //else
-            //{
-            //    foreach (string line in apiLine)
-            //    {
-            //        keyApiList.Add(line);
-            //    }
-            //}
+            }
+            else
+            {
+                keyApiList = _form1Controller.listKeyShopLike(apiKeyTextBox);
+            }
 
             string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"AutoLike\GeneralSetting.txt");
 
@@ -353,7 +349,7 @@ namespace AutoLike
 
         private void checkStatusCookieButton_Click(object sender, EventArgs e)
         {
-            _form1Controller.checkStatusCookie(detailListAccountsDataGridView);
+            //_form1Controller.checkStatusCookie(detailListAccountsDataGridView);
         }
 
 
