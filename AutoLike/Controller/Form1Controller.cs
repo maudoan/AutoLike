@@ -16,6 +16,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Cookie = OpenQA.Selenium.Cookie;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Header;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
@@ -286,7 +287,7 @@ namespace AutoLike.Controller
 
             for (int i = 0; i < dataGridView.Rows.Count; i++)
             {
-                if (dataGridView.Rows[i].Cells["checkboxItemAccount"].Value.ToString() == "True" && dataGridView.Rows[i].Cells["tinhtrangAccount"].Value.ToString() == "Live")
+                if (dataGridView.Rows[i].Cells["checkboxItemAccount"].Value.ToString() == "True")
                 {
                     account acc = new account();
                     acc.UID = dataGridView.Rows[i].Cells["uidAccount"].Value.ToString();
@@ -304,7 +305,7 @@ namespace AutoLike.Controller
             }
             if(danhSach.Count > 0)
             {
-                processInsertBatchPage(danhSach);
+                processInsertBatchPage(danhSach, dataGridView);
             }
             else
             {
@@ -313,7 +314,7 @@ namespace AutoLike.Controller
             
         }
 
-        public async void processInsertBatchPage(List<account> listAccounts)
+        public async void processInsertBatchPage(List<account> listAccounts, DataGridView dataGridView)
         {
             int batchSize = Convert.ToInt32(10); // Số lượng item mỗi lần xử lý
             int maxConcurrency = Convert.ToInt32(10); // Số lượng luồng tối đa
@@ -339,7 +340,7 @@ namespace AutoLike.Controller
                                 if (listIdGroup != null && listIdGroup.Count > 0)
                                 {
                                     item.SOPAGE = listIdGroup.Count.ToString();
-
+                                    ChromeDriverUtils.updateNumPage(dataGridView, item);
                                     SQLiteUtils.updateByUID(item);
                                     foreach (var kvp in listIdGroup)
                                     {
@@ -371,7 +372,7 @@ namespace AutoLike.Controller
                     Console.WriteLine("-------DONE ALL TASK Get ListPage!!!--------->");
                 }
             }
-
+           
             MessageBox.Show("Đã lấy xong số lượng Page!", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
@@ -997,30 +998,472 @@ namespace AutoLike.Controller
             stopLikePage = false;
         }
 
+        int numFlowLikePost = 0;
+        int threadCount = 0;
         public void likePost(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, ComboBox selectProxy, List<string> apiKeyList, CheckBox type2CheckBox, TextBox keyText, NumericUpDown timeGetValue)
         {
 
-            List<account> danhSach = new List<account>();
+            //List<account> danhSach = new List<account>();
 
-            for (int i = 0; i < dataGridView.Rows.Count; i++)
+            //for (int i = 0; i < dataGridView.Rows.Count; i++)
+            //{
+            //    if (dataGridView.Rows[i].Cells["checkboxItemAccount"].Value.ToString() == "True")
+            //    {
+            //        account acc = new account();
+            //        acc.UID = dataGridView.Rows[i].Cells["uidAccount"].Value.ToString();
+            //        acc.COOKIE = dataGridView.Rows[i].Cells["cookieAccount"].Value.ToString();
+            //        acc.TOKEN = dataGridView.Rows[i].Cells["tokenAccount"].Value.ToString();
+            //        acc.PASS = dataGridView.Rows[i].Cells["passAccount"].Value.ToString();
+            //        acc.M2FA = dataGridView.Rows[i].Cells["code2faAccount"].Value.ToString();
+            //        acc.LIVE = dataGridView.Rows[i].Cells["tinhtrangAccount"].Value.ToString();
+            //        acc.PROXY = dataGridView.Rows[i].Cells["proxyAccount"].Value.ToString();
+            //        acc.TRANGTHAI = dataGridView.Rows[i].Cells["trangthaiAccount"].Value.ToString();
+            //        acc.SOPAGE = dataGridView.Rows[i].Cells["pageNumberAccount"].Value.ToString();
+            //        danhSach.Add(acc);
+            //    }
+            //}
+
+            //ProcessLikePost(ProfileFolderPath, dataGridView, flowNum, selectProxy, danhSach, apiKeyList, type2CheckBox, keyText, timeGetValue);
+            CancellationTokenSource taskStop = new CancellationTokenSource();
+            taskStop = new CancellationTokenSource();
+
+            CancellationToken ct = taskStop.Token;
+
+            ProxyUtils proxyUtils = new ProxyUtils();
+
+        endLess:
+
+            int ii = 0;
+            int b = 0;
+            int reset = Convert.ToInt32(flowNum.Value);
+            int reset1 = 0;
+            int demluong = 0;
+            string[] listUidPost;
+
+            while (true)
             {
-                if (dataGridView.Rows[i].Cells["checkboxItemAccount"].Value.ToString() == "True")
+                List<string> count = new List<string>();
+                int itemIndex = 0;
+                int x = 0; int y = 0;
+                int screenWidth = Screen.PrimaryScreen.Bounds.Width;
+                int screenHeight = Screen.PrimaryScreen.Bounds.Height;
+                if (screenWidth > 1920)
                 {
-                    account acc = new account();
-                    acc.UID = dataGridView.Rows[i].Cells["uidAccount"].Value.ToString();
-                    acc.COOKIE = dataGridView.Rows[i].Cells["cookieAccount"].Value.ToString();
-                    acc.TOKEN = dataGridView.Rows[i].Cells["tokenAccount"].Value.ToString();
-                    acc.PASS = dataGridView.Rows[i].Cells["passAccount"].Value.ToString();
-                    acc.M2FA = dataGridView.Rows[i].Cells["code2faAccount"].Value.ToString();
-                    acc.LIVE = dataGridView.Rows[i].Cells["tinhtrangAccount"].Value.ToString();
-                    acc.PROXY = dataGridView.Rows[i].Cells["proxyAccount"].Value.ToString();
-                    acc.TRANGTHAI = dataGridView.Rows[i].Cells["trangthaiAccount"].Value.ToString();
-                    acc.SOPAGE = dataGridView.Rows[i].Cells["pageNumberAccount"].Value.ToString();
-                    danhSach.Add(acc);
+                    screenWidth = 1920;
+                }
+            s:
+                string uidPost = Post.getPostUid(type2CheckBox, keyText, timeGetValue);
+                if (uidPost != "")
+                {
+                    listUidPost = uidPost.Replace("----", "|").Split('|');
+                }
+                else
+                {
+                    goto s;
+                }
+
+                for (int k = 0; k < Int32.Parse(flowNum.Value.ToString()); k++)
+                {
+                    if (ii == dataGridView.Rows.Count)
+                    {
+                        goto end;
+                    }
+
+                    if (dataGridView.Rows[ii].Cells["checkboxItemAccount"].Value.ToString() == "True")
+                    {
+                        account acc = new account();
+                        acc.UID = dataGridView.Rows[ii].Cells["uidAccount"].Value.ToString();
+                        acc.COOKIE = dataGridView.Rows[ii].Cells["cookieAccount"].Value.ToString();
+                        acc.TOKEN = dataGridView.Rows[ii].Cells["tokenAccount"].Value.ToString();
+                        acc.PASS = dataGridView.Rows[ii].Cells["passAccount"].Value.ToString();
+                        acc.M2FA = dataGridView.Rows[ii].Cells["code2faAccount"].Value.ToString();
+                        acc.LIVE = dataGridView.Rows[ii].Cells["tinhtrangAccount"].Value.ToString();
+                        acc.PROXY = dataGridView.Rows[ii].Cells["proxyAccount"].Value.ToString();
+                        acc.TRANGTHAI = dataGridView.Rows[ii].Cells["trangthaiAccount"].Value.ToString();
+                        acc.SOPAGE = dataGridView.Rows[ii].Cells["pageNumberAccount"].Value.ToString();
+
+                        List<string> listPageString = SQLiteUtils.getPageListByUid(acc);
+
+                        List<page> listPage = new List<page>();
+                        foreach (var list in listPageString)
+                        {
+                            string[] itemInfo = list.Split('|');
+
+                            if (itemInfo.Length > 0)
+                            {
+                                page pageNew = new page();
+                                pageNew.PAGEID = itemInfo[0];
+                                pageNew.UID = itemInfo[1];
+                                pageNew.NAME = itemInfo[2];
+                                listPage.Add(pageNew);
+
+                            }
+                        }
+
+                        int i = ii;
+                        reset1++;
+
+                        Thread t = new Thread(async () =>
+                        {
+                            DateTime currentTime = DateTime.Now;
+
+                            if (currentTime - lastApiCallTime >= callInterval)
+                            {
+                                // Nếu đã đủ thời gian, thực hiện gọi API
+                                if (apiKeyList.Count > 0)
+                                {
+                                    for (int m = 0; m < apiKeyList.Count; m++)
+                                    {
+                                        await proxyUtils.getNewProxy(Constants.Constants.GetNewProxyShopLike(apiKeyList[m]));
+                                    }
+                                }
+
+                                // Cập nhật thời gian gọi cuối cùng
+                                lastApiCallTime = currentTime;
+                            }
+                            else
+                            {
+                                // Nếu chưa đủ thời gian, không thực hiện gọi lại API
+                                Console.WriteLine("------------>Waitng For 1 minute " + (callInterval - (currentTime - lastApiCallTime)));
+                            }
+
+                            b++;
+                            threadCount++;
+                            numFlowLikePost++;
+                            demluong++;
+
+                            if (i > Int32.Parse(flowNum.Value.ToString()))
+                            {
+                                dataGridView.FirstDisplayedScrollingRowIndex = i - Int32.Parse(flowNum.Value.ToString());
+                            }
+                            ChromeDriver chromeDriver = null;
+                            try
+                            {
+                                Random random = new Random();
+                                int index = random.Next(apiKeyList.Count);
+                                string randomKey = apiKeyList[index];
+                                string proxy = await proxyUtils.getCurrentProxy(Constants.Constants.GetCurrentProxyShopLike(randomKey, "hd"));
+                                acc.PROXY = proxy;
+
+                                if (itemIndex == 0 || itemIndex == 10 || itemIndex == 20 || itemIndex == 30)
+                                {
+                                    y = 0;
+                                    x = 0;
+                                }
+                                else if ((itemIndex > 0 && itemIndex < 5) || (itemIndex > 10 && itemIndex < 15) || (itemIndex > 20 && itemIndex < 25) || (itemIndex > 30 && itemIndex < 35))
+                                {
+                                    y = 0;
+                                    x += screenWidth / 5;
+                                }
+                                else if (itemIndex == 5 || itemIndex == 15 || itemIndex == 25 || itemIndex == 35)
+                                {
+                                    y = screenHeight / 2;
+                                    x = 0;
+                                }
+                                else if ((itemIndex > 5 && itemIndex < 10) || (itemIndex > 15 && itemIndex <= 20) || (itemIndex > 25 && itemIndex < 30) || (itemIndex > 35 && itemIndex < 40))
+                                {
+                                    y = screenHeight / 2;
+                                    x += screenWidth / 5;
+                                }
+                                else { }
+                                itemIndex++;
+                                if (itemIndex == flowNum.Value)
+                                {
+                                    itemIndex = 0;
+                                }
+
+                                chromeDriver = _chromeDriverUtils.initChrome(ProfileFolderPath, acc, itemIndex, flowNum, selectProxy, x, y);
+                            } catch
+                            {
+
+                            }
+                            _listDriver.Add(chromeDriver);
+
+                            //if (isStop) { goto end2; }
+
+                            try
+                            {
+                                Random rd = new Random();
+                                int demloi = 0;
+
+                                for (int i2 = 0; i2 < listPage.Count; i2++)
+                                {
+                                    for (int k1 = 0; k1 < listUidPost.Length; k1++)
+                                    {
+                                        if (SQLiteUtils.checkPostLikedByPage(listPage[i2].PAGEID, listUidPost[k1]))
+                                        {
+                                            Console.WriteLine("-----Post này đã Like ---->");
+                                            break;
+                                        }
+                                    a:
+                                        int dem = 0;
+                                        ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Vào Post: " + listUidPost[k1]);
+                                    lai:
+                                        chromeDriver.Navigate().GoToUrl("https://www.facebook.com/");
+                                        if (ChromeDriverUtils.FindTextInChrome(chromeDriver, "Chào mừng bạn đến với Trang mới!", "Chào mừng bạn đến với Trang mới!"))
+                                        {
+                                            try
+                                            {
+                                                //*[@id="facebook"]/body/div[2]/div[1]/div/div[2]/div/div/div/div[1]
+                                                chromeDriver.FindElement(By.XPath("//*[@id=\"facebook\"]/body/div[4]/div[1]/div/div[2]/div/div/div/div[1]/div")).Click();
+                                            }
+                                            catch
+                                            {
+                                                chromeDriver.FindElement(By.XPath("//*[@id=\"facebook\"]/body/div[5]/div[1]/div/div[2]/div/div/div/div[1]/div")).Click();
+
+                                            }
+
+                                            //if (chromeDriver.FindElement(By.XPath("//*[@id=\"facebook\"]/body/div[4]/div[1]/div/div[2]/div/div/div/div[1]/div")) != null)
+                                            //{
+                                            //    chromeDriver.FindElement(By.XPath("//*[@id=\"facebook\"]/body/div[4]/div[1]/div/div[2]/div/div/div/div[1]/div")).Click();
+                                            //}
+
+                                            //if (chromeDriver.FindElement(By.XPath("//*[@id=\"facebook\"]/body/div[5]/div[1]/div/div[2]/div/div/div/div[1]/div")) != null)
+                                            //{
+                                            //    chromeDriver.FindElement(By.XPath("//*[@id=\"facebook\"]/body/div[5]/div[1]/div/div[2]/div/div/div/div[1]/div")).Click();
+                                            //}
+
+                                            //chromeDriver.FindElement(By.XPath("//*[@id=\"facebook\"]/body/div[2]/div[1]/div/div[2]/div/div/div/div[1]")).Click();
+                                        }
+
+                                        try
+                                        {
+                                            chromeDriver.Manage().Cookies.DeleteCookieNamed("i_user");
+                                            Cookie cookie = new Cookie("i_user", listPage[i2].PAGEID);
+                                            chromeDriver.Manage().Cookies.AddCookie(cookie);
+                                        }
+                                        catch
+                                        {
+
+                                        }
+
+                                        chromeDriver.Navigate().GoToUrl("https://www.facebook.com/");
+
+                                        if (ChromeDriverUtils.FindTextInChrome(chromeDriver, "Chào mừng bạn đến với Trang mới!", "Chào mừng bạn đến với Trang mới!"))
+                                        {
+                                            try
+                                            {
+                                                chromeDriver.FindElement(By.XPath("//*[@id=\"facebook\"]/body/div[4]/div[1]/div/div[2]/div/div/div/div[1]/div")).Click();
+                                            }
+                                            catch
+                                            {
+                                                chromeDriver.FindElement(By.XPath("//*[@id=\"facebook\"]/body/div[5]/div[1]/div/div[2]/div/div/div/div[1]/div")).Click();
+
+                                            }
+
+                                        }
+
+                                        chromeDriver.Navigate().GoToUrl("https://www.facebook.com/" + listUidPost[k1]);
+
+                                        if (ChromeDriverUtils.FindClickElementInChrome(chromeDriver, "Đăng nhập", "Log In", false) || ChromeDriverUtils.FindClickElementInChrome(chromeDriver, "Đăng nhập", "Choose your account", false))
+                                        {
+                                            ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Like Post Lỗi - Acc Logout " + listUidPost[k1]);
+                                            ChromeDriverUtils.updateStatusAcc(dataGridView, acc, "Die");
+                                            //dataGridView1.Rows[i].Cells[1].Value = false;
+                                            //dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.FromArgb(248, 198, 198);
+                                            //LoadLog(DateTime.Now + ":  " + dataGridView1.Rows[i].Cells["Ten1"].Value.ToString() + " :Like Post Lỗi - Acc Logout! " + uidlike[k1], "red");
+                                            //goto ne;
+                                        }
+                                        else
+                                        {
+                                            while (true)
+                                            {
+
+                                                try
+                                                {
+                                                    try
+                                                    {
+                                                        chromeDriver.FindElement(By.XPath("/html/body/div[1]/div/div[4]/div/div[1]/div/div/div[2]/footer/div/div/div[1]/a")).Click();
+                                                        ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Like Post Lỗi - Acc Logout " + uidPost[k1]);
+                                                        count.Add(uidPost[k1] + "|" + listPage[i].PAGEID);
+                                                        break;
+                                                    }
+                                                    catch
+                                                    {
+                                                        try
+                                                        {
+                                                            if (chromeDriver.Url.Contains("/watch"))
+                                                            {
+                                                                ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Lỗi : dạng wath livetream k like  đc " + uidPost[k1]);
+                                                                Post.upShopLike(listUidPost[k1], 9999, keyText);
+
+                                                            }
+                                                            else if (chromeDriver.Url.Contains("/reel"))
+                                                            {
+                                                                ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Lỗi : dạng wath reel k like  đc " + uidPost[k1]);
+                                                                Post.upShopLike(listUidPost[k1], 9999, keyText);
+                                                            }
+                                                            else if (ChromeDriverUtils.FindClickElementInChrome(chromeDriver, "Thích", "Like", true))
+                                                            {
+                                                                ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Like Thành công Post " + uidPost[k1]);
+                                                                post post = new post();
+                                                                post.POSTID = listUidPost[k1];
+                                                                post.PAGEID = listPage[i2].PAGEID;
+                                                                SQLiteUtils.insertPost(post);
+                                                                count.Add(listUidPost[k1] + "|" + listPage[i2].PAGEID);
+
+                                                            }
+                                                            else if (ChromeDriverUtils.FindTextInChrome(chromeDriver, "Chúc bạn sinh nhật vui vẻ", "Chúc bạn sinh nhật vui vẻ"))
+                                                            {
+                                                                demloi++;
+                                                                if (demloi == 2)
+                                                                {
+                                                                    ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Like Post Lỗi - Acc CHECKPOINT " + uidPost[k1]);
+                                                                    ChromeDriverUtils.updateStatusAcc(dataGridView, acc, "Die");
+                                                                    //dataGridView1.Rows[i].Cells[1].Value = false;
+                                                                    //dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.FromArgb(248, 198, 198);
+                                                                    //LoadLog(DateTime.Now + ":  " + dataGridView1.Rows[i].Cells["Ten1"].Value.ToString() + " :Like Post Lỗi - Acc CHECKPOINT! " + uidlike[k1], "red");
+                                                                    //goto ne;
+                                                                }
+                                                                try
+                                                                {
+                                                                    chromeDriver.FindElement(By.XPath("/html/body/div[1]/div/div[4]/div/div[1]/div/div/div/div/div[3]/div/div[1]/div/span/span")).Click();
+                                                                }
+                                                                catch
+                                                                {
+                                                                    ChromeDriverUtils.FindClickElementInChrome(chromeDriver, "OK", "OK", true);
+
+                                                                }
+                                                                goto a;
+                                                            }
+                                                            else if (chromeDriver.Url.Contains("/actor_experience"))
+                                                            {
+                                                                ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Lỗi : dạng nick bị check cmt spam hoặc cp lạ " + uidPost[k1]);
+                                                                Post.upShopLike(listUidPost[k1], 9999, keyText);
+
+                                                            }
+                                                            else if (ChromeDriverUtils.FindTextInChrome(chromeDriver, "Không tìm thấy nội dung", "Liên kết bạn truy cập") || ChromeDriverUtils.FindTextInChrome(chromeDriver, "Không tìm thấy nội dung", "Liên kết bạn truy cập"))
+                                                            {
+                                                                ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Không tìm thấy nội dung " + listUidPost[k1]);
+                                                                Post.upShopLike(listUidPost[k1], 9999, keyText);
+                                                            }
+                                                            else if (chromeDriver.Url.Contains("/checkpoint") || ChromeDriverUtils.FindClickElementInChrome(chromeDriver, "Cần phê duyệt đăng nhập", "Login approval needed", false)
+                                                            || ChromeDriverUtils.FindClickElementInChrome(chromeDriver, "Vui lòng xác nhận danh tính của bạn", "Please confirm your identity", false))
+                                                            {
+                                                                ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Like Post Lỗi - Acc CHECKPOINT " + listUidPost[k1]);
+                                                                ChromeDriverUtils.updateStatusAcc(dataGridView, acc, "Die");
+                                                                //dataGridView1.Rows[i].Cells[1].Value = false;
+                                                                //dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.FromArgb(248, 198, 198);
+                                                                //LoadLog(DateTime.Now + ":  " + dataGridView1.Rows[i].Cells["Ten1"].Value.ToString() + " :Like Post Lỗi - Acc CHECKPOINT! " + uidlike[k1], "red");
+                                                                //goto ne;
+
+                                                            }
+                                                            else if (ChromeDriverUtils.FindClickElementInChrome(chromeDriver, "Đăng nhập", "Login", false) || ChromeDriverUtils.FindClickElementInChrome(chromeDriver, "Đăng nhập", "Choose your account", false))
+                                                            {
+                                                                ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Like Post Lỗi - Acc Logout " + listUidPost[k1]);
+                                                                ChromeDriverUtils.updateStatusAcc(dataGridView, acc, "Die");
+                                                                //dataGridView1.Rows[i].Cells[1].Value = false;
+                                                                //dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.FromArgb(248, 198, 198);
+                                                                //LoadLog(DateTime.Now + ":  " + dataGridView1.Rows[i].Cells["Ten1"].Value.ToString() + " :Like Post Lỗi - Acc Logout! " + uidlike[k1], "red");
+                                                                //goto ne;
+                                                            }
+                                                            else if (ChromeDriverUtils.FindTextInChrome(chromeDriver, "Chia sẻ", "Share"))
+                                                            {
+                                                                ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Không có nút LIKE" + listUidPost[k1]);
+                                                                count.Add(uidPost[k1] + "|delete");
+                                                            }
+                                                            else if (ChromeDriverUtils.FindTextInChrome(chromeDriver, "của bạn đã bị khóa", "been locked"))
+                                                            {
+                                                                ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Tài khoản của bạn đã bị khóa : " + listUidPost[k1]);
+                                                                ChromeDriverUtils.updateStatusAcc(dataGridView, acc, "Die");
+                                                                //dataGridView1.Rows[i].Cells[1].Value = false;
+                                                                //dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.FromArgb(248, 198, 198);
+                                                                //goto ne;
+                                                            }
+                                                            else if (ChromeDriverUtils.FindTextInChrome(chromeDriver, "Bạn hiện không thể bày tỏ cảm xúc", "Bạn hiện không thể bày tỏ cảm xúc"))
+                                                            {
+                                                                ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Bạn hiện không thể bày tỏ cảm xúc : " + listUidPost[k1]);
+                                                                ChromeDriverUtils.updateStatusAcc(dataGridView, acc, "Checkpoint");
+                                                                //dataGridView1.Rows[i].Cells[1].Value = false;
+                                                                //dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.FromArgb(248, 198, 198);
+                                                                //goto ne;
+                                                            }
+                                                            else
+                                                            {
+                                                                if (dem < 1)
+                                                                {
+                                                                    dem++;
+
+                                                                    goto lai;
+                                                                }
+
+                                                            }
+                                                        }
+                                                        catch
+                                                        {
+                                                            if (dem < 1)
+                                                            {
+                                                                dem++;
+
+                                                                goto lai;
+                                                            }
+                                                        }
+                                                    }
+                                                    break;
+
+                                                }
+                                                catch
+                                                {
+                                                    try
+                                                    {
+                                                        chromeDriver.FindElement(By.XPath("/html/body/div[1]/div/div[4]/div/div[1]/div/div/div/div/div[3]/div/div[1]/div/span/span/div")).Click();
+                                                    }
+                                                    catch
+                                                    {
+                                                        ChromeDriverUtils.FindClickElementInChrome(chromeDriver, "OK", "OK", true);
+                                                    }
+                                                    if (dem < 1)
+                                                    {
+                                                        dem++;
+
+                                                        goto lai;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        int delay = rd.Next(Convert.ToInt32(5), Convert.ToInt32(5));
+                                        while (delay > 0)
+                                        {
+                                            delay--;
+                                        }
+                                    }
+                                }
+                            }
+                            catch
+                            {
+
+                            }
+
+                        });
+                        t.Start();
+                        t.IsBackground = true;
+                        Thread.Sleep(1000);
+                    } else
+                    {
+                        k--;
+                    }
+                    ii++;
                 }
             }
-            
-            ProcessLikePost(ProfileFolderPath, dataGridView, flowNum, selectProxy, danhSach, apiKeyList, type2CheckBox, keyText, timeGetValue);
+        end:
+            while (true)
+            {
+                Thread.Sleep(1);
+                if (threadCount == 0 || stopLikePage)
+                {
+                    if (stopLikePage)
+                    {
+                        break;
+                    }
+                    for (int kk = 0; kk < dataGridView.Rows.Count; kk++)
+                    {
+                        dataGridView.Rows[kk].DefaultCellStyle.BackColor = Color.FromArgb(203, 245, 203);
+                    }
+
+
+                    goto endLess;
+                }
+            }
         }
 
         /*
@@ -1078,7 +1521,7 @@ namespace AutoLike.Controller
 
                     try
                     {
-                        var tasks = batch.Select(async item =>
+                        foreach (var item in batch)
                         {
                             await semaphore.WaitAsync();
                             try
@@ -1117,7 +1560,6 @@ namespace AutoLike.Controller
                                 }
                                 await Task.Run(async () =>
                                 {
-
                                     List<string> listPageString = SQLiteUtils.getPageListByUid(item);
 
                                     if (listPageString.Count > 0)
@@ -1125,16 +1567,13 @@ namespace AutoLike.Controller
                                         await processItemLikePost(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, dataGridView, x, y, listPageString, type2CheckBox, keyText, timeGetValue, listUidPost);
                                     }
                                 });
-
-
                             }
                             finally
                             {
                                 semaphore.Release();
                             }
-                        });
+                        }
 
-                        await Task.WhenAll(tasks);
                         foreach (var driver in _listDriver)
                         {
                             Console.WriteLine("---------Out Chrome-------->");
@@ -1146,12 +1585,12 @@ namespace AutoLike.Controller
                         }
 
                         _listDriver.Clear();
-
                     }
                     finally
                     {
                         Console.WriteLine("----------DONE TASK Like POST!!!------------>");
                     }
+
                     if (stopLikePage == true)
                     {
                         Console.WriteLine("----------- 1 FLOW LIKE PAGE STOP!!!------------>");

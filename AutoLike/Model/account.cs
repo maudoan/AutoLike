@@ -32,11 +32,5 @@ namespace AutoLike.Model
         public string NGAYBU { get; set; }
         public string TRANGTHAI { get; set; }
         public string SOPAGE { get; set; }
-        public bool CHECKED { get; set; }
-        public account()
-        {
-            // Giá trị ban đầu của trường Checked là false
-            CHECKED = false;
-        }
     }
 }

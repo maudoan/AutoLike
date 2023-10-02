@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace AutoLike.Utils
 {
@@ -263,6 +264,20 @@ namespace AutoLike.Utils
                     dataGridView.Rows[i].DefaultCellStyle.ForeColor = Color.DarkRed;
                     item.LIVE = dataGridView.Rows[i].Cells["tinhtrangAccount"].Value.ToString();
                 }
+            }
+
+        }
+
+        public static void updateNumPage(DataGridView dataGridView, account item)
+        {
+            for (int i = 0; i < dataGridView.Rows.Count; i++)
+            {
+                if (item.UID == dataGridView.Rows[i].Cells["uidAccount"].Value.ToString())
+                {
+                    dataGridView.Rows[i].Cells["pageNumberAccount"].Value = item.SOPAGE;
+                    dataGridView.Rows[i].DefaultCellStyle.ForeColor = Color.DarkRed;
+                }
+
             }
 
         }

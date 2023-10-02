@@ -158,7 +158,6 @@ namespace AutoLike.Features
                         {
                             ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Like Post Lỗi - Acc Logout " + uidPost[k1]);
                             ChromeDriverUtils.updateStatusAcc(dataGridView, acc, "Die");
-                            acc.CHECKED = true;
                             //dataGridView1.Rows[i].Cells[1].Value = false;
                             //dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.FromArgb(248, 198, 198);
                             //LoadLog(DateTime.Now + ":  " + dataGridView1.Rows[i].Cells["Ten1"].Value.ToString() + " :Like Post Lỗi - Acc Logout! " + uidlike[k1], "red");
@@ -378,7 +377,7 @@ namespace AutoLike.Features
 
         }
 
-        public void upShopLike(string uid, int count, TextBox keyTxt)
+        public static void upShopLike(string uid, int count, TextBox keyTxt)
         {
             if (count > 0)
             {
