@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
+using System.Reflection.Emit;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
@@ -96,6 +97,11 @@ namespace AutoLike.Features
                         ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Vào Post: " + uidPost[k1]);
                     lai:
                         driver.Navigate().GoToUrl("https://www.facebook.com/");
+
+                        if (driver.Url.Contains("checkpoint/"))
+                        {
+                            goto ne;
+                        }
                         if (ChromeDriverUtils.FindTextInChrome(driver, "Chào mừng bạn đến với Trang mới!", "Chào mừng bạn đến với Trang mới!"))
                         {
                             //try
@@ -162,7 +168,7 @@ namespace AutoLike.Features
                             //dataGridView1.Rows[i].Cells[1].Value = false;
                             //dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.FromArgb(248, 198, 198);
                             //LoadLog(DateTime.Now + ":  " + dataGridView1.Rows[i].Cells["Ten1"].Value.ToString() + " :Like Post Lỗi - Acc Logout! " + uidlike[k1], "red");
-                            //goto ne;
+                            goto ne;
                         }
                         else
                         {
@@ -213,7 +219,7 @@ namespace AutoLike.Features
                                                     //dataGridView1.Rows[i].Cells[1].Value = false;
                                                     //dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.FromArgb(248, 198, 198);
                                                     //LoadLog(DateTime.Now + ":  " + dataGridView1.Rows[i].Cells["Ten1"].Value.ToString() + " :Like Post Lỗi - Acc CHECKPOINT! " + uidlike[k1], "red");
-                                                    //goto ne;
+                                                    goto ne;
                                                 }
                                                 try
                                                 {
@@ -245,7 +251,7 @@ namespace AutoLike.Features
                                                 //dataGridView1.Rows[i].Cells[1].Value = false;
                                                 //dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.FromArgb(248, 198, 198);
                                                 //LoadLog(DateTime.Now + ":  " + dataGridView1.Rows[i].Cells["Ten1"].Value.ToString() + " :Like Post Lỗi - Acc CHECKPOINT! " + uidlike[k1], "red");
-                                                //goto ne;
+                                                goto ne;
 
                                             }
                                             else if (ChromeDriverUtils.FindClickElementInChrome(driver, "Đăng nhập", "Login", false) || ChromeDriverUtils.FindClickElementInChrome(driver, "Đăng nhập", "Choose your account", false))
@@ -255,7 +261,7 @@ namespace AutoLike.Features
                                                 //dataGridView1.Rows[i].Cells[1].Value = false;
                                                 //dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.FromArgb(248, 198, 198);
                                                 //LoadLog(DateTime.Now + ":  " + dataGridView1.Rows[i].Cells["Ten1"].Value.ToString() + " :Like Post Lỗi - Acc Logout! " + uidlike[k1], "red");
-                                                //goto ne;
+                                                goto ne;
                                             }
                                             else if (ChromeDriverUtils.FindTextInChrome(driver, "Chia sẻ", "Share"))
                                             {
@@ -268,7 +274,7 @@ namespace AutoLike.Features
                                                 ChromeDriverUtils.updateStatusAcc(dataGridView, acc, "Die");
                                                 //dataGridView1.Rows[i].Cells[1].Value = false;
                                                 //dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.FromArgb(248, 198, 198);
-                                                //goto ne;
+                                                goto ne;
                                             }
                                             else if (ChromeDriverUtils.FindTextInChrome(driver, "Bạn hiện không thể bày tỏ cảm xúc", "Bạn hiện không thể bày tỏ cảm xúc"))
                                             {
@@ -276,7 +282,7 @@ namespace AutoLike.Features
                                                 ChromeDriverUtils.updateStatusAcc(dataGridView, acc, "Checkpoint");
                                                 //dataGridView1.Rows[i].Cells[1].Value = false;
                                                 //dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.FromArgb(248, 198, 198);
-                                                //goto ne;
+                                                goto ne;
                                             }
                                             else
                                             {
@@ -329,6 +335,15 @@ namespace AutoLike.Features
                         }
                     }
                 }
+
+            ne:
+                try
+                {
+                    driver.Close();
+                    driver.Quit();
+                }
+                catch (Exception)
+                { }
 
                 for (int k2 = 0; k2 < uidPost.Length; k2++)
                 {

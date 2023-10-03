@@ -18,7 +18,7 @@ namespace AutoLike.Utils
         int screenWidth = Screen.PrimaryScreen.Bounds.Width;
         int screenHeight = Screen.PrimaryScreen.Bounds.Height;
 
-        public ChromeDriver initChrome(string ProfileFolderPath,account account,int index, NumericUpDown flowNum, ComboBox selectProxy, int x, int y)
+        public ChromeDriver initChrome(string ProfileFolderPath,account account,int index, NumericUpDown flowNum, bool selectProxy, int x, int y)
         {
 
           
@@ -29,13 +29,15 @@ namespace AutoLike.Utils
             ChromeOptions co = new ChromeOptions(); //khaibao option chrome
             ChromeDriverService chromeDriverService = ChromeDriverService.CreateDefaultService();
             chromeDriverService.HideCommandPromptWindow = true; //ẩn CMD điều khiển chrome
-                                                                //
-            if (account.PROXY != "")
+            
+            if(selectProxy == true)
             {
-                co.AddArguments("--proxy-server=" + account.PROXY);
-                co.Proxy = null;
+                if (account.PROXY != "")
+                {
+                    co.AddArguments("--proxy-server=" + account.PROXY);
+                    co.Proxy = null;
+                }
             }
-
 
             co.AddArgument("--disable-background-networking");
             co.AddArgument("--disable-client-side-phishing-detection");

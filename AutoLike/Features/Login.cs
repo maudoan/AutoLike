@@ -267,7 +267,7 @@ namespace AutoLike.Features
                     }
 
                 }
-                if (!driver.Url.Contains("checkpoint/"))
+                if (driver.Url.Contains("checkpoint/"))
                 {
                     goto end;
                 }

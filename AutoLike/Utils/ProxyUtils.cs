@@ -8,17 +8,17 @@ namespace AutoLike.Utils
     public class ProxyUtils
     {
 
-        public async Task<string> getNewProxy(String Url) 
+        public string getNewProxy(string Url)
         {
             var proxy = string.Empty;
             using (var client = new HttpClient())
             {
                 try
                 {
-                    HttpResponseMessage result = await client.GetAsync(Url);
+                    HttpResponseMessage result = client.GetAsync(Url).Result;
                     if (result.IsSuccessStatusCode)
                     {
-                        proxy = await result.Content.ReadAsStringAsync();
+                        proxy = result.Content.ReadAsStringAsync().Result;
                         JObject json = JObject.Parse(proxy);
                         proxy = json["data"]["proxy"].ToString();
                     }
@@ -27,24 +27,22 @@ namespace AutoLike.Utils
                 {
                     Console.WriteLine(ex);
                 }
-               
             }
-
             return proxy;
         }
 
-        public async Task<string> getCurrentProxy(String Url)
+        public string getCurrentProxy(string Url)
         {
             var proxy = string.Empty;
 
             using (var client = new HttpClient())
             {
-               try
+                try
                 {
-                    HttpResponseMessage result = await client.GetAsync(Url);
+                    HttpResponseMessage result = client.GetAsync(Url).Result;
                     if (result.IsSuccessStatusCode)
                     {
-                        proxy = await result.Content.ReadAsStringAsync();
+                        proxy = result.Content.ReadAsStringAsync().Result;
                         JObject json = JObject.Parse(proxy);
                         proxy = json["data"]["proxy"].ToString();
                     }

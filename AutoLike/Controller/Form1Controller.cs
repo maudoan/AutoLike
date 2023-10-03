@@ -12,6 +12,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -34,6 +35,26 @@ namespace AutoLike.Controller
             _listAccounts = new List<account>();
             _sqliteUtils = new SQLiteUtils();
             _chromeDriverUtils = new ChromeDriverUtils();
+        }
+
+        public void turnOffChrome()
+        {
+            foreach (ChromeDriver driver in _listDriver)
+            {
+
+                try
+                {
+                    foreach (var process in Process.GetProcessesByName("chromedriver"))
+                    {
+                        process.Kill();
+                    }
+                    driver.Quit();
+                    driver.Close();
+                }
+                catch { }
+
+            }
+            _listDriver.Clear();  
         }
 
         public List<string> listKeyShopLike(TextBox apiKeyTextBox)
@@ -341,6 +362,7 @@ namespace AutoLike.Controller
                                 {
                                     item.SOPAGE = listIdGroup.Count.ToString();
                                     ChromeDriverUtils.updateNumPage(dataGridView, item);
+                                    item.LIVE = "Live";
                                     ChromeDriverUtils.updateStatusAcc(dataGridView, item, "Live");
                                     SQLiteUtils.updateByUID(item);
                                     foreach (var kvp in listIdGroup)
@@ -353,6 +375,13 @@ namespace AutoLike.Controller
                                         page.NAME = value;
                                         listPage.Add(page);
                                     }
+                                }
+                                else
+                                {
+                                    item.SOPAGE = "0";
+                                    item.LIVE = "Checkpoint";
+                                    ChromeDriverUtils.updateStatusAcc(dataGridView, item, "Checkpoint");
+                                    SQLiteUtils.updateByUID(item);
                                 }
                                 SQLiteUtils.insertPage(listPage);
                                 await Task.Delay(1000);
@@ -383,6 +412,10 @@ namespace AutoLike.Controller
             {
                 foreach (var driver in _listDriver)
                 {
+                    foreach (var process in Process.GetProcessesByName("chromedriver"))
+                    {
+                        process.Kill();
+                    }
                     Console.WriteLine("--------Out Chrome------>");
                     driver.Quit();
                     driver.Close();
@@ -495,7 +528,7 @@ namespace AutoLike.Controller
         /*
          * init Login
          */
-        public void LoginChromeWithCookieToken(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, ComboBox selectProxy, List<string> apiKeyList)
+        public void LoginChromeWithCookieToken(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, bool selectProxy, List<string> apiKeyList)
         {
 
             List<account> danhSach = new List<account>();
@@ -524,7 +557,7 @@ namespace AutoLike.Controller
         /*
          * Process Login
          */
-        public async void ProcessLoginChromeCookieToken(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, ComboBox selectProxy, List<account> listAcccounts, List<string> apiKeyList)
+        public async void ProcessLoginChromeCookieToken(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, bool selectProxy, List<account> listAcccounts, List<string> apiKeyList)
         {
             int itemIndex = 0;
 
@@ -539,7 +572,7 @@ namespace AutoLike.Controller
                 {
                     for (int i = 0; i < apiKeyList.Count; i++)
                     {
-                        await proxyUtils.getNewProxy(Constants.Constants.GetNewProxyShopLike(apiKeyList[i]));
+                        proxyUtils.getNewProxy(Constants.Constants.GetNewProxyShopLike(apiKeyList[i]));
                     }
                 }
 
@@ -577,7 +610,7 @@ namespace AutoLike.Controller
                             Random random = new Random();
                             int index = random.Next(apiKeyList.Count);
                             string randomKey = apiKeyList[index];
-                            string proxy = await proxyUtils.getCurrentProxy(Constants.Constants.GetCurrentProxyShopLike(randomKey, "hd"));
+                            string proxy = proxyUtils.getCurrentProxy(Constants.Constants.GetCurrentProxyShopLike(randomKey, "hd"));
                             item.PROXY = proxy;
 
                             if (itemIndex == 0 || itemIndex == 10 || itemIndex == 20 || itemIndex == 30)
@@ -646,7 +679,7 @@ namespace AutoLike.Controller
         /*
         * Process Login with item Account
         */
-        public async Task ProcessItemLoginAcc(string ProfileFolderPath, account item, int itemIndex, NumericUpDown flowNum, ComboBox selectProxy,int x, int y, DataGridView dataGridView)
+        public async Task ProcessItemLoginAcc(string ProfileFolderPath, account item, int itemIndex, NumericUpDown flowNum, bool selectProxy,int x, int y, DataGridView dataGridView)
         {
 
             ChromeDriver chromeDriver = _chromeDriverUtils.initChrome(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, x, y);
@@ -821,7 +854,7 @@ namespace AutoLike.Controller
          * init regPage
          */
 
-        public void regPage(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, ComboBox selectProxy, List<string> apiKeyList)
+        public void regPage(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, bool selectProxy, List<string> apiKeyList)
         {
 
             List<account> danhSach = new List<account>();
@@ -851,7 +884,7 @@ namespace AutoLike.Controller
          * Process Reg Page
          */
 
-        public async void ProcessRegPage(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, ComboBox selectProxy, List<account> listAcccounts, List<string> apiKeyList)
+        public async void ProcessRegPage(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, bool selectProxy, List<account> listAcccounts, List<string> apiKeyList)
         {
             int itemIndex = 0;
             ProxyUtils proxyUtils = new ProxyUtils();
@@ -865,7 +898,7 @@ namespace AutoLike.Controller
                 {
                     for (int i = 0; i < apiKeyList.Count; i++)
                     {
-                        await proxyUtils.getNewProxy(Constants.Constants.GetNewProxyShopLike(apiKeyList[i]));
+                        proxyUtils.getNewProxy(Constants.Constants.GetNewProxyShopLike(apiKeyList[i]));
                     }
                 }
 
@@ -903,7 +936,7 @@ namespace AutoLike.Controller
                             Random random = new Random();
                             int index = random.Next(apiKeyList.Count);
                             string randomKey = apiKeyList[index];
-                            string proxy = await proxyUtils.getCurrentProxy(Constants.Constants.GetCurrentProxyShopLike(randomKey, "hd"));
+                            string proxy = proxyUtils.getCurrentProxy(Constants.Constants.GetCurrentProxyShopLike(randomKey, "hd"));
                             item.PROXY = proxy;
 
                             if (itemIndex == 0 || itemIndex == 10 || itemIndex == 20 || itemIndex == 30)
@@ -968,7 +1001,7 @@ namespace AutoLike.Controller
         /*
          * Process Reg Page for Item Acc
          */
-        public async Task processItemRegPageAcc(string ProfileFolderPath, account item, int itemIndex, NumericUpDown flowNum, ComboBox selectProxy,DataGridView dataGridView, int x, int y)
+        public async Task processItemRegPageAcc(string ProfileFolderPath, account item, int itemIndex, NumericUpDown flowNum, bool selectProxy,DataGridView dataGridView, int x, int y)
         {
             ChromeDriver chromeDriver = _chromeDriverUtils.initChrome(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, x, y);
             _listDriver.Add(chromeDriver);
@@ -999,7 +1032,7 @@ namespace AutoLike.Controller
             stopLikePage = false;
         }
 
-        public void likePost(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, ComboBox selectProxy, List<string> apiKeyList, CheckBox type2CheckBox, TextBox keyText, NumericUpDown timeGetValue)
+        public void likePost(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, bool selectProxy, List<string> apiKeyList, CheckBox type2CheckBox, TextBox keyText, NumericUpDown timeGetValue)
         {
 
             List<account> danhSach = new List<account>();
@@ -1029,7 +1062,7 @@ namespace AutoLike.Controller
          * Process Reg Page
          */
 
-        public async void ProcessLikePost(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, ComboBox selectProxy, List<account> listAcccounts, List<string> apiKeyList, CheckBox type2CheckBox, TextBox keyText, NumericUpDown timeGetValue)
+        public async void ProcessLikePost(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, bool selectProxy, List<account> listAcccounts, List<string> apiKeyList, CheckBox type2CheckBox, TextBox keyText, NumericUpDown timeGetValue)
         {
            
             ProxyUtils proxyUtils = new ProxyUtils();
@@ -1043,7 +1076,7 @@ namespace AutoLike.Controller
                 {
                     for (int i = 0; i < apiKeyList.Count; i++)
                     {
-                        await proxyUtils.getNewProxy(Constants.Constants.GetNewProxyShopLike(apiKeyList[i]));
+                        proxyUtils.getNewProxy(Constants.Constants.GetNewProxyShopLike(apiKeyList[i]));
                     }
                 }
 
@@ -1065,10 +1098,11 @@ namespace AutoLike.Controller
                 screenWidth = 1920;
             }
             int itemIndex = 0;
-            (int x, int y)[] itemCoordinates = new (int x, int y)[batchSize];
+            int x = 0;
+            int y = 0;
             SemaphoreSlim semaphore = new SemaphoreSlim(maxConcurrency);
-           while (stopLikePage == false)
-           {
+            while (stopLikePage == false)
+            {
 
                 string uidPost = Post.getPostUid(type2CheckBox, keyText, timeGetValue);
                 string[] listUidPost = uidPost.Replace("----", "|").Split('|');
@@ -1088,10 +1122,18 @@ namespace AutoLike.Controller
                                 Random random = new Random();
                                 int index = random.Next(apiKeyList.Count);
                                 string randomKey = apiKeyList[index];
-                                string proxy = await proxyUtils.getCurrentProxy(Constants.Constants.GetCurrentProxyShopLike(randomKey, "hd"));
-                                item.PROXY = proxy;
-                                int x = itemCoordinates[index].x;
-                                int y = itemCoordinates[index].y; ;
+                                string proxy = proxyUtils.getCurrentProxy(Constants.Constants.GetCurrentProxyShopLike(randomKey, "hd"));
+
+                                if (proxy == null || proxy == "")
+                                {
+                                    item.PROXY = "";
+                                }
+                                else
+                                {
+                                    item.PROXY = proxy;
+                                }
+
+
                                 if (itemIndex == 0 || itemIndex == 10 || itemIndex == 20 || itemIndex == 30)
                                 {
                                     y = 0;
@@ -1121,15 +1163,13 @@ namespace AutoLike.Controller
                                 await Task.Run(async () =>
                                 {
 
-                                List<string> listPageString = SQLiteUtils.getPageListByUid(item);
+                                    List<string> listPageString = SQLiteUtils.getPageListByUid(item);
 
-                                if (listPageString.Count > 0)
-                                {
-                                    await processItemLikePost(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, dataGridView, x, y, listPageString, type2CheckBox, keyText, timeGetValue, listUidPost);
-                                }
+                                    if (listPageString.Count > 0)
+                                    {
+                                        await processItemLikePost(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, dataGridView, x, y, listPageString, type2CheckBox, keyText, timeGetValue, listUidPost);
+                                    }
                                 });
-
-                                itemCoordinates[index] = (x, y);
                             }
                             finally
                             {
@@ -1180,7 +1220,7 @@ namespace AutoLike.Controller
         /*
          * Process Reg Page for Item Acc
          */
-        public async Task processItemLikePost(string ProfileFolderPath, account item, int itemIndex, NumericUpDown flowNum, ComboBox selectProxy, DataGridView dataGridView, int x, int y, List<string> listPageString, CheckBox type2CheckBox, TextBox keyText, NumericUpDown timeGetValue, string[] listUidPost)
+        public async Task processItemLikePost(string ProfileFolderPath, account item, int itemIndex, NumericUpDown flowNum, bool selectProxy, DataGridView dataGridView, int x, int y, List<string> listPageString, CheckBox type2CheckBox, TextBox keyText, NumericUpDown timeGetValue, string[] listUidPost)
         {
             ChromeDriver chromeDriver = _chromeDriverUtils.initChrome(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, x, y);
             _listDriver.Add(chromeDriver);
@@ -1215,7 +1255,7 @@ namespace AutoLike.Controller
          * 
          */
 
-        public void movePageToUid(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, ComboBox selectProxy, List<string> apiKeyList)
+        public void movePageToUid(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, bool selectProxy, List<string> apiKeyList)
         {
 
             List<account> danhSach = new List<account>();
@@ -1245,7 +1285,7 @@ namespace AutoLike.Controller
          * Process Move Page To Uid
          */
 
-        public async void ProcessMovePageToUid(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, ComboBox selectProxy, List<account> listAcccounts, List<string> apiKeyList)
+        public async void ProcessMovePageToUid(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, bool selectProxy, List<account> listAcccounts, List<string> apiKeyList)
         {
             int itemIndex = 0;
             ProxyUtils proxyUtils = new ProxyUtils();
@@ -1259,7 +1299,7 @@ namespace AutoLike.Controller
                 {
                     for (int i = 0; i < apiKeyList.Count; i++)
                     {
-                        await proxyUtils.getNewProxy(Constants.Constants.GetNewProxyShopLike(apiKeyList[i]));
+                        proxyUtils.getNewProxy(Constants.Constants.GetNewProxyShopLike(apiKeyList[i]));
                     }
                 }
 
@@ -1297,7 +1337,7 @@ namespace AutoLike.Controller
                             Random random = new Random();
                             int index = random.Next(apiKeyList.Count);
                             string randomKey = apiKeyList[index];
-                            string proxy = await proxyUtils.getCurrentProxy(Constants.Constants.GetCurrentProxyShopLike(randomKey, "hd"));
+                            string proxy = proxyUtils.getCurrentProxy(Constants.Constants.GetCurrentProxyShopLike(randomKey, "hd"));
                             item.PROXY = proxy;
 
                             if (itemIndex == 0 || itemIndex == 10 || itemIndex == 20 || itemIndex == 30)
@@ -1368,7 +1408,7 @@ namespace AutoLike.Controller
         /*
          * Process Move Page To Uid Item
          */
-        public async Task processItemMovePageToUid(string ProfileFolderPath, account item, int itemIndex, NumericUpDown flowNum, ComboBox selectProxy, DataGridView dataGridView, int x, int y, List<string> listPageString)
+        public async Task processItemMovePageToUid(string ProfileFolderPath, account item, int itemIndex, NumericUpDown flowNum, bool selectProxy, DataGridView dataGridView, int x, int y, List<string> listPageString)
         {
             ChromeDriver chromeDriver = _chromeDriverUtils.initChrome(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, x, y);
             _listDriver.Add(chromeDriver);

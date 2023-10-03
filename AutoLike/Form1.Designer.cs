@@ -181,7 +181,7 @@ namespace AutoLike
             this.getInfoAccountToken = new System.Windows.Forms.Button();
             this.getAccessTokenEAAGButton = new System.Windows.Forms.Button();
             this.settingChormeGroupBox = new System.Windows.Forms.GroupBox();
-            this.turnOffChormeButton = new System.Windows.Forms.Button();
+            this.turnOffChromeButton = new System.Windows.Forms.Button();
             this.detailListAccountsPanel = new System.Windows.Forms.Panel();
             this.detailListAccountsDataGridView = new System.Windows.Forms.DataGridView();
             this.sttAccount = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -1530,8 +1530,8 @@ namespace AutoLike
             this.listFileDataGridView.ContextMenuStrip = this.listFileContextMenuStrip;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Green;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Tahoma", 8F);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.White;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.Blue;
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
@@ -1648,26 +1648,27 @@ namespace AutoLike
             // 
             // settingChormeGroupBox
             // 
-            this.settingChormeGroupBox.Controls.Add(this.turnOffChormeButton);
+            this.settingChormeGroupBox.Controls.Add(this.turnOffChromeButton);
             this.settingChormeGroupBox.Location = new System.Drawing.Point(8, 3);
             this.settingChormeGroupBox.Name = "settingChormeGroupBox";
             this.settingChormeGroupBox.Size = new System.Drawing.Size(197, 151);
             this.settingChormeGroupBox.TabIndex = 19;
             this.settingChormeGroupBox.TabStop = false;
             // 
-            // turnOffChormeButton
+            // turnOffChromeButton
             // 
-            this.turnOffChormeButton.BackColor = System.Drawing.Color.White;
-            this.turnOffChormeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.turnOffChormeButton.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.turnOffChormeButton.ForeColor = System.Drawing.Color.Teal;
-            this.turnOffChormeButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.turnOffChormeButton.Location = new System.Drawing.Point(22, 83);
-            this.turnOffChormeButton.Name = "turnOffChormeButton";
-            this.turnOffChormeButton.Size = new System.Drawing.Size(152, 31);
-            this.turnOffChormeButton.TabIndex = 56;
-            this.turnOffChormeButton.Text = "Tắt Chromedriver";
-            this.turnOffChormeButton.UseVisualStyleBackColor = false;
+            this.turnOffChromeButton.BackColor = System.Drawing.Color.White;
+            this.turnOffChromeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.turnOffChromeButton.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.turnOffChromeButton.ForeColor = System.Drawing.Color.Teal;
+            this.turnOffChromeButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.turnOffChromeButton.Location = new System.Drawing.Point(22, 83);
+            this.turnOffChromeButton.Name = "turnOffChromeButton";
+            this.turnOffChromeButton.Size = new System.Drawing.Size(152, 31);
+            this.turnOffChromeButton.TabIndex = 56;
+            this.turnOffChromeButton.Text = "Tắt Chromedriver";
+            this.turnOffChromeButton.UseVisualStyleBackColor = false;
+            this.turnOffChromeButton.Click += new System.EventHandler(this.turnOffChromeButton_Click);
             // 
             // detailListAccountsPanel
             // 
@@ -2169,7 +2170,7 @@ namespace AutoLike
         private System.Windows.Forms.GroupBox backupGroupBox;
         private System.Windows.Forms.GroupBox checkViaGroupBox;
         private System.Windows.Forms.GroupBox settingChormeGroupBox;
-        private System.Windows.Forms.Button turnOffChormeButton;
+        private System.Windows.Forms.Button turnOffChromeButton;
         private System.Windows.Forms.Panel detailListAccountsPanel;
         private System.Windows.Forms.DataGridView detailListAccountsDataGridView;
         private System.Windows.Forms.DataGridViewTextBoxColumn sttAccount;

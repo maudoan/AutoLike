@@ -1,11 +1,13 @@
 ﻿using AutoLike.Controller;
 using AutoLike.Utils;
+using OpenQA.Selenium.Chrome;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 using System.Xml.Linq;
@@ -239,7 +241,12 @@ namespace AutoLike
             }
             else
             {
-                _form1Controller.LoginChromeWithCookieToken(selectPathProfileChromeTextBox.Text, detailListAccountsDataGridView, generalSettingflowNumberNumericUpDown, generalSetingUserProxyComboBox, keyApiList);
+                bool selectProxy = false;
+                if(generalSetingUserProxyComboBox.SelectedItem.ToString().Equals("Use Proxy"))
+                {
+                    selectProxy = true;
+                }
+                _form1Controller.LoginChromeWithCookieToken(selectPathProfileChromeTextBox.Text, detailListAccountsDataGridView, generalSettingflowNumberNumericUpDown, selectProxy, keyApiList);
             }
         }
 
@@ -268,7 +275,12 @@ namespace AutoLike
                 MessageBox.Show("Vui lòng lưu lại cấu hình mới nhất!", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
             } else
             {
-                _form1Controller.regPage(selectPathProfileChromeTextBox.Text, detailListAccountsDataGridView, generalSettingflowNumberNumericUpDown, generalSetingUserProxyComboBox, keyApiList);
+                bool selectProxy = false;
+                if (generalSetingUserProxyComboBox.SelectedItem.ToString().Equals("Use Proxy"))
+                {
+                    selectProxy = true;
+                }
+                _form1Controller.regPage(selectPathProfileChromeTextBox.Text, detailListAccountsDataGridView, generalSettingflowNumberNumericUpDown, selectProxy, keyApiList);
             }
             
             tabControl.SelectTab(doashBoardTabPage);
@@ -369,8 +381,14 @@ namespace AutoLike
             }
             else
             {
+                bool selectProxy = false;
+                if (generalSetingUserProxyComboBox.SelectedItem.ToString().Equals("Use Proxy"))
+                {
+                    selectProxy = true;
+                }
+
                 _form1Controller.setStopLikePageFalse();
-                _form1Controller.likePost(selectPathProfileChromeTextBox.Text, detailListAccountsDataGridView, generalSettingflowNumberNumericUpDown, generalSetingUserProxyComboBox, keyApiList, sType2SeedingPageCheckbox, keyGetUidSeedingPageTextBox,timeGetNumBerNumericUpDown);
+                _form1Controller.likePost(selectPathProfileChromeTextBox.Text, detailListAccountsDataGridView, generalSettingflowNumberNumericUpDown, selectProxy, keyApiList, sType2SeedingPageCheckbox, keyGetUidSeedingPageTextBox,timeGetNumBerNumericUpDown);
                 tabControl.SelectTab(doashBoardTabPage);
             }   
         }
@@ -387,7 +405,12 @@ namespace AutoLike
             }
             else
             {
-                _form1Controller.movePageToUid(selectPathProfileChromeTextBox.Text, detailListAccountsDataGridView, generalSettingflowNumberNumericUpDown, generalSetingUserProxyComboBox, keyApiList);
+                bool selectProxy = false;
+                if (generalSetingUserProxyComboBox.SelectedItem.ToString().Equals("Use Proxy"))
+                {
+                    selectProxy = true;
+                }
+                _form1Controller.movePageToUid(selectPathProfileChromeTextBox.Text, detailListAccountsDataGridView, generalSettingflowNumberNumericUpDown, selectProxy, keyApiList);
             }
         }
 
@@ -468,6 +491,11 @@ namespace AutoLike
                 itemFileDetail.Width = dtw;
                 showHideListDataButton.Text = "Hide";
             }
+        }
+
+        private void turnOffChromeButton_Click(object sender, EventArgs e)
+        {
+            _form1Controller.turnOffChrome();
         }
     }
 }
