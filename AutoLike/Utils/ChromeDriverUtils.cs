@@ -267,6 +267,20 @@ namespace AutoLike.Utils
 
         }
 
+        public static void updateNumPage(DataGridView dataGridView, account item)
+        {
+            for (int i = 0; i < dataGridView.Rows.Count; i++)
+            {
+                if (item.UID == dataGridView.Rows[i].Cells["uidAccount"].Value.ToString())
+                {
+                    dataGridView.Rows[i].Cells["pageNumberAccount"].Value = item.SOPAGE;
+                    dataGridView.Rows[i].DefaultCellStyle.ForeColor = Color.DarkRed;
+                }
+
+            }
+
+        }
+
         public static void sxepChrome(List<ChromeDriver> listChromeDrivers)
         {
             int screenHeight = SystemInformation.VirtualScreen.Height;

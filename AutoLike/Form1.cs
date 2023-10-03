@@ -29,7 +29,7 @@ namespace AutoLike
         {
             _form1Controller.LoadFileAccount(listFileDataGridView);
 
-            _form1Controller.loadGeneralSetting(selectPathProfileChromeTextBox, generalSetingUserProxyComboBox, apiKeyTextBox);
+            _form1Controller.loadGeneralSetting(selectPathProfileChromeTextBox, generalSetingUserProxyComboBox, apiKeyTextBox, generalSettingflowNumberNumericUpDown);
 
             _form1Controller.loadLikePostSeeting(likePostSeedingPageCheckBox, keyGetUidSeedingPageTextBox);
 
@@ -322,7 +322,7 @@ namespace AutoLike
                 File.Create(filePath).Close();
                 Console.WriteLine("Tạo tệp GeneralSetting.txt.");
             }
-            string dt = generalSetingUserProxyComboBox.SelectedItem.ToString() + "|" + selectPathProfileChromeTextBox.Text + "|" + apiKeyTextBox.Text;
+            string dt = generalSetingUserProxyComboBox.SelectedItem.ToString() + "|" + selectPathProfileChromeTextBox.Text + "|" + apiKeyTextBox.Text + "|" + generalSettingflowNumberNumericUpDown.Value;
             File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\AutoLike\GeneralSetting.txt", dt.ToString());
             MessageBox.Show("Lưu cấu hình thành công !", "Done", MessageBoxButtons.OK, MessageBoxIcon.Information);
 

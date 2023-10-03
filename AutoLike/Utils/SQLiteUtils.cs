@@ -293,25 +293,39 @@ namespace AutoLike.Utils
 
         public static void updateByUID(account item)
         {
-            while (true)
+            using (SQLiteConnection sqliteConnection = new SQLiteConnection("Data Source=Data.sqlite3;Version=3;"))
             {
-                Thread.Sleep(1);
-                try
+                sqliteConnection.Open();
+                using (SQLiteTransaction transaction = sqliteConnection.BeginTransaction())
                 {
-                    string text = string.Format("UPDATE data set COOKIE='{0}',PROXY='{1}', LIVE='{2}', TRANGTHAI='{3}', SOPAGE='{4}' where UID='{5}'", item.COOKIE,item.PROXY, item.LIVE,item.TRANGTHAI,item.SOPAGE, item.UID);
-                    SQLiteConnection sqliteConnection = new SQLiteConnection();
-                    sqliteConnection.ConnectionString = "Data Source=Data.sqlite3;Version=3;";
-                    sqliteConnection.Open();
-                    SQLiteCommand sqliteCommand = new SQLiteCommand(text, sqliteConnection);
-                    sqliteCommand.ExecuteNonQuery();
-                    sqliteConnection.Dispose();
-                    break;
+                    try
+                    {
+                        string updateSql = "UPDATE data SET COOKIE=@Cookie, PROXY=@Proxy, LIVE=@Live, TRANGTHAI=@TrangThai, SOPAGE=@SoPage WHERE UID=@UID";
+                        SQLiteCommand sqliteCommand = new SQLiteCommand(updateSql, sqliteConnection);
+                        sqliteCommand.Parameters.AddWithValue("@Cookie", item.COOKIE);
+                        sqliteCommand.Parameters.AddWithValue("@Proxy", item.PROXY);
+                        sqliteCommand.Parameters.AddWithValue("@Live", item.LIVE);
+                        sqliteCommand.Parameters.AddWithValue("@TrangThai", item.TRANGTHAI);
+                        sqliteCommand.Parameters.AddWithValue("@SoPage", item.SOPAGE);
+                        sqliteCommand.Parameters.AddWithValue("@UID", item.UID);
+                        sqliteCommand.ExecuteNonQuery();
+                        transaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        // Xử lý ngoại lệ (vd: ghi log hoặc thông báo lỗi)
+                        Console.WriteLine("Lỗi: " + ex.Message);
+                        transaction.Rollback(); // Hoàn tác giao dịch nếu có lỗi
+                    }
+                    finally
+                    {
+                        sqliteConnection.Close();
+                    }
                 }
-                catch { }
             }
         }
 
-        public static void insertPage(List<page> listPage)
+            public static void insertPage(List<page> listPage)
         {
             deletePageExisted(listPage);
             try

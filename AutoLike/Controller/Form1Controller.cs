@@ -238,7 +238,7 @@ namespace AutoLike.Controller
 
         }
 
-        public void loadGeneralSetting(TextBox profileFolderPath, ComboBox selectProxy,TextBox apiKeyTextBox)
+        public void loadGeneralSetting(TextBox profileFolderPath, ComboBox selectProxy,TextBox apiKeyTextBox, NumericUpDown generalSettingflowNumberNumericUpDown)
         {
             if (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\AutoLike\GeneralSetting.txt"))
             {
@@ -248,6 +248,7 @@ namespace AutoLike.Controller
                     selectProxy.SelectedItem = dt[0];
                     profileFolderPath.Text = dt[1];
                     apiKeyTextBox.Text = dt[2];
+                    generalSettingflowNumberNumericUpDown.Value = int.Parse(dt[3].Trim());
                 }
                 catch { }
             }
@@ -304,7 +305,7 @@ namespace AutoLike.Controller
             }
             if(danhSach.Count > 0)
             {
-                processInsertBatchPage(danhSach);
+                processInsertBatchPage(danhSach, dataGridView);
             }
             else
             {
@@ -313,7 +314,7 @@ namespace AutoLike.Controller
             
         }
 
-        public async void processInsertBatchPage(List<account> listAccounts)
+        public async void processInsertBatchPage(List<account> listAccounts, DataGridView dataGridView)
         {
             int batchSize = Convert.ToInt32(10); // Số lượng item mỗi lần xử lý
             int maxConcurrency = Convert.ToInt32(10); // Số lượng luồng tối đa
@@ -339,7 +340,8 @@ namespace AutoLike.Controller
                                 if (listIdGroup != null && listIdGroup.Count > 0)
                                 {
                                     item.SOPAGE = listIdGroup.Count.ToString();
-
+                                    ChromeDriverUtils.updateNumPage(dataGridView, item);
+                                    ChromeDriverUtils.updateStatusAcc(dataGridView, item, "Live");
                                     SQLiteUtils.updateByUID(item);
                                     foreach (var kvp in listIdGroup)
                                     {
@@ -1063,7 +1065,7 @@ namespace AutoLike.Controller
                 screenWidth = 1920;
             }
             int itemIndex = 0;
-            int x = 0; int y = 0;
+            (int x, int y)[] itemCoordinates = new (int x, int y)[batchSize];
             SemaphoreSlim semaphore = new SemaphoreSlim(maxConcurrency);
            while (stopLikePage == false)
            {
@@ -1088,7 +1090,8 @@ namespace AutoLike.Controller
                                 string randomKey = apiKeyList[index];
                                 string proxy = await proxyUtils.getCurrentProxy(Constants.Constants.GetCurrentProxyShopLike(randomKey, "hd"));
                                 item.PROXY = proxy;
-
+                                int x = itemCoordinates[index].x;
+                                int y = itemCoordinates[index].y; ;
                                 if (itemIndex == 0 || itemIndex == 10 || itemIndex == 20 || itemIndex == 30)
                                 {
                                     y = 0;
@@ -1118,15 +1121,15 @@ namespace AutoLike.Controller
                                 await Task.Run(async () =>
                                 {
 
-                                    List<string> listPageString = SQLiteUtils.getPageListByUid(item);
+                                List<string> listPageString = SQLiteUtils.getPageListByUid(item);
 
-                                    if (listPageString.Count > 0)
-                                    {
-                                        await processItemLikePost(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, dataGridView, x, y, listPageString, type2CheckBox, keyText, timeGetValue, listUidPost);
-                                    }
+                                if (listPageString.Count > 0)
+                                {
+                                    await processItemLikePost(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, dataGridView, x, y, listPageString, type2CheckBox, keyText, timeGetValue, listUidPost);
+                                }
                                 });
 
-
+                                itemCoordinates[index] = (x, y);
                             }
                             finally
                             {
