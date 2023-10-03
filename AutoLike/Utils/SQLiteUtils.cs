@@ -319,6 +319,10 @@ namespace AutoLike.Utils
                         Console.WriteLine("Lỗi: " + ex.Message);
                         transaction.Rollback(); // Hoàn tác giao dịch nếu có lỗi
                     }
+                    finally
+                    {
+                        sqliteConnection.Close();
+                    }
                 }
             }
         }

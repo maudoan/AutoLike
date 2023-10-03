@@ -19,6 +19,7 @@ using System.Windows.Forms;
 using Cookie = OpenQA.Selenium.Cookie;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Header;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
+using System.Reflection.Emit;
 
 namespace AutoLike.Controller
 {
@@ -1030,6 +1031,7 @@ namespace AutoLike.Controller
             CancellationToken ct = taskStop.Token;
 
             ProxyUtils proxyUtils = new ProxyUtils();
+            DateTime currentTime = DateTime.Now;
 
         endLess:
 
@@ -1039,6 +1041,26 @@ namespace AutoLike.Controller
             int reset1 = 0;
             int demluong = 0;
             string[] listUidPost;
+
+            if (currentTime - lastApiCallTime >= callInterval)
+            {
+                // Nếu đã đủ thời gian, thực hiện gọi API
+                if (apiKeyList.Count > 0)
+                {
+                    for (int m = 0; m < apiKeyList.Count; m++)
+                    {
+                        proxyUtils.GetNewProxy(Constants.Constants.GetNewProxyShopLike(apiKeyList[m]));
+                    }
+                }
+
+                // Cập nhật thời gian gọi cuối cùng
+                lastApiCallTime = currentTime;
+            }
+            else
+            {
+                // Nếu chưa đủ thời gian, không thực hiện gọi lại API
+                Console.WriteLine("------------>Waitng For 1 minute " + (callInterval - (currentTime - lastApiCallTime)));
+            }
 
             while (true)
             {
@@ -1062,7 +1084,7 @@ namespace AutoLike.Controller
                     goto s;
                 }
 
-                for (int k = 0; k < Int32.Parse(flowNum.Value.ToString()); k++)
+                for (int k = 0; k < int.Parse(flowNum.Value.ToString()); k++)
                 {
                     if (ii == dataGridView.Rows.Count)
                     {
@@ -1098,34 +1120,46 @@ namespace AutoLike.Controller
                                 listPage.Add(pageNew);
 
                             }
-                        }
+                        }                  
 
                         int i = ii;
                         reset1++;
 
-                        Thread t = new Thread(async () =>
+                        if (itemIndex == 0 || itemIndex == 10 || itemIndex == 20 || itemIndex == 30)
                         {
-                            DateTime currentTime = DateTime.Now;
+                            y = 0;
+                            x = 0;
+                        }
+                        else if ((itemIndex > 0 && itemIndex < 5) || (itemIndex > 10 && itemIndex < 15) || (itemIndex > 20 && itemIndex < 25) || (itemIndex > 30 && itemIndex < 35))
+                        {
+                            y = 0;
+                            x += screenWidth / 5;
+                        }
+                        else if (itemIndex == 5 || itemIndex == 15 || itemIndex == 25 || itemIndex == 35)
+                        {
+                            y = screenHeight / 2;
+                            x = 0;
+                        }
+                        else if ((itemIndex > 5 && itemIndex < 10) || (itemIndex > 15 && itemIndex <= 20) || (itemIndex > 25 && itemIndex < 30) || (itemIndex > 35 && itemIndex < 40))
+                        {
+                            y = screenHeight / 2;
+                            x += screenWidth / 5;
+                        }
+                        else { }
 
-                            if (currentTime - lastApiCallTime >= callInterval)
-                            {
-                                // Nếu đã đủ thời gian, thực hiện gọi API
-                                if (apiKeyList.Count > 0)
-                                {
-                                    for (int m = 0; m < apiKeyList.Count; m++)
-                                    {
-                                        await proxyUtils.getNewProxy(Constants.Constants.GetNewProxyShopLike(apiKeyList[m]));
-                                    }
-                                }
+                        if (listPage.Count <= 0)
+                        {
+                            itemIndex--;
+                            break;
+                        }
+                        itemIndex++;
+                        if (itemIndex == flowNum.Value)
+                        {
+                            itemIndex = 0;
+                        }
 
-                                // Cập nhật thời gian gọi cuối cùng
-                                lastApiCallTime = currentTime;
-                            }
-                            else
-                            {
-                                // Nếu chưa đủ thời gian, không thực hiện gọi lại API
-                                Console.WriteLine("------------>Waitng For 1 minute " + (callInterval - (currentTime - lastApiCallTime)));
-                            }
+                        Thread t = new Thread(() =>
+                        {
 
                             b++;
                             threadCount++;
@@ -1142,44 +1176,22 @@ namespace AutoLike.Controller
                                 Random random = new Random();
                                 int index = random.Next(apiKeyList.Count);
                                 string randomKey = apiKeyList[index];
-                                string proxy = await proxyUtils.getCurrentProxy(Constants.Constants.GetCurrentProxyShopLike(randomKey, "hd"));
+                                string proxy = proxyUtils.GetCurrentProxy(Constants.Constants.GetCurrentProxyShopLike(randomKey, "hd"));
                                 acc.PROXY = proxy;
-
-                                if (itemIndex == 0 || itemIndex == 10 || itemIndex == 20 || itemIndex == 30)
-                                {
-                                    y = 0;
-                                    x = 0;
-                                }
-                                else if ((itemIndex > 0 && itemIndex < 5) || (itemIndex > 10 && itemIndex < 15) || (itemIndex > 20 && itemIndex < 25) || (itemIndex > 30 && itemIndex < 35))
-                                {
-                                    y = 0;
-                                    x += screenWidth / 5;
-                                }
-                                else if (itemIndex == 5 || itemIndex == 15 || itemIndex == 25 || itemIndex == 35)
-                                {
-                                    y = screenHeight / 2;
-                                    x = 0;
-                                }
-                                else if ((itemIndex > 5 && itemIndex < 10) || (itemIndex > 15 && itemIndex <= 20) || (itemIndex > 25 && itemIndex < 30) || (itemIndex > 35 && itemIndex < 40))
-                                {
-                                    y = screenHeight / 2;
-                                    x += screenWidth / 5;
-                                }
-                                else { }
-                                itemIndex++;
-                                if (itemIndex == flowNum.Value)
-                                {
-                                    itemIndex = 0;
-                                }
 
                                 chromeDriver = _chromeDriverUtils.initChrome(ProfileFolderPath, acc, itemIndex, flowNum, selectProxy, x, y);
                             } catch
                             {
-
+                                Random random = new Random();
+                                int index = random.Next(apiKeyList.Count);
+                                string randomKey = apiKeyList[index];
+                                string proxy = proxyUtils.GetCurrentProxy(Constants.Constants.GetCurrentProxyShopLike(randomKey, "hd"));
+                                acc.PROXY = proxy;
+                                chromeDriver = _chromeDriverUtils.initChrome(ProfileFolderPath, acc, itemIndex, flowNum, selectProxy, x, y);
                             }
                             _listDriver.Add(chromeDriver);
 
-                            //if (isStop) { goto end2; }
+                            if (stopLikePage) { goto end2; }
 
                             try
                             {
@@ -1200,16 +1212,19 @@ namespace AutoLike.Controller
                                         ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Vào Post: " + listUidPost[k1]);
                                     lai:
                                         chromeDriver.Navigate().GoToUrl("https://www.facebook.com/");
+                                        Thread.Sleep(3000);
                                         if (ChromeDriverUtils.FindTextInChrome(chromeDriver, "Chào mừng bạn đến với Trang mới!", "Chào mừng bạn đến với Trang mới!"))
                                         {
                                             try
                                             {
                                                 //*[@id="facebook"]/body/div[2]/div[1]/div/div[2]/div/div/div/div[1]
                                                 chromeDriver.FindElement(By.XPath("//*[@id=\"facebook\"]/body/div[4]/div[1]/div/div[2]/div/div/div/div[1]/div")).Click();
+                                                Thread.Sleep(1000);
                                             }
                                             catch
                                             {
                                                 chromeDriver.FindElement(By.XPath("//*[@id=\"facebook\"]/body/div[5]/div[1]/div/div[2]/div/div/div/div[1]/div")).Click();
+                                                Thread.Sleep(1000);
 
                                             }
 
@@ -1238,23 +1253,24 @@ namespace AutoLike.Controller
                                         }
 
                                         chromeDriver.Navigate().GoToUrl("https://www.facebook.com/");
-
+                                        Thread.Sleep(3000);
                                         if (ChromeDriverUtils.FindTextInChrome(chromeDriver, "Chào mừng bạn đến với Trang mới!", "Chào mừng bạn đến với Trang mới!"))
                                         {
                                             try
                                             {
                                                 chromeDriver.FindElement(By.XPath("//*[@id=\"facebook\"]/body/div[4]/div[1]/div/div[2]/div/div/div/div[1]/div")).Click();
+                                                Thread.Sleep(1000);
                                             }
                                             catch
                                             {
                                                 chromeDriver.FindElement(By.XPath("//*[@id=\"facebook\"]/body/div[5]/div[1]/div/div[2]/div/div/div/div[1]/div")).Click();
-
+                                                Thread.Sleep(1000);
                                             }
 
                                         }
 
                                         chromeDriver.Navigate().GoToUrl("https://www.facebook.com/" + listUidPost[k1]);
-
+                                        Thread.Sleep(3000);
                                         if (ChromeDriverUtils.FindClickElementInChrome(chromeDriver, "Đăng nhập", "Log In", false) || ChromeDriverUtils.FindClickElementInChrome(chromeDriver, "Đăng nhập", "Choose your account", false))
                                         {
                                             ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Like Post Lỗi - Acc Logout " + listUidPost[k1]);
@@ -1262,7 +1278,7 @@ namespace AutoLike.Controller
                                             //dataGridView1.Rows[i].Cells[1].Value = false;
                                             //dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.FromArgb(248, 198, 198);
                                             //LoadLog(DateTime.Now + ":  " + dataGridView1.Rows[i].Cells["Ten1"].Value.ToString() + " :Like Post Lỗi - Acc Logout! " + uidlike[k1], "red");
-                                            //goto ne;
+                                            goto ne;
                                         }
                                         else
                                         {
@@ -1274,8 +1290,9 @@ namespace AutoLike.Controller
                                                     try
                                                     {
                                                         chromeDriver.FindElement(By.XPath("/html/body/div[1]/div/div[4]/div/div[1]/div/div/div[2]/footer/div/div/div[1]/a")).Click();
-                                                        ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Like Post Lỗi - Acc Logout " + uidPost[k1]);
-                                                        count.Add(uidPost[k1] + "|" + listPage[i].PAGEID);
+                                                        ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Like Thành công Post" + listUidPost[k1]);
+                                                        count.Add(listUidPost[k1] + "|" + listPage[i2].PAGEID);
+                                                        Thread.Sleep(2000);
                                                         break;
                                                     }
                                                     catch
@@ -1284,36 +1301,36 @@ namespace AutoLike.Controller
                                                         {
                                                             if (chromeDriver.Url.Contains("/watch"))
                                                             {
-                                                                ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Lỗi : dạng wath livetream k like  đc " + uidPost[k1]);
+                                                                ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Lỗi : dạng wath livetream k like  đc " + listUidPost[k1]);
                                                                 Post.upShopLike(listUidPost[k1], 9999, keyText);
 
                                                             }
                                                             else if (chromeDriver.Url.Contains("/reel"))
                                                             {
-                                                                ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Lỗi : dạng wath reel k like  đc " + uidPost[k1]);
+                                                                ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Lỗi : dạng wath reel k like  đc " + listUidPost[k1]);
                                                                 Post.upShopLike(listUidPost[k1], 9999, keyText);
                                                             }
                                                             else if (ChromeDriverUtils.FindClickElementInChrome(chromeDriver, "Thích", "Like", true))
                                                             {
-                                                                ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Like Thành công Post " + uidPost[k1]);
+                                                                ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Like Thành công Post " + listUidPost[k1]);
                                                                 post post = new post();
                                                                 post.POSTID = listUidPost[k1];
                                                                 post.PAGEID = listPage[i2].PAGEID;
                                                                 SQLiteUtils.insertPost(post);
                                                                 count.Add(listUidPost[k1] + "|" + listPage[i2].PAGEID);
-
+                                                                Thread.Sleep(2000);
                                                             }
                                                             else if (ChromeDriverUtils.FindTextInChrome(chromeDriver, "Chúc bạn sinh nhật vui vẻ", "Chúc bạn sinh nhật vui vẻ"))
                                                             {
                                                                 demloi++;
                                                                 if (demloi == 2)
                                                                 {
-                                                                    ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Like Post Lỗi - Acc CHECKPOINT " + uidPost[k1]);
+                                                                    ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Like Post Lỗi - Acc CHECKPOINT " + listUidPost[k1]);
                                                                     ChromeDriverUtils.updateStatusAcc(dataGridView, acc, "Die");
                                                                     //dataGridView1.Rows[i].Cells[1].Value = false;
                                                                     //dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.FromArgb(248, 198, 198);
                                                                     //LoadLog(DateTime.Now + ":  " + dataGridView1.Rows[i].Cells["Ten1"].Value.ToString() + " :Like Post Lỗi - Acc CHECKPOINT! " + uidlike[k1], "red");
-                                                                    //goto ne;
+                                                                    goto ne;
                                                                 }
                                                                 try
                                                                 {
@@ -1328,7 +1345,7 @@ namespace AutoLike.Controller
                                                             }
                                                             else if (chromeDriver.Url.Contains("/actor_experience"))
                                                             {
-                                                                ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Lỗi : dạng nick bị check cmt spam hoặc cp lạ " + uidPost[k1]);
+                                                                ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Lỗi : dạng nick bị check cmt spam hoặc cp lạ " + listUidPost[k1]);
                                                                 Post.upShopLike(listUidPost[k1], 9999, keyText);
 
                                                             }
@@ -1345,7 +1362,7 @@ namespace AutoLike.Controller
                                                                 //dataGridView1.Rows[i].Cells[1].Value = false;
                                                                 //dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.FromArgb(248, 198, 198);
                                                                 //LoadLog(DateTime.Now + ":  " + dataGridView1.Rows[i].Cells["Ten1"].Value.ToString() + " :Like Post Lỗi - Acc CHECKPOINT! " + uidlike[k1], "red");
-                                                                //goto ne;
+                                                                goto ne;
 
                                                             }
                                                             else if (ChromeDriverUtils.FindClickElementInChrome(chromeDriver, "Đăng nhập", "Login", false) || ChromeDriverUtils.FindClickElementInChrome(chromeDriver, "Đăng nhập", "Choose your account", false))
@@ -1355,12 +1372,12 @@ namespace AutoLike.Controller
                                                                 //dataGridView1.Rows[i].Cells[1].Value = false;
                                                                 //dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.FromArgb(248, 198, 198);
                                                                 //LoadLog(DateTime.Now + ":  " + dataGridView1.Rows[i].Cells["Ten1"].Value.ToString() + " :Like Post Lỗi - Acc Logout! " + uidlike[k1], "red");
-                                                                //goto ne;
+                                                                goto ne;
                                                             }
                                                             else if (ChromeDriverUtils.FindTextInChrome(chromeDriver, "Chia sẻ", "Share"))
                                                             {
                                                                 ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Không có nút LIKE" + listUidPost[k1]);
-                                                                count.Add(uidPost[k1] + "|delete");
+                                                                count.Add(listUidPost[k1] + "|delete");
                                                             }
                                                             else if (ChromeDriverUtils.FindTextInChrome(chromeDriver, "của bạn đã bị khóa", "been locked"))
                                                             {
@@ -1368,7 +1385,7 @@ namespace AutoLike.Controller
                                                                 ChromeDriverUtils.updateStatusAcc(dataGridView, acc, "Die");
                                                                 //dataGridView1.Rows[i].Cells[1].Value = false;
                                                                 //dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.FromArgb(248, 198, 198);
-                                                                //goto ne;
+                                                                goto ne;
                                                             }
                                                             else if (ChromeDriverUtils.FindTextInChrome(chromeDriver, "Bạn hiện không thể bày tỏ cảm xúc", "Bạn hiện không thể bày tỏ cảm xúc"))
                                                             {
@@ -1376,7 +1393,7 @@ namespace AutoLike.Controller
                                                                 ChromeDriverUtils.updateStatusAcc(dataGridView, acc, "Checkpoint");
                                                                 //dataGridView1.Rows[i].Cells[1].Value = false;
                                                                 //dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.FromArgb(248, 198, 198);
-                                                                //goto ne;
+                                                                goto ne;
                                                             }
                                                             else
                                                             {
@@ -1411,6 +1428,7 @@ namespace AutoLike.Controller
                                                     catch
                                                     {
                                                         ChromeDriverUtils.FindClickElementInChrome(chromeDriver, "OK", "OK", true);
+                                                        Thread.Sleep(4000);
                                                     }
                                                     if (dem < 1)
                                                     {
@@ -1424,25 +1442,99 @@ namespace AutoLike.Controller
                                         int delay = rd.Next(Convert.ToInt32(5), Convert.ToInt32(5));
                                         while (delay > 0)
                                         {
+                                            Thread.Sleep(1000);
                                             delay--;
                                         }
                                     }
                                 }
+                                listPage.Clear();
                             }
                             catch
                             {
 
                             }
 
+                        ne:
+                            //try
+                            //{
+                            //    updatedata(i, true);
+                            //}
+                            //catch
+                            //{
+                            //    Trangthaichrome(i, "Lỗi updatedata");
+
+                            //}
+                            //dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.FromArgb(217, 255, 255);
+                            threadCount--;
+                            //DateTime now = DateTime.Now;
+                            //if (cbreset.Checked && (cbtinsoft.Checked || cbtmproxy.Checked || cb_yproxy.Checked))
+                            //{
+                            //    dataGridView1.Rows[i].Cells["Trangthai"].Value = dataGridView1.Rows[i].Cells["Trangthai"].Value.ToString() + "(" + now + ") IP:" + proxy2;
+                            //}
+                            //else
+                            //{
+                            //    dataGridView1.Rows[i].Cells["Trangthai"].Value = dataGridView1.Rows[i].Cells["Trangthai"].Value.ToString() + "(" + now + ") IP: " + label71.Text;
+                            //}
+
+                            demluong--;
+                            try
+                            {
+                                chromeDriver.Close();
+                                chromeDriver.Quit();
+                                _listDriver.Remove(chromeDriver);
+                            }
+                            catch (Exception)
+                            { }
+                        end2:
+                            Thread.Sleep(1);
                         });
                         t.Start();
                         t.IsBackground = true;
                         Thread.Sleep(1000);
-                    } else
+                    }
+                    else
                     {
                         k--;
                     }
                     ii++;
+                }
+                for (int k2 = 0; k2 < listUidPost.Length; k2++)
+                {
+                    int dem = 0;
+                    foreach (string s in count)
+                    {
+                        if (s.Split('|')[0] == listUidPost[k2])
+                        {
+                            dem++;
+                        }
+                        else if (s == listUidPost[k2] + "|delete")
+                        {
+                            try
+                            {
+                                Post.upShopLike(listUidPost[k2], 9999, keyText);
+                            }
+                            catch
+                            {
+                            }
+
+                            goto en;
+                        }
+                    }
+                    foreach (string s in count)
+                    {
+                        if (s.Split('|')[0] == listUidPost[k2])
+                        {
+                        }
+                    }
+                    try
+                    {
+                        Post.upShopLike(listUidPost[k2], dem, keyText);
+                    }
+                    catch
+                    {
+                    }
+                en:
+                    Task.Delay(100);
                 }
             }
         end:
@@ -1459,8 +1551,11 @@ namespace AutoLike.Controller
                     {
                         dataGridView.Rows[kk].DefaultCellStyle.BackColor = Color.FromArgb(203, 245, 203);
                     }
-
-
+                    Console.WriteLine("------->lap vo tan");
+                    foreach (var process in Process.GetProcessesByName("chromedriver"))
+                    {
+                        process.Kill();
+                    }
                     goto endLess;
                 }
             }
