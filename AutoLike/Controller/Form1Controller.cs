@@ -397,6 +397,7 @@ namespace AutoLike.Controller
 
                     await Task.WhenAll(tasks);
                     listPage.Clear();
+                    await Task.Delay(5000);
                 }
                 finally
                 {
@@ -1198,6 +1199,7 @@ namespace AutoLike.Controller
                         }
 
                         _listDriver.Clear();
+                       await Task.Delay(5000);
 
                     }
                     finally
