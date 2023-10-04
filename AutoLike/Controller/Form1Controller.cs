@@ -308,7 +308,7 @@ namespace AutoLike.Controller
 
             for (int i = 0; i < dataGridView.Rows.Count; i++)
             {
-                if (dataGridView.Rows[i].Cells["checkboxItemAccount"].Value.ToString() == "True" && dataGridView.Rows[i].Cells["tinhtrangAccount"].Value.ToString() == "Live")
+                if (dataGridView.Rows[i].Cells["checkboxItemAccount"].Value.ToString() == "True")
                 {
                     account acc = new account();
                     acc.UID = dataGridView.Rows[i].Cells["uidAccount"].Value.ToString();
@@ -337,8 +337,8 @@ namespace AutoLike.Controller
 
         public async void processInsertBatchPage(List<account> listAccounts, DataGridView dataGridView)
         {
-            int batchSize = Convert.ToInt32(10); // Số lượng item mỗi lần xử lý
-            int maxConcurrency = Convert.ToInt32(10); // Số lượng luồng tối đa
+            int batchSize = Convert.ToInt32(5); // Số lượng item mỗi lần xử lý
+            int maxConcurrency = Convert.ToInt32(5); // Số lượng luồng tối đa
 
             List<page> listPage = new List<page>();
             SemaphoreSlim semaphore = new SemaphoreSlim(maxConcurrency);
@@ -351,47 +351,50 @@ namespace AutoLike.Controller
                 {
                     var tasks = batch.Select(async item =>
                     {
-                        ChromeDriverUtils.updateColorStatus(dataGridView, item);
-                        await semaphore.WaitAsync();
-                        try
+                        if (item.COOKIE != null && item.COOKIE != "")
                         {
-
-                            await Task.Run(async () =>
+                            ChromeDriverUtils.updateColorStatus(dataGridView, item);
+                            await semaphore.WaitAsync();
+                            try
                             {
-                                Dictionary<string, string> listIdGroup = FacebookUtils.getListPage(item.COOKIE, "", "");
-                                if (listIdGroup != null && listIdGroup.Count > 0)
-                                {
-                                    item.SOPAGE = listIdGroup.Count.ToString();
-                                    ChromeDriverUtils.updateNumPage(dataGridView, item);
-                                    item.LIVE = "Live";
-                                    ChromeDriverUtils.updateStatusAcc(dataGridView, item, "Live");
-                                    SQLiteUtils.updateByUID(item);
-                                    foreach (var kvp in listIdGroup)
-                                    {
-                                        string key = kvp.Key;
-                                        string value = kvp.Value;
-                                        page page = new page();
-                                        page.UID = item.UID;
-                                        page.PAGEID = key;
-                                        page.NAME = value;
-                                        listPage.Add(page);
-                                    }
-                                }
-                                else
-                                {
-                                    item.SOPAGE = "0";
-                                    item.LIVE = "Checkpoint";
-                                    ChromeDriverUtils.updateStatusAcc(dataGridView, item, "Checkpoint");
-                                    SQLiteUtils.updateByUID(item);
-                                }
-                                SQLiteUtils.insertPage(listPage);
-                                await Task.Delay(1000);
-                            });
 
-                        }
-                        finally
-                        {
-                            semaphore.Release();
+                                await Task.Run(async () =>
+                                {
+                                    Dictionary<string, string> listIdGroup = FacebookUtils.getListPage(item.COOKIE, "", "");
+                                    if (listIdGroup != null && listIdGroup.Count > 0)
+                                    {
+                                        item.SOPAGE = listIdGroup.Count.ToString();
+                                        ChromeDriverUtils.updateNumPage(dataGridView, item);
+                                        item.LIVE = "Live";
+                                        ChromeDriverUtils.updateStatusAcc(dataGridView, item, "Live");
+                                        SQLiteUtils.updateByUID(item);
+                                        foreach (var kvp in listIdGroup)
+                                        {
+                                            string key = kvp.Key;
+                                            string value = kvp.Value;
+                                            page page = new page();
+                                            page.UID = item.UID;
+                                            page.PAGEID = key;
+                                            page.NAME = value;
+                                            listPage.Add(page);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        item.SOPAGE = "0";
+                                        item.LIVE = "Checkpoint";
+                                        ChromeDriverUtils.updateStatusAcc(dataGridView, item, "Checkpoint");
+                                        SQLiteUtils.updateByUID(item);
+                                    }
+                                    SQLiteUtils.insertPage(listPage);
+                                    await Task.Delay(1000);
+                                });
+
+                            }
+                            finally
+                            {
+                                semaphore.Release();
+                            }
                         }
                     });
 
