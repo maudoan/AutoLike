@@ -1120,102 +1120,174 @@ namespace AutoLike.Controller
                 string uidPost = Post.getPostUid(type2CheckBox, keyText, timeGetValue);
                 string[] listUidPost = uidPost.Replace("----", "|").Split('|');
 
+                //for (int i = 0; i < listAcccounts.Count; i += batchSize)
+                //{
+                //    List<account> batch = listAcccounts.GetRange(i, Math.Min(batchSize, listAcccounts.Count - i));
+
+
+                //    try
+                //    {
+                //        var tasks = batch.Select(async item =>
+                //        {
+                //            await semaphore.WaitAsync();
+                //            try
+                //            {
+                //                Random random = new Random();
+                //                int index = random.Next(apiKeyList.Count);
+                //                string randomKey = apiKeyList[index];
+                //                string proxy = proxyUtils.getCurrentProxy(Constants.Constants.GetCurrentProxyShopLike(randomKey, "hd"));
+
+                //                if (proxy == null || proxy == "")
+                //                {
+                //                    item.PROXY = "";
+                //                }
+                //                else
+                //                {
+                //                    item.PROXY = proxy;
+                //                }
+
+
+                //                if (itemIndex == 0 || itemIndex == 10 || itemIndex == 20 || itemIndex == 30)
+                //                {
+                //                    y = 0;
+                //                    x = 0;
+                //                }
+                //                else if ((itemIndex > 0 && itemIndex < 5) || (itemIndex > 10 && itemIndex < 15) || (itemIndex > 20 && itemIndex < 25) || (itemIndex > 30 && itemIndex < 35))
+                //                {
+                //                    y = 0;
+                //                    x += screenWidth / 5;
+                //                }
+                //                else if (itemIndex == 5 || itemIndex == 15 || itemIndex == 25 || itemIndex == 35)
+                //                {
+                //                    y = screenHeight / 2;
+                //                    x = 0;
+                //                }
+                //                else if ((itemIndex > 5 && itemIndex < 10) || (itemIndex > 15 && itemIndex <= 20) || (itemIndex > 25 && itemIndex < 30) || (itemIndex > 35 && itemIndex < 40))
+                //                {
+                //                    y = screenHeight / 2;
+                //                    x += screenWidth / 5;
+                //                }
+                //                else { }
+                //                itemIndex++;
+                //                if (itemIndex == flowNum.Value)
+                //                {
+                //                    itemIndex = 0;
+                //                }
+                //                await Task.Run(async () =>
+                //                {
+
+                //                    List<string> listPageString = SQLiteUtils.getPageListByUid(item);
+
+                //                    if (listPageString.Count > 0)
+                //                    {
+                //                        await processItemLikePost(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, dataGridView, x, y, listPageString, type2CheckBox, keyText, timeGetValue, listUidPost);
+                //                    }
+                //                });
+                //            }
+                //            finally
+                //            {
+                //                semaphore.Release();
+                //            }
+                //        });
+
+                //        await Task.WhenAll(tasks);
+                //        foreach (var driver in _listDriver)
+                //        {
+                //            Console.WriteLine("---------Out Chrome-------->");
+                //            driver.Quit();
+                //        }
+                //        foreach (var process in Process.GetProcessesByName("chromedriver"))
+                //        {
+                //            process.Kill();
+                //        }
+
+                //        _listDriver.Clear();
+                //       await Task.Delay(5000);
+
+                //    }
+                //    finally
+                //    {
+                //        Console.WriteLine("----------DONE TASK Like POST!!!------------>");
+                //    }
+                //    if (stopLikePage == true)
+                //    {
+                //        Console.WriteLine("----------- 1 FLOW LIKE PAGE STOP!!!------------>");
+                //        break;
+                //    }
+
+                //}
+
                 for (int i = 0; i < listAcccounts.Count; i += batchSize)
                 {
                     List<account> batch = listAcccounts.GetRange(i, Math.Min(batchSize, listAcccounts.Count - i));
 
-
-                    try
+                    Parallel.ForEach(batch, new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount }, async (item) =>
                     {
-                        var tasks = batch.Select(async item =>
+                        Random random = new Random();
+                        int index = random.Next(apiKeyList.Count);
+                        string randomKey = apiKeyList[index];
+                        string proxy = proxyUtils.getCurrentProxy(Constants.Constants.GetCurrentProxyShopLike(randomKey, "hd"));
+
+                        if (proxy == null || proxy == "")
                         {
-                            await semaphore.WaitAsync();
-                            try
-                            {
-                                Random random = new Random();
-                                int index = random.Next(apiKeyList.Count);
-                                string randomKey = apiKeyList[index];
-                                string proxy = proxyUtils.getCurrentProxy(Constants.Constants.GetCurrentProxyShopLike(randomKey, "hd"));
-
-                                if (proxy == null || proxy == "")
-                                {
-                                    item.PROXY = "";
-                                }
-                                else
-                                {
-                                    item.PROXY = proxy;
-                                }
-
-
-                                if (itemIndex == 0 || itemIndex == 10 || itemIndex == 20 || itemIndex == 30)
-                                {
-                                    y = 0;
-                                    x = 0;
-                                }
-                                else if ((itemIndex > 0 && itemIndex < 5) || (itemIndex > 10 && itemIndex < 15) || (itemIndex > 20 && itemIndex < 25) || (itemIndex > 30 && itemIndex < 35))
-                                {
-                                    y = 0;
-                                    x += screenWidth / 5;
-                                }
-                                else if (itemIndex == 5 || itemIndex == 15 || itemIndex == 25 || itemIndex == 35)
-                                {
-                                    y = screenHeight / 2;
-                                    x = 0;
-                                }
-                                else if ((itemIndex > 5 && itemIndex < 10) || (itemIndex > 15 && itemIndex <= 20) || (itemIndex > 25 && itemIndex < 30) || (itemIndex > 35 && itemIndex < 40))
-                                {
-                                    y = screenHeight / 2;
-                                    x += screenWidth / 5;
-                                }
-                                else { }
-                                itemIndex++;
-                                if (itemIndex == flowNum.Value)
-                                {
-                                    itemIndex = 0;
-                                }
-                                await Task.Run(async () =>
-                                {
-
-                                    List<string> listPageString = SQLiteUtils.getPageListByUid(item);
-
-                                    if (listPageString.Count > 0)
-                                    {
-                                        await processItemLikePost(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, dataGridView, x, y, listPageString, type2CheckBox, keyText, timeGetValue, listUidPost);
-                                    }
-                                });
-                            }
-                            finally
-                            {
-                                semaphore.Release();
-                            }
-                        });
-
-                        await Task.WhenAll(tasks);
-                        foreach (var driver in _listDriver)
-                        {
-                            Console.WriteLine("---------Out Chrome-------->");
-                            driver.Quit();
+                            item.PROXY = "";
                         }
-                        foreach (var process in Process.GetProcessesByName("chromedriver"))
+                        else
                         {
-                            process.Kill();
+                            item.PROXY = proxy;
                         }
 
-                        _listDriver.Clear();
-                       await Task.Delay(5000);
+                        if (itemIndex == 0 || itemIndex == 10 || itemIndex == 20 || itemIndex == 30)
+                        {
+                            y = 0;
+                            x = 0;
+                        }
+                        else if ((itemIndex > 0 && itemIndex < 5) || (itemIndex > 10 && itemIndex < 15) || (itemIndex > 20 && itemIndex < 25) || (itemIndex > 30 && itemIndex < 35))
+                        {
+                            y = 0;
+                            x += screenWidth / 5;
+                        }
+                        else if (itemIndex == 5 || itemIndex == 15 || itemIndex == 25 || itemIndex == 35)
+                        {
+                            y = screenHeight / 2;
+                            x = 0;
+                        }
+                        else if ((itemIndex > 5 && itemIndex < 10) || (itemIndex > 15 && itemIndex <= 20) || (itemIndex > 25 && itemIndex < 30) || (itemIndex > 35 && itemIndex < 40))
+                        {
+                            y = screenHeight / 2;
+                            x += screenWidth / 5;
+                        }
+                        else { }
+                        itemIndex++;
+                        if (itemIndex == flowNum.Value)
+                        {
+                            itemIndex = 0;
+                        }
 
-                    }
-                    finally
-                    {
-                        Console.WriteLine("----------DONE TASK Like POST!!!------------>");
-                    }
-                    if (stopLikePage == true)
-                    {
-                        Console.WriteLine("----------- 1 FLOW LIKE PAGE STOP!!!------------>");
-                        break;
-                    }
+                        List<string> listPageString = SQLiteUtils.getPageListByUid(item);
 
+                        if (listPageString.Count > 0)
+                        {
+                            await processItemLikePost(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, dataGridView, x, y, listPageString, type2CheckBox, keyText, timeGetValue, listUidPost);
+                        }
+                    });
+                    ChromeDriverUtils.sxepChrome(_listDriver);
                 }
+
+                foreach (var driver in _listDriver)
+                {
+                    Console.WriteLine("---------Out Chrome-------->");
+                    driver.Quit();
+                }
+
+                foreach (var process in Process.GetProcessesByName("chromedriver"))
+                {
+                    process.Kill();
+                }
+
+                _listDriver.Clear();
+
+                await Task.Delay(5000);
 
                 if (stopLikePage == true)
                 {
