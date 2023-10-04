@@ -283,6 +283,34 @@ namespace AutoLike.Utils
 
         }
 
+        public static void updateStatusAccAndUncheck(DataGridView dataGridView, account item, string text)
+        {
+            for (int i = 0; i < dataGridView.Rows.Count; i++)
+            {
+                if (item.UID == dataGridView.Rows[i].Cells["uidAccount"].Value.ToString())
+                {
+                    dataGridView.Rows[i].Cells["tinhtrangAccount"].Value = text;
+                    dataGridView.Rows[i].DefaultCellStyle.ForeColor = Color.DarkRed;
+                    dataGridView.Rows[i].Cells["checkboxItemAccount"].Value = false;
+                    dataGridView.Rows[i].DefaultCellStyle.BackColor = Color.FromArgb(248, 198, 198);
+                    item.LIVE = dataGridView.Rows[i].Cells["tinhtrangAccount"].Value.ToString();
+                }
+            }
+
+        }
+
+        public static void updateColorStatus(DataGridView dataGridView, account item)
+        {
+            for (int i = 0; i < dataGridView.Rows.Count; i++)
+            {
+                if (item.UID == dataGridView.Rows[i].Cells["uidAccount"].Value.ToString())
+                {
+                    dataGridView.Rows[i].DefaultCellStyle.BackColor = Color.FromArgb(217, 255, 255);
+                }
+            }
+
+        }
+
         public static void sxepChrome(List<ChromeDriver> listChromeDrivers)
         {
             int screenHeight = SystemInformation.VirtualScreen.Height;

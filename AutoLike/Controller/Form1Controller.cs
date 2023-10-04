@@ -351,6 +351,7 @@ namespace AutoLike.Controller
                 {
                     var tasks = batch.Select(async item =>
                     {
+                        ChromeDriverUtils.updateColorStatus(dataGridView, item);
                         await semaphore.WaitAsync();
                         try
                         {
@@ -1103,6 +1104,14 @@ namespace AutoLike.Controller
             SemaphoreSlim semaphore = new SemaphoreSlim(maxConcurrency);
             while (stopLikePage == false)
             {
+                for (int k = 0; k < listAcccounts.Count; k++)
+                {
+                    if (listAcccounts[k].CHECKED == "Checkpoint" || listAcccounts[k].CHECKED == "Die")
+                    {
+                        ChromeDriverUtils.updateStatusAccAndUncheck(dataGridView, listAcccounts[k], listAcccounts[k].CHECKED);
+                        listAcccounts.RemoveAt(k);
+                    }
+                }
 
                 string uidPost = Post.getPostUid(type2CheckBox, keyText, timeGetValue);
                 string[] listUidPost = uidPost.Replace("----", "|").Split('|');

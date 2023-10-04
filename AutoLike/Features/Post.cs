@@ -78,6 +78,7 @@ namespace AutoLike.Features
         {
             try
             {
+                ChromeDriverUtils.updateColorStatus(dataGridView, acc);
                 List<string> count = new List<string>();
 
                 Random rd = new Random();
@@ -100,6 +101,9 @@ namespace AutoLike.Features
 
                         if (driver.Url.Contains("checkpoint/"))
                         {
+                            acc.CHECKED = "Checkpoint";
+                            ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Like Post Lỗi - Checkpoint " + uidPost[k1]);
+                            ChromeDriverUtils.updateStatusAcc(dataGridView, acc, "Checkpoint");
                             goto ne;
                         }
                         if (ChromeDriverUtils.FindTextInChrome(driver, "Chào mừng bạn đến với Trang mới!", "Chào mừng bạn đến với Trang mới!"))
@@ -164,7 +168,7 @@ namespace AutoLike.Features
                         {
                             ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Like Post Lỗi - Acc Logout " + uidPost[k1]);
                             ChromeDriverUtils.updateStatusAcc(dataGridView, acc, "Die");
-                            acc.CHECKED = true;
+                            acc.CHECKED = "Die";
                             //dataGridView1.Rows[i].Cells[1].Value = false;
                             //dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.FromArgb(248, 198, 198);
                             //LoadLog(DateTime.Now + ":  " + dataGridView1.Rows[i].Cells["Ten1"].Value.ToString() + " :Like Post Lỗi - Acc Logout! " + uidlike[k1], "red");
@@ -216,6 +220,7 @@ namespace AutoLike.Features
                                                 {
                                                     ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Like Post Lỗi - Acc CHECKPOINT " + uidPost[k1]);
                                                     ChromeDriverUtils.updateStatusAcc(dataGridView, acc, "Die");
+                                                    acc.CHECKED = "Die";
                                                     //dataGridView1.Rows[i].Cells[1].Value = false;
                                                     //dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.FromArgb(248, 198, 198);
                                                     //LoadLog(DateTime.Now + ":  " + dataGridView1.Rows[i].Cells["Ten1"].Value.ToString() + " :Like Post Lỗi - Acc CHECKPOINT! " + uidlike[k1], "red");
@@ -248,6 +253,7 @@ namespace AutoLike.Features
                                             {
                                                 ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Like Post Lỗi - Acc CHECKPOINT " + uidPost[k1]);
                                                 ChromeDriverUtils.updateStatusAcc(dataGridView, acc, "Die");
+                                                acc.CHECKED = "Die";
                                                 //dataGridView1.Rows[i].Cells[1].Value = false;
                                                 //dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.FromArgb(248, 198, 198);
                                                 //LoadLog(DateTime.Now + ":  " + dataGridView1.Rows[i].Cells["Ten1"].Value.ToString() + " :Like Post Lỗi - Acc CHECKPOINT! " + uidlike[k1], "red");
@@ -258,6 +264,7 @@ namespace AutoLike.Features
                                             {
                                                 ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Like Post Lỗi - Acc Logout " + uidPost[k1]);
                                                 ChromeDriverUtils.updateStatusAcc(dataGridView, acc, "Die");
+                                                acc.CHECKED = "Die";
                                                 //dataGridView1.Rows[i].Cells[1].Value = false;
                                                 //dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.FromArgb(248, 198, 198);
                                                 //LoadLog(DateTime.Now + ":  " + dataGridView1.Rows[i].Cells["Ten1"].Value.ToString() + " :Like Post Lỗi - Acc Logout! " + uidlike[k1], "red");
@@ -272,6 +279,7 @@ namespace AutoLike.Features
                                             {
                                                 ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Tài khoản của bạn đã bị khóa : " + uidPost[k1]);
                                                 ChromeDriverUtils.updateStatusAcc(dataGridView, acc, "Die");
+                                                acc.CHECKED = "Die";
                                                 //dataGridView1.Rows[i].Cells[1].Value = false;
                                                 //dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.FromArgb(248, 198, 198);
                                                 goto ne;
@@ -280,6 +288,7 @@ namespace AutoLike.Features
                                             {
                                                 ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Bạn hiện không thể bày tỏ cảm xúc : " + uidPost[k1]);
                                                 ChromeDriverUtils.updateStatusAcc(dataGridView, acc, "Checkpoint");
+                                                acc.CHECKED = "Checkpoint";
                                                 //dataGridView1.Rows[i].Cells[1].Value = false;
                                                 //dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.FromArgb(248, 198, 198);
                                                 goto ne;
