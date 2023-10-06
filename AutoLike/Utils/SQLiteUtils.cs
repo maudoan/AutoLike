@@ -45,7 +45,6 @@ namespace AutoLike.Utils
                 sw.Stop();
                 min = sw.Elapsed.Minutes + " Phút " + sw.Elapsed.Seconds + " giây";
                 Console.WriteLine("Đã Insert");
-                //sqliteConnection.Dispose();
                 sqliteConnection.Close();
             } catch(Exception e)
             {
@@ -103,23 +102,11 @@ namespace AutoLike.Utils
                 finally 
                 {
                     sqliteDataReader.Close();
-
-                    // Close the connection when done with it.
                     sqliteConnection.Close();
                 }
-               
-
-                //sqliteConnection.Dispose();
             }
             catch
             {
-                //SQLiteConnection sqliteConnection = new SQLiteConnection();
-                //sqliteConnection.ConnectionString = "Data Source=Data.sqlite3;Version=3;";
-                //sqliteConnection.Open();
-                //string text = string.Format("CREATE TABLE data");
-                //SQLiteCommand sqliteCommand = new SQLiteCommand(text, sqliteConnection);
-                //sqliteCommand.ExecuteNonQuery();
-                //sqliteConnection.Dispose();
 
             }
 
@@ -169,12 +156,8 @@ namespace AutoLike.Utils
                 finally
                 {
                     sqliteDataReader.Close();
-
-                    // Close the connection when done with it.
                     sqliteConnection.Close();
                 }
-                
-                //sqliteConnection.Dispose();
             }
             catch(Exception e)
             {
@@ -300,15 +283,52 @@ namespace AutoLike.Utils
                 {
                     try
                     {
-                        string updateSql = "UPDATE data SET COOKIE=@Cookie, PROXY=@Proxy, LIVE=@Live, TRANGTHAI=@TrangThai, SOPAGE=@SoPage WHERE UID=@UID";
-                        SQLiteCommand sqliteCommand = new SQLiteCommand(updateSql, sqliteConnection);
-                        sqliteCommand.Parameters.AddWithValue("@Cookie", item.COOKIE);
-                        sqliteCommand.Parameters.AddWithValue("@Proxy", item.PROXY);
-                        sqliteCommand.Parameters.AddWithValue("@Live", item.LIVE);
-                        sqliteCommand.Parameters.AddWithValue("@TrangThai", item.TRANGTHAI);
-                        sqliteCommand.Parameters.AddWithValue("@SoPage", item.SOPAGE);
-                        sqliteCommand.Parameters.AddWithValue("@UID", item.UID);
-                        sqliteCommand.ExecuteNonQuery();
+                            string updateSql = "UPDATE data SET COOKIE=@Cookie, PROXY=@Proxy, LIVE=@Live, TRANGTHAI=@TrangThai, SOPAGE=@SoPage WHERE UID=@UID";
+                            SQLiteCommand sqliteCommand = new SQLiteCommand(updateSql, sqliteConnection);
+                            sqliteCommand.Parameters.AddWithValue("@Cookie", item.COOKIE);
+                            sqliteCommand.Parameters.AddWithValue("@Proxy", item.PROXY);
+                            sqliteCommand.Parameters.AddWithValue("@Live", item.LIVE);
+                            sqliteCommand.Parameters.AddWithValue("@TrangThai", item.TRANGTHAI);
+                            sqliteCommand.Parameters.AddWithValue("@SoPage", item.SOPAGE);
+                            sqliteCommand.Parameters.AddWithValue("@UID", item.UID);
+                            sqliteCommand.ExecuteNonQuery();
+                            transaction.Commit();
+                        }
+                    catch (Exception ex)
+                    {
+                        // Xử lý ngoại lệ (vd: ghi log hoặc thông báo lỗi)
+                        Console.WriteLine("Lỗi: " + ex.Message);
+                        transaction.Rollback(); // Hoàn tác giao dịch nếu có lỗi
+                    }
+                    finally
+                    {
+                        sqliteConnection.Close();
+                    }
+                }
+            }
+        }
+
+        public static void updateByListUID(List<account> listAcc)
+        {
+            using (SQLiteConnection sqliteConnection = new SQLiteConnection("Data Source=Data.sqlite3;Version=3;"))
+            {
+                sqliteConnection.Open();
+                using (SQLiteTransaction transaction = sqliteConnection.BeginTransaction())
+                {
+                    try
+                    {
+                        foreach (account item in listAcc)
+                        {
+                            string updateSql = "UPDATE data SET COOKIE=@Cookie, PROXY=@Proxy, LIVE=@Live, TRANGTHAI=@TrangThai, SOPAGE=@SoPage WHERE UID=@UID";
+                            SQLiteCommand sqliteCommand = new SQLiteCommand(updateSql, sqliteConnection);
+                            sqliteCommand.Parameters.AddWithValue("@Cookie", item.COOKIE);
+                            sqliteCommand.Parameters.AddWithValue("@Proxy", item.PROXY);
+                            sqliteCommand.Parameters.AddWithValue("@Live", item.LIVE);
+                            sqliteCommand.Parameters.AddWithValue("@TrangThai", item.TRANGTHAI);
+                            sqliteCommand.Parameters.AddWithValue("@SoPage", item.SOPAGE);
+                            sqliteCommand.Parameters.AddWithValue("@UID", item.UID);
+                            sqliteCommand.ExecuteNonQuery();
+                        }
                         transaction.Commit();
                     }
                     catch (Exception ex)
@@ -325,7 +345,7 @@ namespace AutoLike.Utils
             }
         }
 
-            public static void insertPage(List<page> listPage)
+        public static void insertPage(List<page> listPage)
         {
             deletePageExisted(listPage);
             try
@@ -349,7 +369,6 @@ namespace AutoLike.Utils
                 sw.Stop();
                 min = sw.Elapsed.Minutes + " Phút " + sw.Elapsed.Seconds + " giây";
                 Console.WriteLine("Đã Insert");
-                //sqliteConnection.Dispose();
                 sqliteConnection.Close();
             }
             catch (Exception e)
@@ -436,7 +455,6 @@ namespace AutoLike.Utils
                 sw.Stop();
                 min = sw.Elapsed.Minutes + " Phút " + sw.Elapsed.Seconds + " giây";
                 Console.WriteLine("Đã Insert");
-                //sqliteConnection.Dispose();
                 sqliteConnection.Close();
             }
             catch (Exception e)

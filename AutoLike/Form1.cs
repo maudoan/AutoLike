@@ -11,9 +11,6 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 using System.Xml.Linq;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolBar;
 
 namespace AutoLike
 {
@@ -36,6 +33,15 @@ namespace AutoLike
             _form1Controller.loadLikePostSeeting(likePostSeedingPageCheckBox, keyGetUidSeedingPageTextBox);
 
             keyApiList = _form1Controller.listKeyShopLike(apiKeyTextBox);
+
+            string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"LOG\loglike.txt");
+
+            if (!File.Exists(filePath))
+            {
+                using (StreamWriter writer = File.CreateText(filePath))
+                {
+                }
+            }
         }
 
         private void buttonCloseApp_Click(object sender, EventArgs e)
@@ -246,7 +252,7 @@ namespace AutoLike
                 {
                     selectProxy = true;
                 }
-                _form1Controller.LoginChromeWithCookieToken(selectPathProfileChromeTextBox.Text, detailListAccountsDataGridView, generalSettingflowNumberNumericUpDown, selectProxy, keyApiList);
+                _form1Controller.LoginChromeWithCookieToken(selectPathProfileChromeTextBox.Text, detailListAccountsDataGridView, generalSettingflowNumberNumericUpDown, selectProxy, keyApiList, loadImageChromeCheckbox, runHideCheckBox);
             }
         }
 
@@ -280,7 +286,7 @@ namespace AutoLike
                 {
                     selectProxy = true;
                 }
-                _form1Controller.regPage(selectPathProfileChromeTextBox.Text, detailListAccountsDataGridView, generalSettingflowNumberNumericUpDown, selectProxy, keyApiList);
+                _form1Controller.regPage(selectPathProfileChromeTextBox.Text, detailListAccountsDataGridView, generalSettingflowNumberNumericUpDown, selectProxy, keyApiList, loadImageChromeCheckbox, runHideCheckBox);
             }
             
             tabControl.SelectTab(doashBoardTabPage);
@@ -325,7 +331,7 @@ namespace AutoLike
             {
                 // Xóa nội dung bên trong tệp
                 File.WriteAllText(filePath, string.Empty);
-                Console.WriteLine("Đã xóa nội dung tệp GeneralSetting.txt.");
+                Console.WriteLine("Da xoa GeneralSetting.txt.");
             }
             else
             {
@@ -388,7 +394,7 @@ namespace AutoLike
                 }
 
                 _form1Controller.setStopLikePageFalse();
-                _form1Controller.likePost(selectPathProfileChromeTextBox.Text, detailListAccountsDataGridView, generalSettingflowNumberNumericUpDown, selectProxy, keyApiList, sType2SeedingPageCheckbox, keyGetUidSeedingPageTextBox,timeGetNumBerNumericUpDown);
+                _form1Controller.likePost(selectPathProfileChromeTextBox.Text, detailListAccountsDataGridView, generalSettingflowNumberNumericUpDown, selectProxy, keyApiList, sType2SeedingPageCheckbox, keyGetUidSeedingPageTextBox,timeGetNumBerNumericUpDown, loadImageChromeCheckbox, runHideCheckBox, statusGetUIDLabel);
                 tabControl.SelectTab(doashBoardTabPage);
             }   
         }
@@ -410,7 +416,7 @@ namespace AutoLike
                 {
                     selectProxy = true;
                 }
-                _form1Controller.movePageToUid(selectPathProfileChromeTextBox.Text, detailListAccountsDataGridView, generalSettingflowNumberNumericUpDown, selectProxy, keyApiList);
+                _form1Controller.movePageToUid(selectPathProfileChromeTextBox.Text, detailListAccountsDataGridView, generalSettingflowNumberNumericUpDown, selectProxy, keyApiList, loadImageChromeCheckbox, runHideCheckBox);
             }
         }
 

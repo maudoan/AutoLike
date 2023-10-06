@@ -17,8 +17,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Header;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace AutoLike.Controller
 {
@@ -43,18 +41,22 @@ namespace AutoLike.Controller
             {
 
                 try
-                {
-                    foreach (var process in Process.GetProcessesByName("chromedriver"))
-                    {
-                        process.Kill();
-                    }
-                    driver.Quit();
+                {                 
                     driver.Close();
                 }
                 catch { }
 
             }
-            _listDriver.Clear();  
+            _listDriver.Clear();
+
+            foreach (var process in Process.GetProcessesByName("chrome"))
+            {
+                process.Kill();
+            }
+            foreach (var process in Process.GetProcessesByName("chromedriver"))
+            {
+                process.Kill();
+            }
         }
 
         public List<string> listKeyShopLike(TextBox apiKeyTextBox)
@@ -342,6 +344,7 @@ namespace AutoLike.Controller
 
             List<page> listPage = new List<page>();
             SemaphoreSlim semaphore = new SemaphoreSlim(maxConcurrency);
+            List<account> listAcc = new List<account>();
             for (int i = 0; i < listAccounts.Count; i += batchSize)
             {
                 List<account> batch = listAccounts.GetRange(i, Math.Min(batchSize, listAccounts.Count - i));
@@ -364,10 +367,10 @@ namespace AutoLike.Controller
                                     if (listIdGroup != null && listIdGroup.Count > 0)
                                     {
                                         item.SOPAGE = listIdGroup.Count.ToString();
-                                        ChromeDriverUtils.updateNumPage(dataGridView, item);
                                         item.LIVE = "Live";
+                                        ChromeDriverUtils.updateNumPage(dataGridView, item);
                                         ChromeDriverUtils.updateStatusAcc(dataGridView, item, "Live");
-                                        SQLiteUtils.updateByUID(item);
+                                        //SQLiteUtils.updateByUID(item);
                                         foreach (var kvp in listIdGroup)
                                         {
                                             string key = kvp.Key;
@@ -378,13 +381,17 @@ namespace AutoLike.Controller
                                             page.NAME = value;
                                             listPage.Add(page);
                                         }
+                                        listAcc.Add(item);
                                     }
                                     else
                                     {
                                         item.SOPAGE = "0";
                                         item.LIVE = "Checkpoint";
+                                        item.LIVE = "Live";
+                                        ChromeDriverUtils.updateNumPage(dataGridView, item);
                                         ChromeDriverUtils.updateStatusAcc(dataGridView, item, "Checkpoint");
-                                        SQLiteUtils.updateByUID(item);
+                                        //SQLiteUtils.updateByUID(item);
+                                        listAcc.Add(item);
                                     }
                                     SQLiteUtils.insertPage(listPage);
                                     await Task.Delay(1000);
@@ -399,8 +406,10 @@ namespace AutoLike.Controller
                     });
 
                     await Task.WhenAll(tasks);
-                    listPage.Clear();
+                    SQLiteUtils.updateByListUID(listAcc);
                     await Task.Delay(5000);
+                    listPage.Clear();
+                    listAcc.Clear();
                 }
                 finally
                 {
@@ -413,18 +422,25 @@ namespace AutoLike.Controller
 
         public void processCloseApp ()
         {
-            if(_listDriver.Count > 0)
+            foreach (ChromeDriver driver in _listDriver)
             {
-                foreach (var driver in _listDriver)
+
+                try
                 {
-                    foreach (var process in Process.GetProcessesByName("chromedriver"))
-                    {
-                        process.Kill();
-                    }
-                    Console.WriteLine("--------Out Chrome------>");
-                    driver.Quit();
                     driver.Close();
                 }
+                catch { }
+
+            }
+            _listDriver.Clear();
+
+            foreach (var process in Process.GetProcessesByName("chrome"))
+            {
+                process.Kill();
+            }
+            foreach (var process in Process.GetProcessesByName("chromedriver"))
+            {
+                process.Kill();
             }
 
         }
@@ -533,7 +549,7 @@ namespace AutoLike.Controller
         /*
          * init Login
          */
-        public void LoginChromeWithCookieToken(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, bool selectProxy, List<string> apiKeyList)
+        public void LoginChromeWithCookieToken(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, bool selectProxy, List<string> apiKeyList, CheckBox loadImage, CheckBox hideChrome)
         {
 
             List<account> danhSach = new List<account>();
@@ -556,13 +572,13 @@ namespace AutoLike.Controller
                 }
             }
 
-            ProcessLoginChromeCookieToken(ProfileFolderPath, dataGridView, flowNum, selectProxy, danhSach, apiKeyList);
+            ProcessLoginChromeCookieToken(ProfileFolderPath, dataGridView, flowNum, selectProxy, danhSach, apiKeyList,loadImage, hideChrome);
         }
 
         /*
          * Process Login
          */
-        public async void ProcessLoginChromeCookieToken(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, bool selectProxy, List<account> listAcccounts, List<string> apiKeyList)
+        public async void ProcessLoginChromeCookieToken(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, bool selectProxy, List<account> listAcccounts, List<string> apiKeyList, CheckBox loadImage, CheckBox hideChrome)
         {
             int itemIndex = 0;
 
@@ -650,7 +666,7 @@ namespace AutoLike.Controller
 
                             await Task.Run(async () =>
                             {
-                                await ProcessItemLoginAcc(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, x, y, dataGridView);
+                                await ProcessItemLoginAcc(ProfileFolderPath, item, selectProxy, x, y, dataGridView, loadImage, hideChrome);
                                 await Task.Delay(1000);
                             });
 
@@ -684,10 +700,10 @@ namespace AutoLike.Controller
         /*
         * Process Login with item Account
         */
-        public async Task ProcessItemLoginAcc(string ProfileFolderPath, account item, int itemIndex, NumericUpDown flowNum, bool selectProxy,int x, int y, DataGridView dataGridView)
+        public async Task ProcessItemLoginAcc(string ProfileFolderPath, account item, bool selectProxy,int x, int y, DataGridView dataGridView, CheckBox loadImage, CheckBox hideChrome)
         {
 
-            ChromeDriver chromeDriver = _chromeDriverUtils.initChrome(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, x, y);
+            ChromeDriver chromeDriver = _chromeDriverUtils.initChrome(ProfileFolderPath, item, selectProxy, x, y,loadImage, hideChrome);
             _listDriver.Add(chromeDriver);
 
             chromeDriver.Navigate().GoToUrl("https://www.facebook.com");
@@ -859,7 +875,7 @@ namespace AutoLike.Controller
          * init regPage
          */
 
-        public void regPage(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, bool selectProxy, List<string> apiKeyList)
+        public void regPage(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, bool selectProxy, List<string> apiKeyList,CheckBox loadImage, CheckBox hideChrome)
         {
 
             List<account> danhSach = new List<account>();
@@ -882,14 +898,14 @@ namespace AutoLike.Controller
                 }
             }
 
-            ProcessRegPage(ProfileFolderPath, dataGridView, flowNum, selectProxy, danhSach, apiKeyList);
+            ProcessRegPage(ProfileFolderPath, dataGridView, flowNum, selectProxy, danhSach, apiKeyList, loadImage, hideChrome);
         }
 
         /*
          * Process Reg Page
          */
 
-        public async void ProcessRegPage(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, bool selectProxy, List<account> listAcccounts, List<string> apiKeyList)
+        public async void ProcessRegPage(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, bool selectProxy, List<account> listAcccounts, List<string> apiKeyList, CheckBox loadImage, CheckBox hideChrome)
         {
             int itemIndex = 0;
             ProxyUtils proxyUtils = new ProxyUtils();
@@ -972,7 +988,7 @@ namespace AutoLike.Controller
                             }
                             await Task.Run(async () =>
                             {
-                                await processItemRegPageAcc(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, dataGridView, x, y);
+                                await processItemRegPageAcc(ProfileFolderPath, item, selectProxy, dataGridView, x, y, loadImage, hideChrome);
                             });
                            
 
@@ -1006,9 +1022,9 @@ namespace AutoLike.Controller
         /*
          * Process Reg Page for Item Acc
          */
-        public async Task processItemRegPageAcc(string ProfileFolderPath, account item, int itemIndex, NumericUpDown flowNum, bool selectProxy,DataGridView dataGridView, int x, int y)
+        public async Task processItemRegPageAcc(string ProfileFolderPath, account item, bool selectProxy,DataGridView dataGridView, int x, int y, CheckBox loadImage, CheckBox hideChrome)
         {
-            ChromeDriver chromeDriver = _chromeDriverUtils.initChrome(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, x, y);
+            ChromeDriver chromeDriver = _chromeDriverUtils.initChrome(ProfileFolderPath, item, selectProxy, x, y, loadImage, hideChrome);
             _listDriver.Add(chromeDriver);
             Thread.Sleep(1000);
             RegPage regPage = new RegPage();
@@ -1037,7 +1053,7 @@ namespace AutoLike.Controller
             stopLikePage = false;
         }
 
-        public void likePost(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, bool selectProxy, List<string> apiKeyList, CheckBox type2CheckBox, TextBox keyText, NumericUpDown timeGetValue)
+        public void likePost(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, bool selectProxy, List<string> apiKeyList, CheckBox type2CheckBox, TextBox keyText, NumericUpDown timeGetValue, CheckBox loadImage, CheckBox hideChrome, Label statusGetUID)
         {
 
             List<account> danhSach = new List<account>();
@@ -1060,14 +1076,14 @@ namespace AutoLike.Controller
                 }
             }
             
-            ProcessLikePost(ProfileFolderPath, dataGridView, flowNum, selectProxy, danhSach, apiKeyList, type2CheckBox, keyText, timeGetValue);
+            ProcessLikePost(ProfileFolderPath, dataGridView, flowNum, selectProxy, danhSach, apiKeyList, type2CheckBox, keyText, timeGetValue,loadImage, hideChrome, statusGetUID);
         }
 
         /*
          * Process Reg Page
          */
         List<string> listProxy = new List<string>();
-        public async void ProcessLikePost(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, bool selectProxy, List<account> listAcccounts, List<string> apiKeyList, CheckBox type2CheckBox, TextBox keyText, NumericUpDown timeGetValue)
+        public async void ProcessLikePost(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, bool selectProxy, List<account> listAcccounts, List<string> apiKeyList, CheckBox type2CheckBox, TextBox keyText, NumericUpDown timeGetValue, CheckBox loadImage, CheckBox hideChrome, Label statusGetUID)
         {
            
             ProxyUtils proxyUtils = new ProxyUtils();
@@ -1136,9 +1152,6 @@ namespace AutoLike.Controller
                 }
            
 
-                string uidPost = Post.getPostUid(type2CheckBox, keyText, timeGetValue);
-                string[] listUidPost = uidPost.Replace("----", "|").Split('|');
-
                 for (int i = 0; i < listAcccounts.Count; i += batchSize)
                 {
                     List<account> batch = listAcccounts.GetRange(i, Math.Min(batchSize, listAcccounts.Count - i));
@@ -1146,6 +1159,8 @@ namespace AutoLike.Controller
 
                     try
                     {
+                        string uidPost = Post.getPostUid(type2CheckBox, keyText, timeGetValue, statusGetUID);
+                        string[] listUidPost = uidPost.Replace("----", "|").Split('|');
                         var tasks = batch.Select(async item =>
                         {
                             await semaphore.WaitAsync();
@@ -1193,7 +1208,7 @@ namespace AutoLike.Controller
 
                                     if (listPageString.Count > 0)
                                     {
-                                        await processItemLikePost(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, dataGridView, x, y, listPageString, type2CheckBox, keyText, timeGetValue, listUidPost);
+                                        await processItemLikePost(ProfileFolderPath, item, selectProxy, dataGridView, x, y, listPageString, type2CheckBox, keyText, timeGetValue, listUidPost, loadImage, hideChrome, statusGetUID);
                                     }
                                 });
                             }
@@ -1320,9 +1335,9 @@ namespace AutoLike.Controller
         /*
          * Process Reg Page for Item Acc
          */
-        public async Task processItemLikePost(string ProfileFolderPath, account item, int itemIndex, NumericUpDown flowNum, bool selectProxy, DataGridView dataGridView, int x, int y, List<string> listPageString, CheckBox type2CheckBox, TextBox keyText, NumericUpDown timeGetValue, string[] listUidPost)
+        public async Task processItemLikePost(string ProfileFolderPath, account item, bool selectProxy, DataGridView dataGridView, int x, int y, List<string> listPageString, CheckBox type2CheckBox, TextBox keyText, NumericUpDown timeGetValue, string[] listUidPost, CheckBox loadImage, CheckBox hideChrome, Label statusGetUID)
         {
-            ChromeDriver chromeDriver = _chromeDriverUtils.initChrome(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, x, y);
+            ChromeDriver chromeDriver = _chromeDriverUtils.initChrome(ProfileFolderPath, item, selectProxy, x, y, loadImage, hideChrome);
             _listDriver.Add(chromeDriver);
           
             List<page> listPage = new List<page>();
@@ -1342,7 +1357,7 @@ namespace AutoLike.Controller
             }
 
             Post likePost = new Post();
-            likePost.LikePost(chromeDriver, dataGridView, item, listUidPost, listPage,type2CheckBox, keyText, timeGetValue);
+            likePost.LikePost(chromeDriver, dataGridView, item, listUidPost, listPage,type2CheckBox, keyText, timeGetValue, statusGetUID);
 
             SQLiteUtils.updateByUID(item);
             Console.WriteLine($"----------Processing item: =========>");
@@ -1355,7 +1370,7 @@ namespace AutoLike.Controller
          * 
          */
 
-        public void movePageToUid(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, bool selectProxy, List<string> apiKeyList)
+        public void movePageToUid(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, bool selectProxy, List<string> apiKeyList, CheckBox loadImage, CheckBox hideChrome)
         {
 
             List<account> danhSach = new List<account>();
@@ -1378,14 +1393,14 @@ namespace AutoLike.Controller
                 }
             }
 
-            ProcessMovePageToUid(ProfileFolderPath, dataGridView, flowNum, selectProxy, danhSach, apiKeyList);
+            ProcessMovePageToUid(ProfileFolderPath, dataGridView, flowNum, selectProxy, danhSach, apiKeyList, loadImage, hideChrome);
         }
 
         /*
          * Process Move Page To Uid
          */
 
-        public async void ProcessMovePageToUid(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, bool selectProxy, List<account> listAcccounts, List<string> apiKeyList)
+        public async void ProcessMovePageToUid(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, bool selectProxy, List<account> listAcccounts, List<string> apiKeyList, CheckBox loadImage, CheckBox hideChrome)
         {
             int itemIndex = 0;
             ProxyUtils proxyUtils = new ProxyUtils();
@@ -1473,7 +1488,7 @@ namespace AutoLike.Controller
 
                                 if (listPageString.Count > 0)
                                 {
-                                    await processItemMovePageToUid(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, dataGridView, x, y, listPageString);
+                                    await processItemMovePageToUid(ProfileFolderPath, item, selectProxy, dataGridView, x, y, listPageString, loadImage, hideChrome);
                                 }
                             });
 
@@ -1508,9 +1523,9 @@ namespace AutoLike.Controller
         /*
          * Process Move Page To Uid Item
          */
-        public async Task processItemMovePageToUid(string ProfileFolderPath, account item, int itemIndex, NumericUpDown flowNum, bool selectProxy, DataGridView dataGridView, int x, int y, List<string> listPageString)
+        public async Task processItemMovePageToUid(string ProfileFolderPath, account item, bool selectProxy, DataGridView dataGridView, int x, int y, List<string> listPageString, CheckBox loadImage, CheckBox hideChrome)
         {
-            ChromeDriver chromeDriver = _chromeDriverUtils.initChrome(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, x, y);
+            ChromeDriver chromeDriver = _chromeDriverUtils.initChrome(ProfileFolderPath, item, selectProxy, x, y, loadImage, hideChrome);
             _listDriver.Add(chromeDriver);
 
             chromeDriver.Navigate().GoToUrl("https://www.facebook.com/");

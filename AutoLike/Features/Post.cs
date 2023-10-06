@@ -19,12 +19,13 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Net.Mime.MediaTypeNames;
 using Cookie = OpenQA.Selenium.Cookie;
+using Label = System.Windows.Forms.Label;
 
 namespace AutoLike.Features
 {
     public class Post
     {
-        public static string getPostUid(CheckBox type2CheckBox, TextBox keyText, NumericUpDown timeGetValue)
+        public static string getPostUid(CheckBox type2CheckBox, TextBox keyText, NumericUpDown timeGetValue, Label statusGetUID)
         {
             string uid = "";
             string key = keyText.Text.Trim();
@@ -42,10 +43,9 @@ namespace AutoLike.Features
             {
 
                 try
-                {
-                
+                {                  
+                    statusGetUID.Invoke(new Action(() => statusGetUID.Text = "Đang GET UID Like..."));
                     WebRequest requestmave = WebRequest.Create(Constants.Constants.GetPostUidShopLike(key, type));
-                    //thêm 1 checkbox nếu tích thì stype=2, không tích thì stype=1
                     using (WebResponse response3 = requestmave.GetResponse())
                     using (StreamReader stream3 = new StreamReader(response3.GetResponseStream()))
                     {
@@ -53,16 +53,18 @@ namespace AutoLike.Features
                     }
                     if (uid.Contains("error"))
                     {
+                        statusGetUID.Invoke(new Action(() => statusGetUID.Text = "HẾT UID Like..."));                 
                         int timeGet = Convert.ToInt32(timeGetValue.Value);
                         while (timeGet > 0)
                         {
+                            statusGetUID.Invoke(new Action(() => statusGetUID.Text = "HẾT UID Like...Delay " + timeGet + " giây"));                         
                             timeGet--;
                             Thread.Sleep(1000);
                         }
                     }
                     else
                     {
-                 
+                        statusGetUID.Invoke(new Action(() => statusGetUID.Text = "ĐÃ CÓ UID Like..."));
                         break;
                     }
                 }
@@ -74,7 +76,7 @@ namespace AutoLike.Features
             return uid;
         }
 
-        public void LikePost(ChromeDriver driver, DataGridView dataGridView, account acc, string[] uidPost,List<page> listPage, CheckBox type2CheckBox, TextBox keyText, NumericUpDown timeGetValue)
+        public void LikePost(ChromeDriver driver, DataGridView dataGridView, account acc, string[] uidPost,List<page> listPage, CheckBox type2CheckBox, TextBox keyText, NumericUpDown timeGetValue, Label statusGetUID)
         {
             try
             {
@@ -106,33 +108,6 @@ namespace AutoLike.Features
                             ChromeDriverUtils.updateStatusAcc(dataGridView, acc, "Checkpoint");
                             goto ne;
                         }
-                        if (ChromeDriverUtils.FindTextInChrome(driver, "Chào mừng bạn đến với Trang mới!", "Chào mừng bạn đến với Trang mới!"))
-                        {
-                            try
-                            {
-                                driver.FindElement(By.XPath("//*[@id=\"facebook\"]/body/div[2]/div[1]/div/div[2]/div/div/div/div[1]")).Click();
-                            }
-                            catch
-                            {
-                                driver.FindElement(By.XPath("//*[@id=\"facebook\"]/body/div[1]/div[1]/div/div[2]/div/div/div/div[1]")).Click();
-
-                            }
-
-                            //if(driver.FindElement(By.XPath("//*[@id=\"facebook\"]/body/div[4]/div[1]/div/div[2]/div/div/div/div[1]/div")) != null)
-                            //{
-                            //    driver.FindElement(By.XPath("//*[@id=\"facebook\"]/body/div[4]/div[1]/div/div[2]/div/div/div/div[1]/div")).Click();
-                            //}
-
-                            //if(driver.FindElement(By.XPath("//*[@id=\"facebook\"]/body/div[5]/div[1]/div/div[2]/div/div/div/div[1]/div")) != null)
-                            //{
-                            //    driver.FindElement(By.XPath("//*[@id=\"facebook\"]/body/div[5]/div[1]/div/div[2]/div/div/div/div[1]/div")).Click();
-                            //}
-
-                            //if (driver.FindElement(By.XPath("//*[@id=\"facebook\"]/body/div[2]/div[1]/div/div[2]/div/div/div/div[1]")) != null)
-                            //{
-                            //    driver.FindElement(By.XPath("//*[@id=\"facebook\"]/body/div[2]/div[1]/div/div[2]/div/div/div/div[1]")).Click();                           
-                            //}
-                        }
 
                         try
                         {
@@ -145,21 +120,6 @@ namespace AutoLike.Features
 
                         }
   
-                        driver.Navigate().GoToUrl("https://www.facebook.com/");
-
-                        if (ChromeDriverUtils.FindTextInChrome(driver, "Chào mừng bạn đến với Trang mới!", "Chào mừng bạn đến với Trang mới!"))
-                        {
-                            try
-                            {
-                                driver.FindElement(By.XPath("//*[@id=\"facebook\"]/body/div[2]/div[1]/div/div[2]/div/div/div/div[1]")).Click();
-                            }
-                            catch
-                            {
-                                driver.FindElement(By.XPath("//*[@id=\"facebook\"]/body/div[1]/div[1]/div/div[2]/div/div/div/div[1]")).Click();
-
-                            }
-
-                        }
 
                         driver.Navigate().GoToUrl("https://www.facebook.com/" + uidPost[k1]);
 
@@ -168,9 +128,6 @@ namespace AutoLike.Features
                             ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Like Post Lỗi - Acc Logout " + uidPost[k1]);
                             ChromeDriverUtils.updateStatusAcc(dataGridView, acc, "Die");
                             acc.CHECKED = "Die";
-                            //dataGridView1.Rows[i].Cells[1].Value = false;
-                            //dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.FromArgb(248, 198, 198);
-                            //LoadLog(DateTime.Now + ":  " + dataGridView1.Rows[i].Cells["Ten1"].Value.ToString() + " :Like Post Lỗi - Acc Logout! " + uidlike[k1], "red");
                             goto ne;
                         }
                         else
@@ -194,14 +151,14 @@ namespace AutoLike.Features
                                             if (driver.Url.Contains("/watch"))
                                             {
                                                 ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Lỗi : dạng wath livetream k like  đc " + uidPost[k1]);
-                                                upShopLike(uidPost[k1], 9999, keyText);
+                                                upShopLike(uidPost[k1], 9999, keyText, statusGetUID);
                                                 goto ne;
 
                                             }
                                             else if(driver.Url.Contains("/reel"))
                                             {
                                                 ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Lỗi : dạng wath reel k like  đc " + uidPost[k1]);
-                                                upShopLike(uidPost[k1], 9999, keyText);
+                                                upShopLike(uidPost[k1], 9999, keyText, statusGetUID);
                                                 goto ne;
                                             }
                                             else if (ChromeDriverUtils.FindClickElementInChrome(driver, "Thích", "Like", true))
@@ -222,9 +179,6 @@ namespace AutoLike.Features
                                                     ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Like Post Lỗi - Acc CHECKPOINT " + uidPost[k1]);
                                                     ChromeDriverUtils.updateStatusAcc(dataGridView, acc, "Die");
                                                     acc.CHECKED = "Die";
-                                                    //dataGridView1.Rows[i].Cells[1].Value = false;
-                                                    //dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.FromArgb(248, 198, 198);
-                                                    //LoadLog(DateTime.Now + ":  " + dataGridView1.Rows[i].Cells["Ten1"].Value.ToString() + " :Like Post Lỗi - Acc CHECKPOINT! " + uidlike[k1], "red");
                                                     goto ne;
                                                 }
                                                 try
@@ -241,13 +195,13 @@ namespace AutoLike.Features
                                             else if (driver.Url.Contains("/actor_experience"))
                                             {
                                                 ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Lỗi : dạng nick bị check cmt spam hoặc cp lạ " + uidPost[k1]);
-                                                upShopLike(uidPost[k1], 9999, keyText);
+                                                upShopLike(uidPost[k1], 9999, keyText, statusGetUID);
 
                                             }
                                             else if (ChromeDriverUtils.FindTextInChrome(driver, "Không tìm thấy nội dung", "Liên kết bạn truy cập") || ChromeDriverUtils.FindTextInChrome(driver, "Không tìm thấy nội dung", "Liên kết bạn truy cập"))
                                             {
                                                 ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Không tìm thấy nội dung " + uidPost[k1]);
-                                                upShopLike(uidPost[k1], 9999, keyText);
+                                                upShopLike(uidPost[k1], 9999, keyText, statusGetUID);
                                             }
                                             else if (driver.Url.Contains("/checkpoint") || ChromeDriverUtils.FindClickElementInChrome(driver, "Cần phê duyệt đăng nhập", "Login approval needed", false)
                                             || ChromeDriverUtils.FindClickElementInChrome(driver, "Vui lòng xác nhận danh tính của bạn", "Please confirm your identity", false))
@@ -255,9 +209,6 @@ namespace AutoLike.Features
                                                 ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Like Post Lỗi - Acc CHECKPOINT " + uidPost[k1]);
                                                 ChromeDriverUtils.updateStatusAcc(dataGridView, acc, "Die");
                                                 acc.CHECKED = "Die";
-                                                //dataGridView1.Rows[i].Cells[1].Value = false;
-                                                //dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.FromArgb(248, 198, 198);
-                                                //LoadLog(DateTime.Now + ":  " + dataGridView1.Rows[i].Cells["Ten1"].Value.ToString() + " :Like Post Lỗi - Acc CHECKPOINT! " + uidlike[k1], "red");
                                                 goto ne;
 
                                             }
@@ -266,9 +217,6 @@ namespace AutoLike.Features
                                                 ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Like Post Lỗi - Acc Logout " + uidPost[k1]);
                                                 ChromeDriverUtils.updateStatusAcc(dataGridView, acc, "Die");
                                                 acc.CHECKED = "Die";
-                                                //dataGridView1.Rows[i].Cells[1].Value = false;
-                                                //dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.FromArgb(248, 198, 198);
-                                                //LoadLog(DateTime.Now + ":  " + dataGridView1.Rows[i].Cells["Ten1"].Value.ToString() + " :Like Post Lỗi - Acc Logout! " + uidlike[k1], "red");
                                                 goto ne;
                                             }
                                             else if (ChromeDriverUtils.FindTextInChrome(driver, "Chia sẻ", "Share"))
@@ -281,8 +229,6 @@ namespace AutoLike.Features
                                                 ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Tài khoản của bạn đã bị khóa : " + uidPost[k1]);
                                                 ChromeDriverUtils.updateStatusAcc(dataGridView, acc, "Die");
                                                 acc.CHECKED = "Die";
-                                                //dataGridView1.Rows[i].Cells[1].Value = false;
-                                                //dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.FromArgb(248, 198, 198);
                                                 goto ne;
                                             }
                                             else if (ChromeDriverUtils.FindTextInChrome(driver, "Bạn hiện không thể bày tỏ cảm xúc", "Bạn hiện không thể bày tỏ cảm xúc"))
@@ -290,8 +236,6 @@ namespace AutoLike.Features
                                                 ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Bạn hiện không thể bày tỏ cảm xúc : " + uidPost[k1]);
                                                 ChromeDriverUtils.updateStatusAcc(dataGridView, acc, "Checkpoint");
                                                 acc.CHECKED = "Checkpoint";
-                                                //dataGridView1.Rows[i].Cells[1].Value = false;
-                                                //dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.FromArgb(248, 198, 198);
                                                 goto ne;
                                             }
                                             else
@@ -368,7 +312,7 @@ namespace AutoLike.Features
                         {
                             try
                             {
-                                upShopLike(uidPost[k2], 9999, keyText);
+                                upShopLike(uidPost[k2], 9999, keyText, statusGetUID);
                             }
                             catch
                             {
@@ -381,11 +325,12 @@ namespace AutoLike.Features
                     {
                         if (s.Split('|')[0] == uidPost[k2])
                         {
+                            File.AppendAllText(@"LOG\loglike.txt", s.Split('|')[1] + "|" + uidPost[k2] + "|" + dem + "\r\n");
                         }
                     }
                     try
                     {
-                        upShopLike(uidPost[k2], dem, keyText);
+                        upShopLike(uidPost[k2], dem, keyText, statusGetUID);
                     }
                     catch
                     {
@@ -403,11 +348,14 @@ namespace AutoLike.Features
 
         }
 
-        public void upShopLike(string uid, int count, TextBox keyTxt)
+        public void upShopLike(string uid, int count, TextBox keyTxt, Label statusGetUID)
         {
             if (count > 0)
             {
                 string key = keyTxt.Text;
+
+                statusGetUID.Invoke(new Action( () => statusGetUID.Text = "Update API"));
+
                 while (true)
                 {
 
@@ -415,6 +363,8 @@ namespace AutoLike.Features
                     string kq = rq.postRequest("http://shoplike.vn/Cron1123z/like_api.php?key=" + key + "&method=" + uid + "&count=" + count, "key=" + key + "&method=update_count_success&id_stt=" + uid + "&count=" + count, "", "", "");
                     if (kq.Contains("success"))
                     {
+                        Console.WriteLine("Up API Success");
+                        statusGetUID.Invoke(new Action(() => statusGetUID.Text = "Update API SUCCESS"));
                         break;
                     }
                 }

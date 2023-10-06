@@ -18,7 +18,7 @@ namespace AutoLike.Utils
         int screenWidth = Screen.PrimaryScreen.Bounds.Width;
         int screenHeight = Screen.PrimaryScreen.Bounds.Height;
 
-        public ChromeDriver initChrome(string ProfileFolderPath,account account,int index, NumericUpDown flowNum, bool selectProxy, int x, int y)
+        public ChromeDriver initChrome(string ProfileFolderPath,account account, bool selectProxy, int x, int y, CheckBox loadImage, CheckBox hideChrome)
         {
 
           
@@ -58,27 +58,20 @@ namespace AutoLike.Utils
             co.AddArgument("--use-mock-keychain");
             co.AddArgument("--disable-notifications");
             co.AddArgument("mute-audio");
-
-            //int X = 0;
-            //int Y = 0;
-
-
-            //X = screenWidth / Convert.ToInt32(5);
-            //Y = screenHeight;
             co.AddArgument("--window-size=" + 500 + "," + 500);
-
-            ////int X1 = Convert.ToInt32((index - 1) % 2) * X;
-            ////int Y1 = Convert.ToInt32((index - 1) / 2) * (screenHeight / ((Convert.ToInt32(5) / 2) + 1));
-            //int row = index / 5;
-            //int col = index % 5;
-            //int xOffset = col * (screenWidth / 5);
-            //int yOffset = row * (screenHeight / 2);
             co.AddArgument("--window-position=" + x + "," + y);
 
+            if (loadImage.Checked)
+            {
+                co.AddArguments("--mute-audio", "--blink-settings=imagesEnabled=false", "--disable-notifications", "--ignore-certificate-errors", "--disable-gpu");
+                co.AddExcludedArgument("enable-automation");
+            }
 
-
+            if (hideChrome.Checked)
+            {
+                co.AddArguments("headless");
+            }
             string nameCount = account.UID;
-  
             try
             {
                 co.AddArguments("user-data-dir=" + ProfileFolderPath + "\\" + nameCount);

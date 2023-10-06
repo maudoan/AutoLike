@@ -181,6 +181,9 @@ namespace AutoLike
             this.getInfoAccountToken = new System.Windows.Forms.Button();
             this.getAccessTokenEAAGButton = new System.Windows.Forms.Button();
             this.settingChormeGroupBox = new System.Windows.Forms.GroupBox();
+            this.selectUriChromeComboxBox = new System.Windows.Forms.ComboBox();
+            this.runHideCheckBox = new System.Windows.Forms.CheckBox();
+            this.loadImageChromeCheckbox = new System.Windows.Forms.CheckBox();
             this.turnOffChromeButton = new System.Windows.Forms.Button();
             this.detailListAccountsPanel = new System.Windows.Forms.Panel();
             this.detailListAccountsDataGridView = new System.Windows.Forms.DataGridView();
@@ -210,6 +213,7 @@ namespace AutoLike
             this.trangthaiAccount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pageNumberAccount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControl = new System.Windows.Forms.TabControl();
+            this.statusGetUIDLabel = new System.Windows.Forms.Label();
             this.toolBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogoShop)).BeginInit();
             this.listFileContextMenuStrip.SuspendLayout();
@@ -1530,8 +1534,8 @@ namespace AutoLike
             this.listFileDataGridView.ContextMenuStrip = this.listFileContextMenuStrip;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Green;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Tahoma", 8F);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.White;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.Blue;
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
@@ -1648,12 +1652,50 @@ namespace AutoLike
             // 
             // settingChormeGroupBox
             // 
+            this.settingChormeGroupBox.Controls.Add(this.selectUriChromeComboxBox);
+            this.settingChormeGroupBox.Controls.Add(this.runHideCheckBox);
+            this.settingChormeGroupBox.Controls.Add(this.loadImageChromeCheckbox);
             this.settingChormeGroupBox.Controls.Add(this.turnOffChromeButton);
             this.settingChormeGroupBox.Location = new System.Drawing.Point(8, 3);
             this.settingChormeGroupBox.Name = "settingChormeGroupBox";
             this.settingChormeGroupBox.Size = new System.Drawing.Size(197, 151);
             this.settingChormeGroupBox.TabIndex = 19;
             this.settingChormeGroupBox.TabStop = false;
+            // 
+            // selectUriChromeComboxBox
+            // 
+            this.selectUriChromeComboxBox.FormattingEnabled = true;
+            this.selectUriChromeComboxBox.Items.AddRange(new object[] {
+            "www.facebook.com",
+            "m.facebook.com"});
+            this.selectUriChromeComboxBox.Location = new System.Drawing.Point(22, 79);
+            this.selectUriChromeComboxBox.Name = "selectUriChromeComboxBox";
+            this.selectUriChromeComboxBox.Size = new System.Drawing.Size(100, 21);
+            this.selectUriChromeComboxBox.TabIndex = 95;
+            // 
+            // runHideCheckBox
+            // 
+            this.runHideCheckBox.AutoSize = true;
+            this.runHideCheckBox.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.runHideCheckBox.ForeColor = System.Drawing.Color.White;
+            this.runHideCheckBox.Location = new System.Drawing.Point(22, 51);
+            this.runHideCheckBox.Name = "runHideCheckBox";
+            this.runHideCheckBox.Size = new System.Drawing.Size(72, 17);
+            this.runHideCheckBox.TabIndex = 94;
+            this.runHideCheckBox.Text = "Chạy Ẩn";
+            this.runHideCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // loadImageChromeCheckbox
+            // 
+            this.loadImageChromeCheckbox.AutoSize = true;
+            this.loadImageChromeCheckbox.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.loadImageChromeCheckbox.ForeColor = System.Drawing.Color.White;
+            this.loadImageChromeCheckbox.Location = new System.Drawing.Point(22, 19);
+            this.loadImageChromeCheckbox.Name = "loadImageChromeCheckbox";
+            this.loadImageChromeCheckbox.Size = new System.Drawing.Size(116, 17);
+            this.loadImageChromeCheckbox.TabIndex = 93;
+            this.loadImageChromeCheckbox.Text = "Không Load Ảnh";
+            this.loadImageChromeCheckbox.UseVisualStyleBackColor = true;
             // 
             // turnOffChromeButton
             // 
@@ -1662,7 +1704,7 @@ namespace AutoLike
             this.turnOffChromeButton.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.turnOffChromeButton.ForeColor = System.Drawing.Color.Teal;
             this.turnOffChromeButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.turnOffChromeButton.Location = new System.Drawing.Point(22, 83);
+            this.turnOffChromeButton.Location = new System.Drawing.Point(22, 114);
             this.turnOffChromeButton.Name = "turnOffChromeButton";
             this.turnOffChromeButton.Size = new System.Drawing.Size(152, 31);
             this.turnOffChromeButton.TabIndex = 56;
@@ -2012,6 +2054,17 @@ namespace AutoLike
             this.tabControl.Size = new System.Drawing.Size(1672, 787);
             this.tabControl.TabIndex = 40;
             // 
+            // statusGetUIDLabel
+            // 
+            this.statusGetUIDLabel.AutoSize = true;
+            this.statusGetUIDLabel.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Bold);
+            this.statusGetUIDLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.statusGetUIDLabel.Location = new System.Drawing.Point(1239, 851);
+            this.statusGetUIDLabel.Name = "statusGetUIDLabel";
+            this.statusGetUIDLabel.Size = new System.Drawing.Size(31, 13);
+            this.statusGetUIDLabel.TabIndex = 43;
+            this.statusGetUIDLabel.Text = "........";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2020,6 +2073,7 @@ namespace AutoLike
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1678, 873);
+            this.Controls.Add(this.statusGetUIDLabel);
             this.Controls.Add(this.toolBar);
             this.Controls.Add(this.tabControl);
             this.Controls.Add(this.doashBoardHScrollBar);
@@ -2070,6 +2124,7 @@ namespace AutoLike
             this.passCheckPointGroupBox.ResumeLayout(false);
             this.checkViaGroupBox.ResumeLayout(false);
             this.settingChormeGroupBox.ResumeLayout(false);
+            this.settingChormeGroupBox.PerformLayout();
             this.detailListAccountsPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.detailListAccountsDataGridView)).EndInit();
             this.tabControl.ResumeLayout(false);
@@ -2233,6 +2288,10 @@ namespace AutoLike
         private System.Windows.Forms.Button saveFileNameButton;
         private System.Windows.Forms.Button stopLikePostButton;
         private System.Windows.Forms.Button showHideListDataButton;
+        private System.Windows.Forms.CheckBox loadImageChromeCheckbox;
+        private System.Windows.Forms.CheckBox runHideCheckBox;
+        private System.Windows.Forms.ComboBox selectUriChromeComboxBox;
+        private System.Windows.Forms.Label statusGetUIDLabel;
     }
 }
 
