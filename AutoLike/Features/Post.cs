@@ -1,7 +1,9 @@
 ﻿using AutoLike.Model;
 using AutoLike.Utils;
+using Newtonsoft.Json.Linq;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.DevTools.V115.Debugger;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -11,8 +13,10 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
+using System.Net.Http;
 using System.Reflection.Emit;
 using System.Security.Cryptography;
+using System.Security.Policy;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -348,7 +352,7 @@ namespace AutoLike.Features
 
         }
 
-        public void upShopLike(string uid, int count, TextBox keyTxt, Label statusGetUID)
+        public async void upShopLike(string uid, int count, TextBox keyTxt, Label statusGetUID)
         {
             if (count > 0)
             {
@@ -356,16 +360,27 @@ namespace AutoLike.Features
 
                 statusGetUID.Invoke(new Action( () => statusGetUID.Text = "Update API"));
 
+                string Url = "http://shoplike.vn/Cron1123z/like_api.php?key=" + key + "&method=" + uid + "&count=" + count + "," + "key=" + key + "&method=update_count_success&id_stt=" + uid + "&count=" + count;
                 while (true)
                 {
-
-                    HttpUtils rq = new HttpUtils();
-                    string kq = rq.postRequest("http://shoplike.vn/Cron1123z/like_api.php?key=" + key + "&method=" + uid + "&count=" + count, "key=" + key + "&method=update_count_success&id_stt=" + uid + "&count=" + count, "", "", "");
-                    if (kq.Contains("success"))
+                    using (var client = new HttpClient())
                     {
-                        Console.WriteLine("Up API Success");
-                        statusGetUID.Invoke(new Action(() => statusGetUID.Text = "Update API SUCCESS"));
-                        break;
+                        try
+                        {
+                            var content = new StringContent("", Encoding.UTF8, "application/json");
+                            HttpResponseMessage result = await client.PostAsync(Url, content);
+
+                            if (result.IsSuccessStatusCode)
+                            {
+                                Console.WriteLine("Up API Success");
+                                statusGetUID.Invoke(new Action(() => statusGetUID.Text = "Update API SUCCESS"));
+                                break;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex);
+                        }
                     }
                 }
 
