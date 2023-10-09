@@ -128,9 +128,6 @@ namespace AutoLike.Controller
                     _sqliteUtils.addCategory(_listAccounts[0].CATELOGE);
                 }
 
-
-
-
             }
             catch (Exception ex)
             {
@@ -142,7 +139,6 @@ namespace AutoLike.Controller
 
         public void saveCategory(DataGridView listFileDataGridView,TextBox importFileTextBox)
         {
-
             if (importFileTextBox.Text != "")
             {
                 for (int i = 0; i < listFileDataGridView.Rows.Count; i++)
@@ -170,7 +166,6 @@ namespace AutoLike.Controller
 
         public void deleteAllByCateloge(ToolStripMenuItem deleteFileToolStripMenuItem, DataGridView dataGridView)
         {
-
             int index = dataGridView.CurrentCell.RowIndex;
             string fileName = dataGridView.Rows[index].Cells[0].Value.ToString();
             DialogResult rs = MessageBox.Show("Bạn chắc chắn muốn xóa File: " + fileName + " ?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
@@ -194,7 +189,6 @@ namespace AutoLike.Controller
 
         public List<string> getListAccount(string fileName, DataGridView dataGridView)
         {
-
             List<string> list = new List<string>();
             if (fileName == "ALL")
             {
@@ -303,7 +297,6 @@ namespace AutoLike.Controller
         public void getInfoAccounts(DataGridView dataGridView)
         {
             List<account> danhSach = new List<account>();
-
             for (int i = 0; i < dataGridView.Rows.Count; i++)
             {
                 if (dataGridView.Rows[i].Cells["checkboxItemAccount"].Value.ToString() == "True")
@@ -337,15 +330,12 @@ namespace AutoLike.Controller
         {
             int batchSize = Convert.ToInt32(5); // Số lượng item mỗi lần xử lý
             int maxConcurrency = Convert.ToInt32(5); // Số lượng luồng tối đa
-
             List<page> listPage = new List<page>();
             SemaphoreSlim semaphore = new SemaphoreSlim(maxConcurrency);
             List<account> listAcc = new List<account>();
             for (int i = 0; i < listAccounts.Count; i += batchSize)
             {
                 List<account> batch = listAccounts.GetRange(i, Math.Min(batchSize, listAccounts.Count - i));
-
-
                 try
                 {
                     var tasks = batch.Select(async item =>
@@ -418,7 +408,6 @@ namespace AutoLike.Controller
         {
             foreach (ChromeDriver driver in _listDriver)
             {
-
                 try
                 {
                     driver.Close();
@@ -445,7 +434,6 @@ namespace AutoLike.Controller
         public void getAccessTokenEAAG(DataGridView dataGridView)
         {
             List<account> danhSach = new List<account>();
-
             for (int i = 0; i < dataGridView.Rows.Count; i++)
             {
                 if (dataGridView.Rows[i].Cells["checkboxItemAccount"].Value.ToString() == "True" && dataGridView.Rows[i].Cells["tinhtrangAccount"].Value.ToString() == "Live")
@@ -483,7 +471,6 @@ namespace AutoLike.Controller
 
             }
 
-
         }
 
         /*
@@ -494,7 +481,6 @@ namespace AutoLike.Controller
         public void checkStatusCookie(DataGridView dataGridView)
         {
             List<account> danhSach = new List<account>();
-
             for (int i = 0; i < dataGridView.Rows.Count; i++)
             {
                 if (dataGridView.Rows[i].Cells["checkboxItemAccount"].Value.ToString() == "True" && dataGridView.Rows[i].Cells["tinhtrangAccount"].Value.ToString() == "Live")
@@ -541,9 +527,7 @@ namespace AutoLike.Controller
          */
         public void LoginChromeWithCookieToken(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, bool selectProxy, List<string> apiKeyList, CheckBox loadImage, CheckBox hideChrome)
         {
-
             List<account> danhSach = new List<account>();
-
             for (int i = 0; i < dataGridView.Rows.Count; i++)
             {
                 if (dataGridView.Rows[i].Cells["checkboxItemAccount"].Value.ToString() == "True")
@@ -571,9 +555,7 @@ namespace AutoLike.Controller
         public async void ProcessLoginChromeCookieToken(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, bool selectProxy, List<account> listAcccounts, List<string> apiKeyList, CheckBox loadImage, CheckBox hideChrome)
         {
             ProxyUtils proxyUtils = new ProxyUtils();
-
             DateTime currentTime = DateTime.Now;
-
             if (currentTime - lastApiCallTime >= callInterval)
             {
                 // Nếu đã đủ thời gian, thực hiện gọi API
@@ -600,8 +582,6 @@ namespace AutoLike.Controller
             for (int i = 0; i < listAcccounts.Count; i += batchSize)
             {
                 List<account> batch = listAcccounts.GetRange(i, Math.Min(batchSize, listAcccounts.Count - i));
- 
-
                 try
                 {
                     var tasks = batch.Select(async item =>
@@ -653,7 +633,6 @@ namespace AutoLike.Controller
         */
         public async Task ProcessItemLoginAcc(string ProfileFolderPath, account item, bool selectProxy, DataGridView dataGridView, CheckBox loadImage, CheckBox hideChrome)
         {
-
             ChromeDriver chromeDriver = _chromeDriverUtils.initChrome(ProfileFolderPath, item, selectProxy, loadImage, hideChrome);
             _listDriver.Add(chromeDriver);
             ChromeDriverUtils.sxepChrome(_listDriver);
@@ -676,8 +655,6 @@ namespace AutoLike.Controller
                 }
                 catch { }
             }
-
-            Thread.Sleep(1000);
 
             try
             {
@@ -828,9 +805,7 @@ namespace AutoLike.Controller
 
         public void regPage(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, bool selectProxy, List<string> apiKeyList,CheckBox loadImage, CheckBox hideChrome)
         {
-
             List<account> danhSach = new List<account>();
-
             for (int i = 0; i < dataGridView.Rows.Count; i++)
             {
                 if (dataGridView.Rows[i].Cells["checkboxItemAccount"].Value.ToString() == "True")
@@ -859,9 +834,7 @@ namespace AutoLike.Controller
         public async void ProcessRegPage(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, bool selectProxy, List<account> listAcccounts, List<string> apiKeyList, CheckBox loadImage, CheckBox hideChrome)
         {
             ProxyUtils proxyUtils = new ProxyUtils();
-
             DateTime currentTime = DateTime.Now;
-
             if (currentTime - lastApiCallTime >= callInterval)
             {
                 // Nếu đã đủ thời gian, thực hiện gọi API
@@ -960,7 +933,6 @@ namespace AutoLike.Controller
          */
 
         bool stopLikePage = false;
-
         public void setStopLikePageTrue()
         {
             stopLikePage = true;
@@ -973,7 +945,6 @@ namespace AutoLike.Controller
 
         public void likePost(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, bool selectProxy, List<string> apiKeyList, CheckBox type2CheckBox, TextBox keyText, NumericUpDown timeGetValue, CheckBox loadImage, CheckBox hideChrome, Label statusGetUID)
         {
-
             List<account> danhSach = new List<account>();
 
             for (int i = 0; i < dataGridView.Rows.Count; i++)
@@ -992,8 +963,7 @@ namespace AutoLike.Controller
                     acc.SOPAGE = dataGridView.Rows[i].Cells["pageNumberAccount"].Value.ToString();
                     danhSach.Add(acc);
                 }
-            }
-            
+            }            
             ProcessLikePost(ProfileFolderPath, dataGridView, flowNum, selectProxy, danhSach, apiKeyList, type2CheckBox, keyText, timeGetValue,loadImage, hideChrome, statusGetUID);
         }
 
@@ -1002,16 +972,12 @@ namespace AutoLike.Controller
          */
         List<string> listProxy = new List<string>();
         public async void ProcessLikePost(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, bool selectProxy, List<account> listAcccounts, List<string> apiKeyList, CheckBox type2CheckBox, TextBox keyText, NumericUpDown timeGetValue, CheckBox loadImage, CheckBox hideChrome, Label statusGetUID)
-        {
-           
+        {    
             ProxyUtils proxyUtils = new ProxyUtils();
-
             DateTime currentTime = DateTime.Now;
-
-
+            Random random = new Random();
             int batchSize = Convert.ToInt32(flowNum.Value); // Số lượng item mỗi lần xử lý
             int maxConcurrency = Convert.ToInt32(flowNum.Value); // Số lượng luồng tối đa
-
             SemaphoreSlim semaphore = new SemaphoreSlim(maxConcurrency);
             while (stopLikePage == false)
             {
@@ -1060,13 +1026,10 @@ namespace AutoLike.Controller
                         listAcccounts.RemoveAt(k);
                     }
                 }
-           
 
                 for (int i = 0; i < listAcccounts.Count; i += batchSize)
                 {
                     List<account> batch = listAcccounts.GetRange(i, Math.Min(batchSize, listAcccounts.Count - i));
-
-
                     try
                     {
                         string uidPost = Post.getPostUid(type2CheckBox, keyText, timeGetValue, statusGetUID);
@@ -1076,9 +1039,8 @@ namespace AutoLike.Controller
                             await semaphore.WaitAsync();
                             try
                             {
-                                if(listProxy.Count > 0)
+                                if (listProxy.Count > 0)
                                 {
-                                    Random random = new Random();
                                     int index = random.Next(listProxy.Count);
                                     string randomProxy = listProxy[index];
                                     item.PROXY = randomProxy;
@@ -1182,9 +1144,7 @@ namespace AutoLike.Controller
 
         public void movePageToUid(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, bool selectProxy, List<string> apiKeyList, CheckBox loadImage, CheckBox hideChrome)
         {
-
             List<account> danhSach = new List<account>();
-
             for (int i = 0; i < dataGridView.Rows.Count; i++)
             {
                 if (dataGridView.Rows[i].Cells["checkboxItemAccount"].Value.ToString() == "True")
@@ -1202,7 +1162,6 @@ namespace AutoLike.Controller
                     danhSach.Add(acc);
                 }
             }
-
             ProcessMovePageToUid(ProfileFolderPath, dataGridView, flowNum, selectProxy, danhSach, apiKeyList, loadImage, hideChrome);
         }
 
@@ -1213,7 +1172,6 @@ namespace AutoLike.Controller
         public async void ProcessMovePageToUid(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, bool selectProxy, List<account> listAcccounts, List<string> apiKeyList, CheckBox loadImage, CheckBox hideChrome)
         {
             ProxyUtils proxyUtils = new ProxyUtils();
-
             DateTime currentTime = DateTime.Now;
 
             if (currentTime - lastApiCallTime >= callInterval)
@@ -1242,8 +1200,6 @@ namespace AutoLike.Controller
             for (int i = 0; i < listAcccounts.Count; i += batchSize)
             {
                 List<account> batch = listAcccounts.GetRange(i, Math.Min(batchSize, listAcccounts.Count - i));
-
-
                 try
                 {
                     var tasks = batch.Select(async item =>
