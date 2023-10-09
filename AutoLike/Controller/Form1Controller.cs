@@ -48,11 +48,7 @@ namespace AutoLike.Controller
 
             }
             _listDriver.Clear();
-
-            foreach (var process in Process.GetProcessesByName("chrome"))
-            {
-                process.Kill();
-            }
+            stopLikePage = true;
             foreach (var process in Process.GetProcessesByName("chromedriver"))
             {
                 process.Kill();
@@ -370,7 +366,6 @@ namespace AutoLike.Controller
                                         item.LIVE = "Live";
                                         ChromeDriverUtils.updateNumPage(dataGridView, item);
                                         ChromeDriverUtils.updateStatusAcc(dataGridView, item, "Live");
-                                        //SQLiteUtils.updateByUID(item);
                                         foreach (var kvp in listIdGroup)
                                         {
                                             string key = kvp.Key;
@@ -390,7 +385,6 @@ namespace AutoLike.Controller
                                         item.LIVE = "Live";
                                         ChromeDriverUtils.updateNumPage(dataGridView, item);
                                         ChromeDriverUtils.updateStatusAcc(dataGridView, item, "Checkpoint");
-                                        //SQLiteUtils.updateByUID(item);
                                         listAcc.Add(item);
                                     }
                                     SQLiteUtils.insertPage(listPage);
@@ -434,10 +428,6 @@ namespace AutoLike.Controller
             }
             _listDriver.Clear();
 
-            foreach (var process in Process.GetProcessesByName("chrome"))
-            {
-                process.Kill();
-            }
             foreach (var process in Process.GetProcessesByName("chromedriver"))
             {
                 process.Kill();
@@ -580,8 +570,6 @@ namespace AutoLike.Controller
          */
         public async void ProcessLoginChromeCookieToken(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, bool selectProxy, List<account> listAcccounts, List<string> apiKeyList, CheckBox loadImage, CheckBox hideChrome)
         {
-            int itemIndex = 0;
-
             ProxyUtils proxyUtils = new ProxyUtils();
 
             DateTime currentTime = DateTime.Now;
@@ -608,14 +596,7 @@ namespace AutoLike.Controller
 
             int batchSize = Convert.ToInt32(flowNum.Value); // Số lượng item mỗi lần xử lý
             int maxConcurrency = Convert.ToInt32(flowNum.Value); // Số lượng luồng tối đa
-            int screenWidth = Screen.PrimaryScreen.Bounds.Width;
-            int screenHeight = Screen.PrimaryScreen.Bounds.Height;
-            if (screenWidth > 1920)
-            {
-                screenWidth = 1920;
-            }
             SemaphoreSlim semaphore = new SemaphoreSlim(maxConcurrency);
-            int x = 0; int y = 0;
             for (int i = 0; i < listAcccounts.Count; i += batchSize)
             {
                 List<account> batch = listAcccounts.GetRange(i, Math.Min(batchSize, listAcccounts.Count - i));
@@ -634,39 +615,9 @@ namespace AutoLike.Controller
                             string proxy = proxyUtils.getCurrentProxy(Constants.Constants.GetCurrentProxyShopLike(randomKey, "hd"));
                             item.PROXY = proxy;
 
-                            if (itemIndex == 0 || itemIndex == 10 || itemIndex == 20 || itemIndex == 30)
-                            {
-                                y = 0;
-                                x = 0;
-                            }
-                            else if ((itemIndex > 0 && itemIndex < 5) || (itemIndex > 10 && itemIndex < 15) || (itemIndex > 20 && itemIndex < 25) || (itemIndex > 30 && itemIndex < 35))
-                            {
-                                y = 0;
-                                x += screenWidth / 5;
-                            }
-                            else if (itemIndex == 5 || itemIndex == 15 || itemIndex == 25 || itemIndex == 35)
-                            {
-                                y = screenHeight / 2;
-                                x = 0;
-                            }
-                            else if ((itemIndex > 5 && itemIndex < 10) || (itemIndex > 15 && itemIndex <= 20) || (itemIndex > 25 && itemIndex < 30) || (itemIndex > 35 && itemIndex < 40))
-                            {
-                                y = screenHeight / 2;
-                                x += screenWidth / 5;
-                            }
-                            else { }
-
-
-                            itemIndex++;
-
-                            if(itemIndex == flowNum.Value)
-                            {
-                                itemIndex = 0;
-                            }
-
                             await Task.Run(async () =>
                             {
-                                await ProcessItemLoginAcc(ProfileFolderPath, item, selectProxy, x, y, dataGridView, loadImage, hideChrome);
+                                await ProcessItemLoginAcc(ProfileFolderPath, item, selectProxy, dataGridView, loadImage, hideChrome);
                                 await Task.Delay(1000);
                             });
 
@@ -700,14 +651,14 @@ namespace AutoLike.Controller
         /*
         * Process Login with item Account
         */
-        public async Task ProcessItemLoginAcc(string ProfileFolderPath, account item, bool selectProxy,int x, int y, DataGridView dataGridView, CheckBox loadImage, CheckBox hideChrome)
+        public async Task ProcessItemLoginAcc(string ProfileFolderPath, account item, bool selectProxy, DataGridView dataGridView, CheckBox loadImage, CheckBox hideChrome)
         {
 
-            ChromeDriver chromeDriver = _chromeDriverUtils.initChrome(ProfileFolderPath, item, selectProxy, x, y,loadImage, hideChrome);
+            ChromeDriver chromeDriver = _chromeDriverUtils.initChrome(ProfileFolderPath, item, selectProxy, loadImage, hideChrome);
             _listDriver.Add(chromeDriver);
-
+            ChromeDriverUtils.sxepChrome(_listDriver);
             chromeDriver.Navigate().GoToUrl("https://www.facebook.com");
-            Thread.Sleep(1000);
+            await Task.Delay(1000);
 
             if (ChromeDriverUtils.FindClickElementInChrome(chromeDriver, "Đăng nhập", "Log in", false))
             {
@@ -907,7 +858,6 @@ namespace AutoLike.Controller
 
         public async void ProcessRegPage(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, bool selectProxy, List<account> listAcccounts, List<string> apiKeyList, CheckBox loadImage, CheckBox hideChrome)
         {
-            int itemIndex = 0;
             ProxyUtils proxyUtils = new ProxyUtils();
 
             DateTime currentTime = DateTime.Now;
@@ -934,14 +884,7 @@ namespace AutoLike.Controller
 
             int batchSize = Convert.ToInt32(flowNum.Value); // Số lượng item mỗi lần xử lý
             int maxConcurrency = Convert.ToInt32(flowNum.Value); // Số lượng luồng tối đa
-            int screenWidth = Screen.PrimaryScreen.Bounds.Width;
-            int screenHeight = Screen.PrimaryScreen.Bounds.Height;
-            if (screenWidth > 1920)
-            {
-                screenWidth = 1920;
-            }
             SemaphoreSlim semaphore = new SemaphoreSlim(maxConcurrency);
-            int x = 0; int y = 0;
             for (int i = 0; i < listAcccounts.Count; i += batchSize)
             {
                 List<account> batch = listAcccounts.GetRange(i, Math.Min(batchSize, listAcccounts.Count - i));
@@ -960,35 +903,9 @@ namespace AutoLike.Controller
                             string proxy = proxyUtils.getCurrentProxy(Constants.Constants.GetCurrentProxyShopLike(randomKey, "hd"));
                             item.PROXY = proxy;
 
-                            if (itemIndex == 0 || itemIndex == 10 || itemIndex == 20 || itemIndex == 30)
-                            {
-                                y = 0;
-                                x = 0;
-                            }
-                            else if ((itemIndex > 0 && itemIndex < 5) || (itemIndex > 10 && itemIndex < 15) || (itemIndex > 20 && itemIndex < 25) || (itemIndex > 30 && itemIndex < 35))
-                            {
-                                y = 0;
-                                x += screenWidth / 5;
-                            }
-                            else if (itemIndex == 5 || itemIndex == 15 || itemIndex == 25 || itemIndex == 35)
-                            {
-                                y = screenHeight / 2;
-                                x = 0;
-                            }
-                            else if ((itemIndex > 5 && itemIndex < 10) || (itemIndex > 15 && itemIndex <= 20) || (itemIndex > 25 && itemIndex < 30) || (itemIndex > 35 && itemIndex < 40))
-                            {
-                                y = screenHeight / 2;
-                                x += screenWidth / 5;
-                            }
-                            else { }
-                            itemIndex++;
-                            if (itemIndex == flowNum.Value)
-                            {
-                                itemIndex = 0;
-                            }
                             await Task.Run(async () =>
                             {
-                                await processItemRegPageAcc(ProfileFolderPath, item, selectProxy, dataGridView, x, y, loadImage, hideChrome);
+                                await processItemRegPageAcc(ProfileFolderPath, item, selectProxy, dataGridView, loadImage, hideChrome);
                             });
                            
 
@@ -1022,11 +939,12 @@ namespace AutoLike.Controller
         /*
          * Process Reg Page for Item Acc
          */
-        public async Task processItemRegPageAcc(string ProfileFolderPath, account item, bool selectProxy,DataGridView dataGridView, int x, int y, CheckBox loadImage, CheckBox hideChrome)
+        public async Task processItemRegPageAcc(string ProfileFolderPath, account item, bool selectProxy,DataGridView dataGridView, CheckBox loadImage, CheckBox hideChrome)
         {
-            ChromeDriver chromeDriver = _chromeDriverUtils.initChrome(ProfileFolderPath, item, selectProxy, x, y, loadImage, hideChrome);
+            ChromeDriver chromeDriver = _chromeDriverUtils.initChrome(ProfileFolderPath, item, selectProxy, loadImage, hideChrome);
             _listDriver.Add(chromeDriver);
-            Thread.Sleep(1000);
+            ChromeDriverUtils.sxepChrome(_listDriver);
+            await Task.Delay(1000);
             RegPage regPage = new RegPage();
             regPage.RegPageWithUID(chromeDriver, fullPathNamePage,dataGridView,item, _listDriver);
 
@@ -1093,15 +1011,7 @@ namespace AutoLike.Controller
 
             int batchSize = Convert.ToInt32(flowNum.Value); // Số lượng item mỗi lần xử lý
             int maxConcurrency = Convert.ToInt32(flowNum.Value); // Số lượng luồng tối đa
-            int screenWidth = Screen.PrimaryScreen.Bounds.Width;
-            int screenHeight = Screen.PrimaryScreen.Bounds.Height;
-            if (screenWidth > 1920)
-            {
-                screenWidth = 1920;
-            }
-            int itemIndex = 0;
-            int x = 0;
-            int y = 0;
+
             SemaphoreSlim semaphore = new SemaphoreSlim(maxConcurrency);
             while (stopLikePage == false)
             {
@@ -1173,34 +1083,6 @@ namespace AutoLike.Controller
                                     string randomProxy = listProxy[index];
                                     item.PROXY = randomProxy;
                                 }
-
-
-                                if (itemIndex == 0 || itemIndex == 10 || itemIndex == 20 || itemIndex == 30)
-                                {
-                                    y = 0;
-                                    x = 0;
-                                }
-                                else if ((itemIndex > 0 && itemIndex < 5) || (itemIndex > 10 && itemIndex < 15) || (itemIndex > 20 && itemIndex < 25) || (itemIndex > 30 && itemIndex < 35))
-                                {
-                                    y = 0;
-                                    x += screenWidth / 5;
-                                }
-                                else if (itemIndex == 5 || itemIndex == 15 || itemIndex == 25 || itemIndex == 35)
-                                {
-                                    y = screenHeight / 2;
-                                    x = 0;
-                                }
-                                else if ((itemIndex > 5 && itemIndex < 10) || (itemIndex > 15 && itemIndex <= 20) || (itemIndex > 25 && itemIndex < 30) || (itemIndex > 35 && itemIndex < 40))
-                                {
-                                    y = screenHeight / 2;
-                                    x += screenWidth / 5;
-                                }
-                                else { }
-                                itemIndex++;
-                                if (itemIndex == flowNum.Value)
-                                {
-                                    itemIndex = 0;
-                                }
                                 await Task.Run(async () =>
                                 {
 
@@ -1208,7 +1090,7 @@ namespace AutoLike.Controller
 
                                     if (listPageString.Count > 0)
                                     {
-                                        await processItemLikePost(ProfileFolderPath, item, selectProxy, dataGridView, x, y, listPageString, type2CheckBox, keyText, timeGetValue, listUidPost, loadImage, hideChrome, statusGetUID);
+                                        await processItemLikePost(ProfileFolderPath, item, selectProxy, dataGridView, listPageString, type2CheckBox, keyText, timeGetValue, listUidPost, loadImage, hideChrome, statusGetUID);
                                     }
                                 });
                             }
@@ -1245,84 +1127,11 @@ namespace AutoLike.Controller
 
                 }
 
-                //for (int i = 0; i < listAcccounts.Count; i += batchSize)
-                //{
-                //    List<account> batch = listAcccounts.GetRange(i, Math.Min(batchSize, listAcccounts.Count - i));
-
-                //    Parallel.ForEach(batch, new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount }, async (item) =>
-                //    {
-                //        Random random = new Random();
-                //        int index = random.Next(apiKeyList.Count);
-                //        string randomKey = apiKeyList[index];
-                //        string proxy = proxyUtils.getCurrentProxy(Constants.Constants.GetCurrentProxyShopLike(randomKey, "hd"));
-
-                //        if (proxy == null || proxy == "")
-                //        {
-                //            item.PROXY = "";
-                //        }
-                //        else
-                //        {
-                //            item.PROXY = proxy;
-                //        }
-
-                //        if (itemIndex == 0 || itemIndex == 10 || itemIndex == 20 || itemIndex == 30)
-                //        {
-                //            y = 0;
-                //            x = 0;
-                //        }
-                //        else if ((itemIndex > 0 && itemIndex < 5) || (itemIndex > 10 && itemIndex < 15) || (itemIndex > 20 && itemIndex < 25) || (itemIndex > 30 && itemIndex < 35))
-                //        {
-                //            y = 0;
-                //            x += screenWidth / 5;
-                //        }
-                //        else if (itemIndex == 5 || itemIndex == 15 || itemIndex == 25 || itemIndex == 35)
-                //        {
-                //            y = screenHeight / 2;
-                //            x = 0;
-                //        }
-                //        else if ((itemIndex > 5 && itemIndex < 10) || (itemIndex > 15 && itemIndex <= 20) || (itemIndex > 25 && itemIndex < 30) || (itemIndex > 35 && itemIndex < 40))
-                //        {
-                //            y = screenHeight / 2;
-                //            x += screenWidth / 5;
-                //        }
-                //        else { }
-                //        itemIndex++;
-                //        if (itemIndex == flowNum.Value)
-                //        {
-                //            itemIndex = 0;
-                //        }
-
-                //        List<string> listPageString = SQLiteUtils.getPageListByUid(item);
-
-                //        if (listPageString.Count > 0)
-                //        {
-                //            await processItemLikePost(ProfileFolderPath, item, itemIndex, flowNum, selectProxy, dataGridView, x, y, listPageString, type2CheckBox, keyText, timeGetValue, listUidPost);
-                //        }
-                //    });
-                //    ChromeDriverUtils.sxepChrome(_listDriver);
-                //}
-
-                //foreach (var driver in _listDriver)
-                //{
-                //    Console.WriteLine("---------Out Chrome-------->");
-                //    driver.Quit();
-                //    driver.Close();
-                //}
-
-                //foreach (var process in Process.GetProcessesByName("chromedriver"))
-                //{
-                //    process.Kill();
-                //}
-
-                //_listDriver.Clear();
-
-                //await Task.Delay(5000);
-
                 if (stopLikePage == true)
                 {
+                    Console.WriteLine("---------LIKE PAGE IS STOPED------------>");
                     foreach (var driver in _listDriver)
                     {
-                        Console.WriteLine("---------LIKE PAGE IS STOPED------------>");
                         driver.Quit();
                     }
                     _listDriver.Clear();
@@ -1335,11 +1144,12 @@ namespace AutoLike.Controller
         /*
          * Process Reg Page for Item Acc
          */
-        public async Task processItemLikePost(string ProfileFolderPath, account item, bool selectProxy, DataGridView dataGridView, int x, int y, List<string> listPageString, CheckBox type2CheckBox, TextBox keyText, NumericUpDown timeGetValue, string[] listUidPost, CheckBox loadImage, CheckBox hideChrome, Label statusGetUID)
+        public async Task processItemLikePost(string ProfileFolderPath, account item, bool selectProxy, DataGridView dataGridView, List<string> listPageString, CheckBox type2CheckBox, TextBox keyText, NumericUpDown timeGetValue, string[] listUidPost, CheckBox loadImage, CheckBox hideChrome, Label statusGetUID)
         {
-            ChromeDriver chromeDriver = _chromeDriverUtils.initChrome(ProfileFolderPath, item, selectProxy, x, y, loadImage, hideChrome);
+            ChromeDriver chromeDriver = _chromeDriverUtils.initChrome(ProfileFolderPath, item, selectProxy, loadImage, hideChrome);
             _listDriver.Add(chromeDriver);
-          
+            ChromeDriverUtils.sxepChrome(_listDriver);
+            await Task.Delay(1000);
             List<page> listPage = new List<page>();
             foreach(var list in listPageString)
             {
@@ -1402,7 +1212,6 @@ namespace AutoLike.Controller
 
         public async void ProcessMovePageToUid(string ProfileFolderPath, DataGridView dataGridView, NumericUpDown flowNum, bool selectProxy, List<account> listAcccounts, List<string> apiKeyList, CheckBox loadImage, CheckBox hideChrome)
         {
-            int itemIndex = 0;
             ProxyUtils proxyUtils = new ProxyUtils();
 
             DateTime currentTime = DateTime.Now;
@@ -1429,14 +1238,7 @@ namespace AutoLike.Controller
 
             int batchSize = Convert.ToInt32(flowNum.Value); // Số lượng item mỗi lần xử lý
             int maxConcurrency = Convert.ToInt32(flowNum.Value); // Số lượng luồng tối đa
-            int screenWidth = Screen.PrimaryScreen.Bounds.Width;
-            int screenHeight = Screen.PrimaryScreen.Bounds.Height;
-            if (screenWidth > 1920)
-            {
-                screenWidth = 1920;
-            }
             SemaphoreSlim semaphore = new SemaphoreSlim(maxConcurrency);
-            int x = 0; int y = 0;
             for (int i = 0; i < listAcccounts.Count; i += batchSize)
             {
                 List<account> batch = listAcccounts.GetRange(i, Math.Min(batchSize, listAcccounts.Count - i));
@@ -1454,41 +1256,14 @@ namespace AutoLike.Controller
                             string randomKey = apiKeyList[index];
                             string proxy = proxyUtils.getCurrentProxy(Constants.Constants.GetCurrentProxyShopLike(randomKey, "hd"));
                             item.PROXY = proxy;
-
-                            if (itemIndex == 0 || itemIndex == 10 || itemIndex == 20 || itemIndex == 30)
-                            {
-                                y = 0;
-                                x = 0;
-                            }
-                            else if ((itemIndex > 0 && itemIndex < 5) || (itemIndex > 10 && itemIndex < 15) || (itemIndex > 20 && itemIndex < 25) || (itemIndex > 30 && itemIndex < 35))
-                            {
-                                y = 0;
-                                x += screenWidth / 5;
-                            }
-                            else if (itemIndex == 5 || itemIndex == 15 || itemIndex == 25 || itemIndex == 35)
-                            {
-                                y = screenHeight / 2;
-                                x = 0;
-                            }
-                            else if ((itemIndex > 5 && itemIndex < 10) || (itemIndex > 15 && itemIndex <= 20) || (itemIndex > 25 && itemIndex < 30) || (itemIndex > 35 && itemIndex < 40))
-                            {
-                                y = screenHeight / 2;
-                                x += screenWidth / 5;
-                            }
-                            else { }
-                            itemIndex++;
-                            if (itemIndex == flowNum.Value)
-                            {
-                                itemIndex = 0;
-                            }
-                         
+                        
                             await Task.Run(async () =>
                             {
                                 List<string> listPageString = SQLiteUtils.getPageListByUid(item);
 
                                 if (listPageString.Count > 0)
                                 {
-                                    await processItemMovePageToUid(ProfileFolderPath, item, selectProxy, dataGridView, x, y, listPageString, loadImage, hideChrome);
+                                    await processItemMovePageToUid(ProfileFolderPath, item, selectProxy, dataGridView, listPageString, loadImage, hideChrome);
                                 }
                             });
 
@@ -1523,13 +1298,13 @@ namespace AutoLike.Controller
         /*
          * Process Move Page To Uid Item
          */
-        public async Task processItemMovePageToUid(string ProfileFolderPath, account item, bool selectProxy, DataGridView dataGridView, int x, int y, List<string> listPageString, CheckBox loadImage, CheckBox hideChrome)
+        public async Task processItemMovePageToUid(string ProfileFolderPath, account item, bool selectProxy, DataGridView dataGridView, List<string> listPageString, CheckBox loadImage, CheckBox hideChrome)
         {
-            ChromeDriver chromeDriver = _chromeDriverUtils.initChrome(ProfileFolderPath, item, selectProxy, x, y, loadImage, hideChrome);
+            ChromeDriver chromeDriver = _chromeDriverUtils.initChrome(ProfileFolderPath, item, selectProxy, loadImage, hideChrome);
             _listDriver.Add(chromeDriver);
-
+            ChromeDriverUtils.sxepChrome(_listDriver);
             chromeDriver.Navigate().GoToUrl("https://www.facebook.com/");
-            Thread.Sleep(2000);
+            await Task.Delay(1000);
             try
             {
                 chromeDriver.Manage().Cookies.DeleteCookieNamed("i_user");

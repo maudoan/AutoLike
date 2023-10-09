@@ -15,17 +15,8 @@ namespace AutoLike.Utils
 {
     public class ChromeDriverUtils
     {
-        int screenWidth = Screen.PrimaryScreen.Bounds.Width;
-        int screenHeight = Screen.PrimaryScreen.Bounds.Height;
-
-        public ChromeDriver initChrome(string ProfileFolderPath,account account, bool selectProxy, int x, int y, CheckBox loadImage, CheckBox hideChrome)
+        public ChromeDriver initChrome(string ProfileFolderPath,account account, bool selectProxy, CheckBox loadImage, CheckBox hideChrome)
         {
-
-          
-            if (screenWidth > 1920)
-            {
-                screenWidth = 1920;
-            }
             ChromeOptions co = new ChromeOptions(); //khaibao option chrome
             ChromeDriverService chromeDriverService = ChromeDriverService.CreateDefaultService();
             chromeDriverService.HideCommandPromptWindow = true; //ẩn CMD điều khiển chrome
@@ -59,7 +50,7 @@ namespace AutoLike.Utils
             co.AddArgument("--disable-notifications");
             co.AddArgument("mute-audio");
             co.AddArgument("--window-size=" + 500 + "," + 500);
-            co.AddArgument("--window-position=" + x + "," + y);
+            //co.AddArgument("--window-position=" + x + "," + y);
 
             if (loadImage.Checked)
             {
@@ -88,8 +79,6 @@ namespace AutoLike.Utils
         {
            driver.Close();
            driver.Quit();
-           //listChromeDriver.Remove(driver);
-           //sxepChrome(listChromeDriver);
         }
 
         public static bool FindTextInChrome(ChromeDriver driver, string textVN, string textEN)
