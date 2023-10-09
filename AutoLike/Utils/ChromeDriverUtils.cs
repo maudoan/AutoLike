@@ -60,7 +60,7 @@ namespace AutoLike.Utils
 
             if (hideChrome.Checked)
             {
-                co.AddArguments("headless");
+                //co.AddArguments("headless");
             }
             string nameCount = account.UID;
             try
