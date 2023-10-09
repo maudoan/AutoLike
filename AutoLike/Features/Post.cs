@@ -110,6 +110,7 @@ namespace AutoLike.Features
                             acc.CHECKED = "Checkpoint";
                             ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Like Post Lỗi - Checkpoint " + uidPost[k1]);
                             ChromeDriverUtils.updateStatusAcc(dataGridView, acc, "Checkpoint");
+                            outChrome(driver);
                             goto ne;
                         }
 
@@ -132,6 +133,7 @@ namespace AutoLike.Features
                             ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Like Post Lỗi - Acc Logout " + uidPost[k1]);
                             ChromeDriverUtils.updateStatusAcc(dataGridView, acc, "Die");
                             acc.CHECKED = "Die";
+                            outChrome(driver);
                             goto ne;
                         }
                         else
@@ -156,13 +158,14 @@ namespace AutoLike.Features
                                             {
                                                 ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Lỗi : dạng wath livetream k like  đc " + uidPost[k1]);
                                                 upShopLike(uidPost[k1], 9999, keyText, statusGetUID);
+                                                outChrome(driver);
                                                 goto ne;
-
                                             }
                                             else if(driver.Url.Contains("/reel"))
                                             {
                                                 ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Lỗi : dạng wath reel k like  đc " + uidPost[k1]);
                                                 upShopLike(uidPost[k1], 9999, keyText, statusGetUID);
+                                                outChrome(driver);
                                                 goto ne;
                                             }
                                             else if (ChromeDriverUtils.FindClickElementInChrome(driver, "Thích", "Like", true))
@@ -183,6 +186,7 @@ namespace AutoLike.Features
                                                     ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Like Post Lỗi - Acc CHECKPOINT " + uidPost[k1]);
                                                     ChromeDriverUtils.updateStatusAcc(dataGridView, acc, "Die");
                                                     acc.CHECKED = "Die";
+                                                    outChrome(driver);
                                                     goto ne;
                                                 }
                                                 try
@@ -213,6 +217,7 @@ namespace AutoLike.Features
                                                 ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Like Post Lỗi - Acc CHECKPOINT " + uidPost[k1]);
                                                 ChromeDriverUtils.updateStatusAcc(dataGridView, acc, "Die");
                                                 acc.CHECKED = "Die";
+                                                outChrome(driver);
                                                 goto ne;
 
                                             }
@@ -221,6 +226,7 @@ namespace AutoLike.Features
                                                 ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Like Post Lỗi - Acc Logout " + uidPost[k1]);
                                                 ChromeDriverUtils.updateStatusAcc(dataGridView, acc, "Die");
                                                 acc.CHECKED = "Die";
+                                                outChrome(driver);
                                                 goto ne;
                                             }
                                             else if (ChromeDriverUtils.FindTextInChrome(driver, "Chia sẻ", "Share"))
@@ -233,6 +239,7 @@ namespace AutoLike.Features
                                                 ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Tài khoản của bạn đã bị khóa : " + uidPost[k1]);
                                                 ChromeDriverUtils.updateStatusAcc(dataGridView, acc, "Die");
                                                 acc.CHECKED = "Die";
+                                                outChrome(driver);
                                                 goto ne;
                                             }
                                             else if (ChromeDriverUtils.FindTextInChrome(driver, "Bạn hiện không thể bày tỏ cảm xúc", "Bạn hiện không thể bày tỏ cảm xúc"))
@@ -240,6 +247,7 @@ namespace AutoLike.Features
                                                 ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Bạn hiện không thể bày tỏ cảm xúc : " + uidPost[k1]);
                                                 ChromeDriverUtils.updateStatusAcc(dataGridView, acc, "Checkpoint");
                                                 acc.CHECKED = "Checkpoint";
+                                                outChrome(driver);
                                                 goto ne;
                                             }
                                             else
@@ -291,18 +299,10 @@ namespace AutoLike.Features
                             Task.Delay(1000);
                             delay--;
                         }
-                    }
-                }
 
+                    }       
+                }
             ne:
-                try
-                {
-                    driver.Close();
-                    driver.Quit();
-                }
-                catch (Exception)
-                { }
-
                 for (int k2 = 0; k2 < uidPost.Length; k2++)
                 {
                     int dem = 0;
@@ -388,6 +388,18 @@ namespace AutoLike.Features
 
         }
 
+
+        public void outChrome(ChromeDriver driver)
+        {
+            try
+            {
+                Console.WriteLine("=========== NeNeNe=======>");
+                driver.Close();
+                driver.Quit();
+            }
+            catch (Exception)
+            { }
+        }
 
     }
     
