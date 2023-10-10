@@ -128,7 +128,6 @@ namespace AutoLike.Utils
             int dem = 0;
             while (true)
             {
-                string find = driver.FindElement(By.TagName("body")).Text;
                 try
                 {
                     var a = driver.FindElement(By.XPath("//*[text()='" + textVN + "']"));

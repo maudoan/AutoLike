@@ -37,25 +37,7 @@ namespace AutoLike.Controller
 
         public void turnOffChrome()
         {
-            foreach (ChromeDriver driver in _listDriver)
-            {
-                Thread s = new Thread(() =>
-                {
-                    try
-                    {
-                        driver.Close();
-                        _listDriver.Remove(driver);
-                    }
-                    catch { }
-                });
-                s.Start();
-            }
-            _listDriver.Clear();
             stopLikePage = true;
-            foreach (var process in Process.GetProcessesByName("chromedriver"))
-            {
-                process.Kill();
-            }
         }
 
         public List<string> listKeyShopLike(TextBox apiKeyTextBox)
@@ -349,8 +331,7 @@ namespace AutoLike.Controller
                             await semaphore.WaitAsync();
                             try
                             {
-
-                                await Task.Run(async () =>
+                                await Task.Run(() =>
                                 {
                                     Dictionary<string, string> listIdGroup = FacebookUtils.getListPage(item.COOKIE, "", "");
                                     if (listIdGroup != null && listIdGroup.Count > 0)
@@ -411,25 +392,29 @@ namespace AutoLike.Controller
 
         public void processCloseApp ()
         {
-            foreach (ChromeDriver driver in _listDriver)
+            try
             {
-                Thread s = new Thread(() =>
+                foreach (ChromeDriver driver in _listDriver)
                 {
+
                     try
                     {
                         driver.Close();
-                        _listDriver.Remove(driver);
                     }
                     catch { }
-                });
-                s.Start();
-            }
-            _listDriver.Clear();
 
-            foreach (var process in Process.GetProcessesByName("chromedriver"))
-            {
-                process.Kill();
+                }
+
+                foreach (var process in Process.GetProcessesByName("chromedriver"))
+                {
+                    process.Kill();
+                }
             }
+            catch (Exception e)
+            {
+
+            }
+
 
         }
 
@@ -645,7 +630,7 @@ namespace AutoLike.Controller
             ChromeDriver chromeDriver = _chromeDriverUtils.initChrome(ProfileFolderPath, item, selectProxy, loadImage, hideChrome);
             _listDriver.Add(chromeDriver);
             ChromeDriverUtils.sxepChrome(_listDriver);
-            chromeDriver.Navigate().GoToUrl("https://www.facebook.com");
+                chromeDriver.Navigate().GoToUrl("https://www.facebook.com");
             await Task.Delay(1000);
 
             if (ChromeDriverUtils.FindClickElementInChrome(chromeDriver, "Đăng nhập", "Log in", false))
@@ -889,7 +874,7 @@ namespace AutoLike.Controller
                             {
                                 await processItemRegPageAcc(ProfileFolderPath, item, selectProxy, dataGridView, loadImage, hideChrome);
                             });
-                           
+
 
                         }
                         finally
@@ -1030,7 +1015,12 @@ namespace AutoLike.Controller
 
                     }
                 }
-             
+
+                for (int kk = 0; kk < dataGridView.Rows.Count; kk++)
+                {
+                    dataGridView.Rows[kk].DefaultCellStyle.BackColor = Color.FromArgb(203, 245, 203);
+                }
+
                 for (int k = 0; k < listAcccounts.Count; k++)
                 {
                     if (listAcccounts[k].CHECKED == "Checkpoint" || listAcccounts[k].CHECKED == "Die")

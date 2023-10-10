@@ -350,6 +350,7 @@ namespace AutoLike.Utils
 
         public static void insertPage(List<page> listPage)
         {
+            deletePageExisted(listPage);
             try
             {
                 using (SQLiteConnection sqliteConnection = new SQLiteConnection("Data Source=Data.sqlite3;Version=3;"))
