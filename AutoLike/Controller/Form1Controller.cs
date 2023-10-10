@@ -39,13 +39,16 @@ namespace AutoLike.Controller
         {
             foreach (ChromeDriver driver in _listDriver)
             {
-
-                try
-                {                 
-                    driver.Close();
-                }
-                catch { }
-
+                Thread s = new Thread(() =>
+                {
+                    try
+                    {
+                        driver.Close();
+                        _listDriver.Remove(driver);
+                    }
+                    catch { }
+                });
+                s.Start();
             }
             _listDriver.Clear();
             stopLikePage = true;
@@ -378,7 +381,6 @@ namespace AutoLike.Controller
                                         listAcc.Add(item);
                                     }
                                     SQLiteUtils.insertPage(listPage);
-                                    await Task.Delay(1000);
                                 });
 
                             }
@@ -391,9 +393,12 @@ namespace AutoLike.Controller
 
                     await Task.WhenAll(tasks);
                     SQLiteUtils.updateByListUID(listAcc);
-                    await Task.Delay(5000);
                     listPage.Clear();
                     listAcc.Clear();
+                    await Task.Delay(1000);
+                } catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
                 }
                 finally
                 {
@@ -408,12 +413,16 @@ namespace AutoLike.Controller
         {
             foreach (ChromeDriver driver in _listDriver)
             {
-                try
+                Thread s = new Thread(() =>
                 {
-                    driver.Close();
-                }
-                catch { }
-
+                    try
+                    {
+                        driver.Close();
+                        _listDriver.Remove(driver);
+                    }
+                    catch { }
+                });
+                s.Start();
             }
             _listDriver.Clear();
 
@@ -982,42 +991,46 @@ namespace AutoLike.Controller
             while (stopLikePage == false)
             {
                 listProxy.Clear();
-                if (currentTime - lastApiCallTime >= callInterval)
+
+                if(selectProxy)
                 {
-                    // Nếu đã đủ thời gian, thực hiện gọi API
-                    if (apiKeyList.Count > 0)
+                    if (currentTime - lastApiCallTime >= callInterval)
                     {
-                        for (int i = 0; i < apiKeyList.Count; i++)
+                        // Nếu đã đủ thời gian, thực hiện gọi API
+                        if (apiKeyList.Count > 0)
                         {
-                           await proxyUtils.GetNewProxy(Constants.Constants.GetNewProxyShopLike(apiKeyList[i]));
+                            for (int i = 0; i < apiKeyList.Count; i++)
+                            {
+                                await proxyUtils.GetNewProxy(Constants.Constants.GetNewProxyShopLike(apiKeyList[i]));
+                            }
                         }
+
+                        // Cập nhật thời gian gọi cuối cùng
+                        lastApiCallTime = currentTime;
+                    }
+                    else
+                    {
+                        // Nếu chưa đủ thời gian, không thực hiện gọi lại API
+                        Console.WriteLine("------------>Waitng For 1 minute " + (callInterval - (currentTime - lastApiCallTime)));
                     }
 
-                    // Cập nhật thời gian gọi cuối cùng
-                    lastApiCallTime = currentTime;
-                }
-                else
-                {
-                    // Nếu chưa đủ thời gian, không thực hiện gọi lại API
-                    Console.WriteLine("------------>Waitng For 1 minute " + (callInterval - (currentTime - lastApiCallTime)));
-                }
-
-                try
-                {
-                    for (int k1 = 0; k1 < apiKeyList.Count; k1++)
+                    try
                     {
-                        string proxy = await proxyUtils.GetCurrentProxy(Constants.Constants.GetCurrentProxyShopLike(apiKeyList[k1], "hd"));
-                        if (proxy != null && proxy != "")
+                        for (int k1 = 0; k1 < apiKeyList.Count; k1++)
                         {
-                            listProxy.Add(proxy);
+                            string proxy = await proxyUtils.GetCurrentProxy(Constants.Constants.GetCurrentProxyShopLike(apiKeyList[k1], "hd"));
+                            if (proxy != null && proxy != "")
+                            {
+                                listProxy.Add(proxy);
+                            }
                         }
                     }
-                }
-                catch
-                {
+                    catch
+                    {
 
+                    }
                 }
-
+             
                 for (int k = 0; k < listAcccounts.Count; k++)
                 {
                     if (listAcccounts[k].CHECKED == "Checkpoint" || listAcccounts[k].CHECKED == "Die")
@@ -1076,6 +1089,9 @@ namespace AutoLike.Controller
                         _listDriver.Clear();
                         await Task.Delay(5000);
 
+                    } catch (Exception e)
+                    {
+                        Console.WriteLine($"Error: {e}");
                     }
                     finally
                     {
@@ -1111,7 +1127,7 @@ namespace AutoLike.Controller
             ChromeDriver chromeDriver = _chromeDriverUtils.initChrome(ProfileFolderPath, item, selectProxy, loadImage, hideChrome);
             _listDriver.Add(chromeDriver);
             ChromeDriverUtils.sxepChrome(_listDriver);
-            await Task.Delay(1000);
+            await Task.Delay(100);
             List<page> listPage = new List<page>();
             foreach(var list in listPageString)
             {
