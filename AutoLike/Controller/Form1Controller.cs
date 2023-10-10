@@ -957,8 +957,15 @@ namespace AutoLike.Controller
                     acc.SOPAGE = dataGridView.Rows[i].Cells["pageNumberAccount"].Value.ToString();
                     danhSach.Add(acc);
                 }
-            }            
-            ProcessLikePost(ProfileFolderPath, dataGridView, flowNum, selectProxy, danhSach, apiKeyList, type2CheckBox, keyText, timeGetValue,loadImage, hideChrome, statusGetUID);
+            }   
+            if(danhSach.Count > 0)
+            {
+                ProcessLikePost(ProfileFolderPath, dataGridView, flowNum, selectProxy, danhSach, apiKeyList, type2CheckBox, keyText, timeGetValue, loadImage, hideChrome, statusGetUID);
+            }else
+            {
+                MessageBox.Show("Vui lòng chọn Acc Like!", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+         
         }
 
         /*

@@ -116,6 +116,14 @@ namespace AutoLike.Features
 
                         driver.Navigate().GoToUrl("https://www.facebook.com/" + uidPost[k1]);
 
+                        try
+                        {
+                            ChromeDriverUtils.FindClickElementInChrome(driver, "Lúc khác", "Lúc khác", true);
+                        }
+                        catch
+                        {
+
+                        }
                         if (driver.Url.Contains("checkpoint/"))
                         {
                             acc.CHECKED = "Checkpoint";
@@ -295,12 +303,12 @@ namespace AutoLike.Features
             ne:
                 for (int k2 = 0; k2 < uidPost.Length; k2++)
                 {
-                    int dem = 0;
+                    int demUid = 0;
                     foreach (string s in count)
                     {
                         if (s.Split('|')[0] == uidPost[k2])
                         {
-                            dem++;
+                            demUid++;
                         }
                         else if (s == uidPost[k2] + "|delete")
                         {
@@ -319,12 +327,12 @@ namespace AutoLike.Features
                     {
                         if (s.Split('|')[0] == uidPost[k2])
                         {
-                            File.AppendAllText(@"LOG\loglike.txt", s.Split('|')[1] + "|" + uidPost[k2] + "|" + dem + "\r\n");
+                            File.AppendAllText(@"LOG\loglike.txt", s.Split('|')[1] + "|" + uidPost[k2] + "|" + demUid + "\r\n");
                         }
                     }
                     try
                     {
-                        upShopLike(uidPost[k2], dem, keyText, statusGetUID);
+                        upShopLike(uidPost[k2], demUid, keyText, statusGetUID);
                     }
                     catch
                     {
