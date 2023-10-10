@@ -103,17 +103,6 @@ namespace AutoLike.Features
                         int dem = 0;
                         ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Vào Post: " + uidPost[k1]);
                     lai:
-                        driver.Navigate().GoToUrl("https://www.facebook.com/");
-
-                        if (driver.Url.Contains("checkpoint/"))
-                        {
-                            acc.CHECKED = "Checkpoint";
-                            ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Like Post Lỗi - Checkpoint " + uidPost[k1]);
-                            ChromeDriverUtils.updateStatusAcc(dataGridView, acc, "Checkpoint");
-                            outChrome(driver);
-                            goto ne;
-                        }
-
                         try
                         {
                             driver.Manage().Cookies.DeleteCookieNamed("i_user");
@@ -124,9 +113,17 @@ namespace AutoLike.Features
                         {
 
                         }
-  
 
                         driver.Navigate().GoToUrl("https://www.facebook.com/" + uidPost[k1]);
+
+                        if (driver.Url.Contains("checkpoint/"))
+                        {
+                            acc.CHECKED = "Checkpoint";
+                            ChromeDriverUtils.updateStatusChrome(dataGridView, acc, "Like Post Lỗi - Checkpoint " + uidPost[k1]);
+                            ChromeDriverUtils.updateStatusAcc(dataGridView, acc, "Checkpoint");
+                            outChrome(driver);
+                            goto ne;
+                        }
 
                         if (ChromeDriverUtils.FindClickElementInChrome(driver, "Đăng nhập", "Log In", false) || ChromeDriverUtils.FindClickElementInChrome(driver, "Đăng nhập", "Choose your account", false))
                         {
@@ -293,13 +290,6 @@ namespace AutoLike.Features
                                 }
                             }
                         }
-                        int delay = rd.Next(Convert.ToInt32(5), Convert.ToInt32(5));
-                        while (delay > 0)
-                        {
-                            Task.Delay(1000);
-                            delay--;
-                        }
-
                     }       
                 }
             ne:
