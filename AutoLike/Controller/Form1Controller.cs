@@ -1140,12 +1140,40 @@ namespace AutoLike.Controller
 
                 }
             }
+            List<page> newList = new List<page>();
+            Random rd = new Random(); // Đảm bảo bạn đã tạo đối tượng Random
 
+            // Xác định xem bạn nên lấy 1 hoặc 2 phần tử
+            int numberOfElementsToTake = rd.Next(1, 3);
+
+            // Tạo danh sách tạm thời để lưu các phần tử đã lấy
+            List<page> selectedItems = new List<page>();
+
+            // Lấy ngẫu nhiên 1 hoặc 2 phần tử
+            for (int i = 0; i < numberOfElementsToTake; i++)
+            {
+                int randomIndex;
+                page selectedItem;
+
+                // Đảm bảo không chọn phần tử trùng lặp
+                do
+                {
+                    randomIndex = rd.Next(listPage.Count);
+                    selectedItem = listPage[randomIndex];
+                } while (selectedItems.Contains(selectedItem));
+
+                // Thêm phần tử đã lấy vào danh sách mới và danh sách tạm thời
+                newList.Add(selectedItem);
+                selectedItems.Add(selectedItem);
+            }
             Post likePost = new Post();
-            likePost.LikePost(chromeDriver, dataGridView, item, listUidPost, listPage,type2CheckBox, keyText, timeGetValue, statusGetUID);
-
-            SQLiteUtils.updateByUID(item);
-            Console.WriteLine($"----------Processing item: =========>");
+            if(newList.Count > 0)
+            {
+                likePost.LikePost(chromeDriver, dataGridView, item, listUidPost, newList, type2CheckBox, keyText, timeGetValue, statusGetUID);
+                SQLiteUtils.updateByUID(item);
+                Console.WriteLine($"----------Processing item: =========>");
+            }
+ 
         }
 
 
